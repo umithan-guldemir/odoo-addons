@@ -26,6 +26,23 @@ class StockIncoterms(models.Model):
     destination_port = fields.Boolean(string="Requires destination port")
     transport_type = fields.Boolean(string="Requires transport type")
 
+    def name_get2(self, cr, uid, ids, context=None):
+        res = []
+        for inst in self.browse(cr, uid, ids, context=context):
+            name='['+inst.code+']'+inst.name
+            res.append((inst.id, name))
+        return res
+
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=80):
+        if args is None:
+            args = []
+        if context is None:
+            context = {}
+        if name:
+            args += [('name', operator, name)]
+        ids = self.search(cr, user, args, limit=limit, context=context)
+        return self.name_get2(cr, user, ids, context=context)
+
 
 class StockPicking(models.Model):
 
