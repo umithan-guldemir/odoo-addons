@@ -29,8 +29,14 @@ class SaleOrder(models.Model):
                                         related="incoterm.transport_type")
     destination_port = fields.Char(string="Destination port")
     transport_type = fields.Selection(
-        selection=[('air', 'Air'), ('maritime', 'Maritime'),
-                   ('ground', 'Ground')], string="Transport type")
+        selection=[('n/a', '0-Not Specified'),
+                   ('maritime', '1-Maritime'),
+                   ('rail', '2-Rail'),
+                   ('road', '3-Road'),
+                   ('air', '4-Air'),
+                   ('mail', '5-Mail'),
+                   ('multimodal', '6-Multi Modal'),
+                   ], string="Transport type")
 
     @api.model
     def _prepare_invoice(self, order, line_ids):
