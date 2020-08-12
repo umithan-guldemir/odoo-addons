@@ -53,8 +53,9 @@
                 <field name="attr_type" />
                 <field name="name"/>
                 <group expand="0" string="Group By">
-                    <filter string="Attribute" domain="" context="{'group_by':'attribute_id'}"/>
-                    <filter string="Attribute Type" domain="" context="{'group_by':'attr_type'}"/>
+
+                    <filter string="Attribute" name="attribute" domain="[]" context="{'group_by':'attribute_id'}"/>
+                    <filter string="Attribute Type" name="attr_type" domain="[]" context="{'group_by':'attr_type'}"/>
                 </group>
             </search>
         </field>
