@@ -2,7 +2,7 @@
 # Copyright 2017 Ainara Galdona - Avanzosc S.L.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 
 
 class PurchaseOrder(models.Model):
@@ -25,8 +25,8 @@ class PurchaseOrder(models.Model):
         selection='_get_selection_transport_type', string="Transport type")
 
     @api.model
-    def _prepare_invoice(self, order, line_ids):
-        res = super(PurchaseOrder, self)._prepare_invoice(order, line_ids)
+    def _prepare_invoice(self):
+        res = super(PurchaseOrder, self)._prepare_invoice()
         res.update({
             'incoterm': order.incoterm_id.id,
             'destination_port': order.destination_port,

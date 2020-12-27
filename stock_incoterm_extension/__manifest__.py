@@ -29,10 +29,12 @@
     "website": "http://www.odoomrp.com",
     "category": "Stock",
     'data': ["security/ir.model.access.csv",
+             "views/account_incoterm_view.xml",
              "views/stock_view.xml",
              "views/account_invoice_view.xml",
              "views/sale_order_view.xml",
-             "views/purchase_order_view.xml"],
+            # "views/purchase_order_view.xml"
+             ],
     'installable': True,
     'auto_install': False,
 }

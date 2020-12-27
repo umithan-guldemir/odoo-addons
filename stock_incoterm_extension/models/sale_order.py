@@ -16,11 +16,11 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from odoo import models, fields, api
+from odoo.tools.translate import _
 
 
 class SaleOrder(models.Model):
-
     _inherit = 'sale.order'
 
     req_destination_port = fields.Boolean(string="Requires destination port",
@@ -29,21 +29,24 @@ class SaleOrder(models.Model):
                                         related="incoterm.transport_type")
     destination_port = fields.Char(string="Destination port")
     transport_type = fields.Selection(
-        selection=[('n/a', '0-Not Specified'),
-                   ('maritime', '1-Maritime'),
-                   ('rail', '2-Rail'),
-                   ('road', '3-Road'),
-                   ('air', '4-Air'),
-                   ('mail', '5-Mail'),
-                   ('multimodal', '6-Multi Modal'),
+        selection=[('0', _('Transport mode not specified')),
+                   ('1', _('Maritime transport')),
+                   ('2', _('Rail transport')),
+                   ('3', _('Road transport')),
+                   ('4', _('Air transport')),
+                   ('5', _('Mail')),
+                   ('6', _('Multimodal transport')),
+                   ('7', _('Fixed transport installations')),
+                   ('8', _('Inland water transport')),
+                   ('9', _('Transport mode not applicable')),
                    ], string="Transport type")
 
     @api.model
-    def _prepare_invoice(self, order, line_ids):
-        res = super(SaleOrder, self)._prepare_invoice(order, line_ids)
+    def _prepare_invoice(self):
+        res = super(SaleOrder, self)._prepare_invoice()
         res.update({
-            'incoterm': order.incoterm.id,
-            'destination_port': order.destination_port,
-            'transport_type': order.transport_type
-            })
+            'incoterm': self.incoterm.id,
+            'destination_port': self.destination_port,
+            'transport_type': self.transport_type
+        })
         return res

@@ -6,9 +6,10 @@
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="model">account.invoice</field>
             <field name="arch" type="xml">
-                <page string="Other Info" position="inside">
-                    <group string="Incoterm">
-                        <field name="incoterm"/>
+                <field name="incoterm_id" position="replace"/>
+                <page name="other_info" position="inside">
+                    <group string="Incoterms">
+                        <field name="incoterm_id"/>
                         <field name="req_destination_port" invisible="1"/>
                         <field name="req_transport_type" invisible="1"/>
                         <field name="destination_port" attrs="{'required':[('req_destination_port', '=', True)]}"/>

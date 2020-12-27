@@ -16,7 +16,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 
 
 class AccountInvoice(models.Model):
@@ -28,11 +28,11 @@ class AccountInvoice(models.Model):
         return self.env['sale.order'].fields_get(
             allfields=['transport_type'])['transport_type']['selection']
 
-    incoterm = fields.Many2one('stock.incoterms', string="Incoterm")
+
     req_destination_port = fields.Boolean(string="Requires destination port",
-                                          related="incoterm.destination_port")
+                                          related="incoterm_id.destination_port")
     req_transport_type = fields.Boolean(string="Requires transport type",
-                                        related="incoterm.transport_type")
+                                        related="incoterm_id.transport_type")
     destination_port = fields.Char(string="Destination port")
     transport_type = fields.Selection(
         selection='_get_selection_transport_type', string="Transport type")

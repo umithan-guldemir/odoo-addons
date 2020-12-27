@@ -3,7 +3,7 @@
 <data>
         <record id="sale_order_incoterm_form_ext_inh" model="ir.ui.view">
             <field name="name">sale.order.incoterm.form.ext.inh.form</field>
-            <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
             <field name="model">sale.order</field>
             <field name="arch" type="xml">
                 <field name="incoterm" position="after">

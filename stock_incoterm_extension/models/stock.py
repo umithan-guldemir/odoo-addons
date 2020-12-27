@@ -16,32 +16,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
-
-
-class StockIncoterms(models.Model):
-
-    _inherit = 'stock.incoterms'
-
-    destination_port = fields.Boolean(string="Requires destination port")
-    transport_type = fields.Boolean(string="Requires transport type")
-
-    def name_get2(self, cr, uid, ids, context=None):
-        res = []
-        for inst in self.browse(cr, uid, ids, context=context):
-            name='['+inst.code+']'+inst.name
-            res.append((inst.id, name))
-        return res
-
-    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=80):
-        if args is None:
-            args = []
-        if context is None:
-            context = {}
-        if name:
-            args += [('name', operator, name)]
-        ids = self.search(cr, user, args, limit=limit, context=context)
-        return self.name_get2(cr, user, ids, context=context)
+from odoo import models, fields, api
 
 
 class StockPicking(models.Model):
@@ -53,7 +28,7 @@ class StockPicking(models.Model):
         return self.env['sale.order'].fields_get(
             allfields=['transport_type'])['transport_type']['selection']
 
-    incoterm = fields.Many2one('stock.incoterms', string="Incoterm")
+    incoterm = fields.Many2one('account.incoterms', string="Incoterm")
     req_destination_port = fields.Boolean(string="Requires destination port",
                                           related="incoterm.destination_port")
     req_transport_type = fields.Boolean(string="Requires transport type",
@@ -67,7 +42,7 @@ class StockPicking(models.Model):
         if picking and picking.sale_id:
             sale = picking.sale_id
             vals.update({
-                'incoterm': sale.incoterm and sale.incoterm.id or False,
+                'incoterm': sale.incoterm and sale.incoterm or False,
                 'destination_port': sale.destination_port,
                 'transport_type': sale.transport_type
                 })
