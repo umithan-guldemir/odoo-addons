@@ -7,9 +7,9 @@
 			<field name="inherit_id" ref="base.view_company_form" />
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='vat']" position="after">
-					<field name="tax_office_name"/>
-					<field name="mersis"/>
-					<field name="commercial_id_no"/>
+					<field name="tax_office_name" invisible="1"/>
+					<field name="mersis" invisible="1"/>
+					<field name="commercial_id_no" invisible="1"/>
 				</xpath>
 			</field>
 		</record>

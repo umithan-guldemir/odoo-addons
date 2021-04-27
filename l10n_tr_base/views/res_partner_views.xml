@@ -6,9 +6,10 @@
 			<field name="model">res.partner</field>
 			<field name="inherit_id" ref="base.view_partner_form" />
 			<field name="arch" type="xml">
-				<xpath expr="//field[@name='ref']" position="after">
-					<field name="mersis" attrs="{'readonly': [('parent_id','!=',False)]}" />
-					<field name="commercial_id_no" attrs="{'readonly': [('parent_id','!=',False)]}" />
+				<xpath expr="//field[@name='vat']" position="after">
+					<field name="tax_office_name" attrs="{'readonly': [('parent_id','!=',False)]}" invisible="1" />
+					<field name="mersis" attrs="{'readonly': [('parent_id','!=',False)]}" invisible="1" />
+					<field name="commercial_id_no" attrs="{'readonly': [('parent_id','!=',False)]}" invisible="1" />
 				</xpath>
 			</field>
 		</record>
