@@ -26,7 +26,7 @@
                 <field name="active" position="before">
                     <label for="active"/>
                 </field>
-                <field name="active" position="after">
+                <field name="code" position="after">
                     <group>
                         <field name="destination_port"/>
                         <field name="transport_type"/>
