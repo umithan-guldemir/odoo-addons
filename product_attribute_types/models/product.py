@@ -25,7 +25,6 @@ class ProductAttribute(models.Model):
 class ProductAttributeLine(models.Model):
     _inherit = "product.template.attribute.line"
 
-    required = fields.Boolean('Required')
     default = fields.Many2one('product.attribute.value', 'Default')
     attr_type = fields.Selection(string='Type', store=False,
                                  related='attribute_id.attr_type')
