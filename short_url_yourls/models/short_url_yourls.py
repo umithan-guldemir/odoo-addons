@@ -1,5 +1,9 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+# Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import requests
@@ -29,7 +33,11 @@ class ShortURLYourls(models.Model):
         :return: Total number of shortened URLs
         """
         for record in self:
-            record.total_shortened_urls = len(record.shortened_urls)
+            # Pre-assign a default value
+            record.total_shortened_urls = 0
+            # Compute the actual number of shortened URLs
+            if record.shortened_urls:
+                record.total_shortened_urls = len(record.shortened_urls)
 
     name = fields.Char(string="Name")
     hostname = fields.Char(string="URL", required=True, help="Example: https://6sn.de")
@@ -74,6 +82,7 @@ class ShortURLYourls(models.Model):
             "title": "Odoo URL Shortener",
             "format": "json",
         }
+        # Check if the URL has already been shortened to avoid redundancy
         exist_shortened_url = line_obj.search([("long_url", "=", url)], limit=1)
         if exist_shortened_url:
             return exist_shortened_url.short_url
