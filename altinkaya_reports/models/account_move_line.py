@@ -3,8 +3,8 @@
 from odoo import models, fields, api
 
 
-class AccountInvoiceLine(models.Model):
-    _inherit = "account.invoice.line"
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
 
     kdv_amount = fields.Monetary(
         default=0.0,
@@ -17,20 +17,20 @@ class AccountInvoiceLine(models.Model):
     )
 
     @api.depends(
-        "invoice_id.date_invoice",
-        "invoice_id.currency_id",
-        "invoice_id.custom_rate",
-        "invoice_id.type",
-        "invoice_line_tax_ids",
+        "move_id.invoice_date",
+        "move_id.currency_id",
+        "move_id.custom_rate",
+        "move_id.type",
+        "tax_ids",
         "price_subtotal",
     )
     def _compute_kdv_amount(self):
         for ail in self:
-            currency_rate = ail.invoice_id.custom_rate
+            currency_rate = ail.move_id.custom_rate
             kdv_amount = 0.0
-            for tax in ail.invoice_line_tax_ids:
+            for tax in ail.tax_ids:
                 # We need to select tax_code based on invoice type
-                if ail.invoice_id.type in ["out_refund", "in_refund"]:
+                if ail.move_id.type in ["out_refund", "in_refund"]:
                     tax_code = tax.refund_account_id.code
                 else:
                     tax_code = tax.account_id.code
