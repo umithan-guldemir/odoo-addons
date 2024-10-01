@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 
 
 class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+    _inherit = 'account.move'
 
     @api.model
     def _compute_full_reconcile_ids(self):
@@ -39,7 +39,7 @@ class AccountInvoice(models.Model):
         return super(AccountInvoice, self).register_payment(payment_line, writeoff_acc_id=writeoff_acc_id,
                                                             writeoff_journal_id=writeoff_journal_id)
 
-    @api.multi
+    
     def action_invoice_open(self):
         """
         For currency difference Invoices Override method to unreconcile previous account move lines and
@@ -68,7 +68,7 @@ class AccountInvoice(models.Model):
                 aml_to_reconcile._reconcile(diff_aml=diff_aml)
         return res
 
-    @api.multi
+    
     def action_invoice_cancel(self):
         res = super(AccountInvoice, self).action_invoice_cancel()
 
@@ -80,7 +80,7 @@ class AccountInvoice(models.Model):
                 for line in invoice.invoice_line_ids.filtered(lambda x: x.difference_base_aml_id):
                     line.difference_base_aml_id.write({'difference_checked': False})
 
-    @api.multi
+    
     def unlink(self):
         for invoice in self:
             if invoice.invoice_line_ids and invoice.journal_id.code == 'KFARK':
