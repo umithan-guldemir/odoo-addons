@@ -9,8 +9,8 @@ from werkzeug import url_encode
 import hashlib
 
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
     
     #altinkaya61
     x_comment_export = fields.Text('ihracaat fatura notu')
@@ -43,7 +43,7 @@ class AccountInvoice(models.Model):
     
     #TDE Fix Onur
     #invoice have picking_ids but not yet
-    @api.multi
+    
     def invoice_validate(self):
         res = super(AccountInvoice, self).invoice_validate()
         user = self.env['res.users'].browse(self.env.user.id)
