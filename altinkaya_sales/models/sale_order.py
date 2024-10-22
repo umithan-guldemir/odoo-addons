@@ -152,7 +152,11 @@ class SaleOrder(models.Model):
         deadline = datetime.now() - timedelta(days=360)
         for sale in self:
             # SALE
-            if sale.confirmation_date and sale.confirmation_date < deadline and sale.state in ["sent", "sale"]:
+            if (
+                sale.confirmation_date
+                and sale.confirmation_date < deadline
+                and sale.state in ["sent", "sale"]
+            ):
                 sale.state = "done"
                 sale.order_state = "25_completed"
                 continue
@@ -377,6 +381,24 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self).create(vals)
         res.order_line.explode_set_contents()
         return res
+
+    @api.multi
+    def recalculate_names(self):
+        """Overriden to make this function work properly. It originally calls product_id
+        change functions but it only needs to compute descriptions in partners language
+        and replace them."""
+        for line in self.mapped("order_line").filtered("product_id"):
+            line = line.with_context(lang=self.partner_id.lang)
+            product = line.product_id.with_context(
+            lang=self.partner_id.lang,
+            partner=self.partner_id,
+            quantity=line.product_uom_qty,
+            date=self.date_order,
+            pricelist=self.pricelist_id.id,
+            uom=line.product_uom.id
+        )
+            line.name = line.get_sale_order_line_multiline_description_sale(product)
+        return True
 
 
 class SaleOrderLine(models.Model):
