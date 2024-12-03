@@ -1,2 +1,6 @@
-# l10n-turkey-web
-Odoo website uzantısı için yardımcı modüller
+customaddons
+============
+
+Custom addons that I use for my odoo installation Current version 16.0
+Requirements
+

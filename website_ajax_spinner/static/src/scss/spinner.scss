@@ -1,0 +1,51 @@
+.o_loading_toast {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 9999;
+  bottom: 35px;
+  left: 25px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  padding: 10px 7.5px;
+}
+
+.o_loading_toast_text {
+  margin-left: 10px;
+  margin-bottom: 0;
+}
+
+.o_spinner {
+  animation: rotate 2s linear infinite;
+  width: 25px;
+  height: 25px;
+
+  .path {
+    stroke: map-get($theme-colors, 'primary');
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
