@@ -194,3 +194,31 @@ class ProductProduct(models.Model):
     def _compute_name_variant_report_name(self):
         result = self.with_context({"display_default_code": False}).name_get()
         return result
+
+    def _compute_single_set_product_price(self, dummy_so):
+        self.ensure_one()
+        bom = self.env["mrp.bom"].sudo()._bom_find(product=self)
+        if not bom.type == "phantom":
+            return
+        # Create a new sale order line
+        dummy_sol = self.env["sale.order.line"].create(
+            {
+                "order_id": dummy_so.id,
+                "product_id": self.id,
+                "product_uom_qty": 1,
+                "product_uom": self.uom_id.id,
+                "price_unit": self.v_fiyat_dolar,
+            }
+        )
+        # Explode the phantom bom
+        dummy_sol.explode_set_contents()
+        # Compute the price
+        dummy_so.recalculate_prices()
+        # Update the product price
+        _logger.info(
+            "Updating product price for product %s: %s -> %s"
+            % (self.display_name, self.v_fiyat_dolar, dummy_so.amount_untaxed)
+        )
+        self.v_fiyat_dolar = dummy_so.amount_untaxed
+        # Clear sale order lines
+        dummy_so.order_line.unlink()

@@ -3,6 +3,7 @@ Created on Jan 17, 2019
 
 @author: cq
 """
+
 from odoo import models, fields, api, _
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
@@ -118,33 +119,11 @@ class ProductTemplate(models.Model):
                 "date_order": fields.Datetime.now(),
             }
         )
-        for product in self.web_progress_iter(products_2compute, msg="Set ürünlerin fiyatı hesaplanıyor..."):
-            bom = self.env["mrp.bom"].sudo()._bom_find(product=product)
-            if not bom.type == "phantom":
-                continue
-            # Create a new sale order line
-            dummy_sol = self.env["sale.order.line"].create(
-                {
-                    "order_id": dummy_so.id,
-                    "product_id": product.id,
-                    "product_uom_qty": 1,
-                    "product_uom": product.uom_id.id,
-                    "price_unit": product.v_fiyat_dolar,
-                }
-            )
-            # Explode the phantom bom
-            dummy_sol.explode_set_contents()
-            # Compute the price
-            dummy_so.recalculate_prices()
-            # Update the product price
-            _logger.info(
-                "Updating product price for product %s: %s -> %s"
-                % (product.display_name, product.v_fiyat_dolar, dummy_so.amount_untaxed)
-            )
-            product.v_fiyat_dolar = dummy_so.amount_untaxed
-            # Clear sale order lines
-            dummy_so.order_line.unlink()
-        # Clear the dummy sale order
-        dummy_so.unlink()
-        self.env.cr.commit()
+        batch = self.env["queue.job.batch"].get_new_batch("Compute Set Product Price")
+        for product in products_2compute:
+            product.with_context(job_batch=batch).with_delay(
+                channel="import_channel"
+            )._compute_single_set_product_price(dummy_so)
+        # # Clear the dummy sale order
+        # dummy_so.unlink()
         return True
