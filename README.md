@@ -1,6 +1,5 @@
-customaddons
+odoo-addons
 ============
 
-Custom addons that I use for my odoo installation Current version 16.0
-Requirements
+Free and Open Odoo Addons
 
