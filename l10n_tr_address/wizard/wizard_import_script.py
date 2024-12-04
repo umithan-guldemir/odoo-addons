@@ -1,75 +1,130 @@
-
 from odoo import models, fields, api, _
-import csv
-import base64
+import re
 import tempfile
 import binascii
-import xlrd
+import openpyxl
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
 class wizard_import_script(models.TransientModel):
-    _name = 'wizard.import.script'
-    _description="Import Script"
+    _name = "wizard.import.script"
+    _description = "Import Script"
 
-    xls_file = fields.Binary('Upload XLS File')
+    xls_file = fields.Binary("Upload XLS File")
 
     @api.multi
-    def import_excel(self):
+    def import_excel(self): #TODO: bu fonksiyon biraz yavas calisiyor daha iyisi yapilabilir
+
         fp = tempfile.NamedTemporaryFile(suffix=".xlsx")
         fp.write(binascii.a2b_base64(self.xls_file))
         fp.seek(0)
-        workbook = xlrd.open_workbook(fp.name)
-        sheet = workbook.sheet_by_index(0)
-        rec_ids = []
-        con_obj = self.env['res.country']
-        state_obj = self.env['res.country.state']
-        dist_obj = self.env['address.district']
-        reg_obj = self.env['address.region']
-        nei_obj = self.env['address.neighbour']
-        neighbours = []
-        for row_no in range(sheet.nrows):
-            line = (lambda row:isinstance(row.value, str) and
-                               row.value.encode('utf-8') or str(row.value),
-                    sheet.row(row_no))[1]
-            if line:
-                try:
-                    
-                    # con_id = con_obj.search([('name', '=', line[0].value)], limit=1)
-                    # if not con_id:
-                    #     con_id = con_obj.create({'name': line[0].value})
-                    con_id = 224
-                    state_id = state_obj.search([('name', '=', line[1].value.replace(' ', '').capitalize()),
-                                                 ('country_id', '=', 224)], limit=1)
-                    if not state_id:
-                        raise Exception("İl bulunamıyor : %s "%(line[1].value.capitalize()))
-                    
-                    dist_id = dist_obj.search([('name', '=', line[2].value.replace(' ', '').capitalize()),
-                                               ('state_id', '=', state_id.id)], limit=1)
-                    if not dist_id:
-                        dist_id = dist_obj.create({'name': line[2].value.replace(' ', '').capitalize(),
-                                                   'state_id': state_id.id or False})
-                    region_id = reg_obj.search([('name', '=', line[3].value.replace(' ', '').capitalize()),
-                                                ('district_id', '=', dist_id.id)], limit=1)
-                    if not region_id:
-                        region_id = reg_obj.create({'name': line[3].value.replace(' ', '').capitalize(),
-                                                    'district_id': dist_id.id or False})
-                    
-                    nei_id = nei_obj.search([('name', '=', line[4].value.replace(' ', '').capitalize()),
-                                             ('region_id', '=', region_id.id)], limit=1)
-                    if not nei_id:
-                        
-                        neighbours.append({'name': line[4].value.replace(' ', '').capitalize(),
-                                                 'code': line[5].value.replace(' ', '').capitalize(),
-                                                 'region_id': region_id.id or False})
-                except Exception as e:
-                    _logger.error('Import Error !!! %s ' %(str(e)) )        
-                        
-        nei_obj.create(neighbours)           
-                                                     
-                                                     
-                                                     
-                                                     
-                                                     
-                                                     
+
+        wb_obj = openpyxl.load_workbook(fp.name)
+        sheet = wb_obj.active
+
+        state_obj = self.env["res.country.state"]
+        dist_obj = self.env["address.district"]
+        reg_obj = self.env["address.region"]
+        nei_obj = self.env["address.neighbour"]
+
+        for row in sheet.iter_rows(2, sheet.max_row):
+            try:
+
+                prepared_row = {
+                    "state": self.turkish_title(row[0].value.rstrip()),
+                    "district": self.turkish_title(row[1].value.rstrip()),
+                    "region": self.turkish_title(row[2].value.rstrip()),
+                    "neighbour": self.format_neighbourhood(row[3].value.rstrip()),
+                    "code": row[4].value.rstrip(),
+                }
+
+                state_id = state_obj.search(
+                    [("name", "=", prepared_row["state"]), ("country_id", "=", 224)],
+                    limit=1,
+                )
+                if not state_id:
+                    state_id = state_obj.create(
+                        {
+                            "name": prepared_row["state"],
+                            "country_id": 224,
+                            "code": prepared_row["code"][:2],
+                        }
+                    )
+
+                dist_id = dist_obj.search(
+                    [
+                        ("name", "=", prepared_row["district"]),
+                        ("state_id", "=", state_id.id),
+                    ],
+                    limit=1,
+                )
+                if not dist_id:
+                    dist_id = dist_obj.create(
+                        {
+                            "name": prepared_row["district"],
+                            "state_id": state_id.id or False,
+                        }
+                    )
+
+                region_id = reg_obj.search(
+                    [
+                        ("name", "=", prepared_row["region"]),
+                        ("district_id", "=", dist_id.id),
+                    ],
+                    limit=1,
+                )
+
+                if not region_id:
+                    region_id = reg_obj.create(
+                        {
+                            "name": prepared_row["region"],
+                            "district_id": dist_id.id or False,
+                        }
+                    )
+
+                nei_id = nei_obj.search(
+                    [
+                        ("name", "=", prepared_row["neighbour"]),
+                        ("region_id", "=", region_id.id),
+                    ],
+                    limit=1,
+                )
+                if not nei_id:
+
+                    nei_obj.create(
+                        {
+                            "name": prepared_row["neighbour"],
+                            "code": prepared_row["code"],
+                            "region_id": region_id.id or False,
+                        }
+                    )
+
+                    _logger.debug('Imported: %s - %s' % (
+                        prepared_row["state"],
+                        prepared_row["neighbour"])
+                        )
+
+            except Exception as e:
+                _logger.error("Import Error !!! %s " % (str(e)))
+
+
+    def turkish_title(self, word):
+        """
+        Turkce harfleri python'da kucuk harfe cevirirken ozellikle 'I' harfinde yasadigimiz problemi gidermek icin.
+        https://stackoverflow.com/questions/19703106/python-and-turkish-capitalization
+        """
+
+        word = re.sub(r"İ", "i", word)
+        word = re.sub(r"I", "ı", word)
+
+        return word.title()
+
+    def format_neighbourhood(self, neighbourhood):
+
+        neighbourhood = self.turkish_title(neighbourhood)
+        if " Mah" in neighbourhood:
+            neighbourhood = neighbourhood.replace(" Mah", " Mah.")
+
+        return neighbourhood
