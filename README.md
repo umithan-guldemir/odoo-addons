@@ -1,2 +1,2 @@
-# utility-addons
-Odoo için işlevsel modüller
+# odoo-addons
+Free and Open Odoo Addons
