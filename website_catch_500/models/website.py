@@ -16,7 +16,7 @@ class Website(models.Model):
 
     def _catch_500_error(self, request):
         url = request.url
-        http_param = request.query_string
+        form_data_str = "\n".join("%s: %s" % (k,v) for k,v in dict(request.form).items())
         request_method = request.method
         website_id = self.id
         error = (
@@ -24,9 +24,9 @@ class Website(models.Model):
             .sudo()
             .search(
                 [
-                    ("name", "=", url),
+                    ("url", "=", url),
                     ("website_id", "=", website_id),
-                    ("http_param", "=", http_param or ""),
+                    ("form_data", "=", form_data_str or ""),
                 ]
             )
         )
@@ -36,11 +36,11 @@ class Website(models.Model):
         else:
             self.env["website.500.errors"].sudo().create(
                 {
-                    "name": url,
+                    "url": url,
                     "request_method": request_method,
                     "hit_count": 1,
                     "website_id": website_id,
-                    "http_param": http_param or "",
+                    "form_data": form_data_str or "",
                 }
             )
         self.env.cr.commit()
