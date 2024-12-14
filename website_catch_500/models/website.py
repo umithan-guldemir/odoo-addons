@@ -4,24 +4,6 @@ from odoo import models, fields
 from urllib.parse import urlparse, urlunparse
 
 
-def remove_domain_and_protocol(url):
-    """
-    Removes domain and protocol from the url.
-    """
-    parsed_url = urlparse(url)
-    modified_url = urlunparse(
-        (
-            "",
-            "",
-            parsed_url.path,
-            parsed_url.params,
-            parsed_url.query,
-            parsed_url.fragment,
-        )
-    )
-    return modified_url
-
-
 class Website(models.Model):
     _inherit = "website"
 
@@ -33,23 +15,32 @@ class Website(models.Model):
     )
 
     def _catch_500_error(self, request):
-        url = remove_domain_and_protocol(request.url)
+        url = request.url
+        form_data_str = "\n".join("%s: %s" % (k,v) for k,v in dict(request.form).items())
         request_method = request.method
         website_id = self.id
         error = (
             self.env["website.500.errors"]
             .sudo()
-            .search([("name", "=", url), ("website_id", "=", website_id)])
+            .search(
+                [
+                    ("url", "=", url),
+                    ("website_id", "=", website_id),
+                    ("form_data", "=", form_data_str or ""),
+                ]
+            )
         )
+
         if error:
             error.hit_count += 1
         else:
             self.env["website.500.errors"].sudo().create(
                 {
-                    "name": url,
+                    "url": url,
                     "request_method": request_method,
                     "hit_count": 1,
                     "website_id": website_id,
+                    "form_data": form_data_str or "",
                 }
             )
         self.env.cr.commit()

@@ -7,8 +7,9 @@ from odoo.exceptions import ValidationError
 class Website500Errors(models.Model):
     _name = "website.500.errors"
     _description = "Base Model for Website 500 Errors"
+    _rec_name = "url"
 
-    name = fields.Char(string="URL")
+    url = fields.Char(string="URL")
     request_method = fields.Selection(
         selection=[
             ("GET", "GET"),
@@ -21,6 +22,7 @@ class Website500Errors(models.Model):
         ],
         string="Request Method",
     )
+    form_data = fields.Text(string="Form Data")
     hit_count = fields.Integer(string="Hit Count")
     website_id = fields.Many2one(
         comodel_name="website",
@@ -28,8 +30,3 @@ class Website500Errors(models.Model):
         ondelete="cascade",
     )
 
-    @api.constrains("url")
-    def _check_url(self):
-        for record in self:
-            if self.search_count([("name", "=", record.name)]) > 1:
-                raise ValidationError("URL must be unique.")
