@@ -2,6 +2,9 @@
 <!--
   Copyright 2022 Yiğit Budak (https://github.com/yibudak)
   License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
+  Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 -->
 
 <odoo>
@@ -45,7 +48,6 @@
                     <label for="call_timeout"/>
                     <div>
                         <field name="call_timeout" class="oe_inline"/>
-                        <label string=" seconds" class="oe_inline" for="seconds"/>
                     </div>
                 </group>
             </sheet>
