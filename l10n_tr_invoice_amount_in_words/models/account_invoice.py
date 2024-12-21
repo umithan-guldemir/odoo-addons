@@ -19,60 +19,102 @@
 #
 ##############################################################################
 
+# Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 from odoo import models, fields, api
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+class AccountMove(models.Model):
+    _inherit = "account.move"
 
-    @api.one
-    @api.depends('amount_total', 'currency_id')
+    @api.depends("amount_total", "currency_id")
     def _compute_invoice_amount_in_words(self):
-        lang = self.env.context.get('lang', self.sudo().company_id.partner_id.lang)
-        self.invoice_amount_in_words = self.currency_id.with_context({'lang': lang}).amount_to_text(
-            self.amount_total)
+        for record in self:
+            record.invoice_amount_in_words = ""
+            try:
+                lang = record.env.context.get(
+                    "lang", record.sudo().company_id.partner_id.lang
+                )
+                record.invoice_amount_in_words = record.currency_id.with_context(
+                    {"lang": lang}
+                ).amount_to_text(record.amount_total)
+            except Exception as e:
+                _logger.error(f"Error computing invoice amount in words: {e}")
 
-    invoice_amount_in_words = fields.Char(compute='_compute_invoice_amount_in_words',
-                                          string='Amount to Text')
+    invoice_amount_in_words = fields.Char(
+        compute="_compute_invoice_amount_in_words", string="Amount to Text"
+    )
 
 
 class SaleOrder(models.Model):
-    _inherit = 'sale.order'
+    _inherit = "sale.order"
 
-    @api.one
-    @api.depends('amount_total', 'currency_id')
+    @api.depends("amount_total", "currency_id")
     def _compute_sale_order_amount_in_words(self):
-        lang = self.env.context.get('lang') or self.partner_id.lang or self.sudo().company_id.partner_id.lang
-        self.sale_order_amount_in_words = self.currency_id.with_context({'lang': lang}).amount_to_text(
-            self.amount_total)
+        for record in self:
+            record.sale_order_amount_in_words = ""
+            try:
+                lang = (
+                    record.env.context.get("lang")
+                    or record.partner_id.lang
+                    or record.sudo().company_id.partner_id.lang
+                )
+                record.sale_order_amount_in_words = record.currency_id.with_context(
+                    {"lang": lang}
+                ).amount_to_text(record.amount_total)
+            except Exception as e:
+                _logger.error(f"Error computing sale order amount in words: {e}")
 
-    sale_order_amount_in_words = fields.Char(compute='_compute_sale_order_amount_in_words',
-                                             string='Amount to Text')
+    sale_order_amount_in_words = fields.Char(
+        compute="_compute_sale_order_amount_in_words", string="Amount to Text"
+    )
 
 
 class PurchaseOrder(models.Model):
-    _inherit = 'purchase.order'
+    _inherit = "purchase.order"
 
-    @api.one
-    @api.depends('amount_total', 'currency_id')
+    @api.depends("amount_total", "currency_id")
     def _compute_purchase_order_amount_in_words(self):
-        lang = self.env.context.get('lang', self.sudo().company_id.partner_id.lang)
-        self.purchase_order_amount_in_words = self.currency_id.with_context({'lang': lang}).amount_to_text(
-            self.amount_total)
+        for record in self:
+            record.purchase_order_amount_in_words = ""
+            try:
+                lang = record.env.context.get(
+                    "lang", record.sudo().company_id.partner_id.lang
+                )
+                record.purchase_order_amount_in_words = record.currency_id.with_context(
+                    {"lang": lang}
+                ).amount_to_text(record.amount_total)
+            except Exception as e:
+                _logger.error(f"Error computing purchase order amount in words: {e}")
 
-    purchase_order_amount_in_words = fields.Char(compute='_compute_purchase_order_amount_in_words',
-                                                 string='Amount to Text')
+    purchase_order_amount_in_words = fields.Char(
+        compute="_compute_purchase_order_amount_in_words", string="Amount to Text"
+    )
 
 
 class AccountPayment(models.Model):
-    _inherit = 'account.payment'
+    _inherit = "account.payment"
 
-    @api.one
-    @api.depends('amount', 'currency_id')
+    @api.depends("amount", "currency_id")
     def _compute_account_payment_amount_in_words(self):
-        lang = self.env.context.get('lang', self.sudo().company_id.partner_id.lang)
-        self.account_payment_amount_in_words = self.currency_id.with_context({'lang': lang}).amount_to_text(
-            self.amount)
+        for record in self:
+            record.account_payment_amount_in_words = ""
+            try:
+                lang = record.env.context.get(
+                    "lang", record.sudo().company_id.partner_id.lang
+                )
+                record.account_payment_amount_in_words = (
+                    record.currency_id.with_context({"lang": lang}).amount_to_text(
+                        record.amount
+                    )
+                )
+            except Exception as e:
+                _logger.error(f"Error computing account payment amount in words: {e}")
 
-    account_payment_amount_in_words = fields.Char(compute='_compute_account_payment_amount_in_words',
-                                                  string='Amount to Text')
+    account_payment_amount_in_words = fields.Char(
+        compute="_compute_account_payment_amount_in_words", string="Amount to Text"
+    )

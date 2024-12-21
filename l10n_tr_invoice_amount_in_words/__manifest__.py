@@ -19,11 +19,14 @@
 #
 ##############################################################################
 
+# Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 {
-    'name': 'Turkey - Invoice Amount In Words',
-    'version': '1.0',
-    'category': 'Localization',
-    'description': """
+    "name": "Turkey - Invoice Amount In Words",
+    "version": "16.0.1.0.0",
+    "category": "Localization",
+    "description": """
 Invoice Amount to Text
 ====================================================
 
@@ -32,8 +35,10 @@ Converts total amount to text for printing on the invoice
 Fatura toplam tutarını yazdırmak için birleşik kelimeye çevirir
 
     """,
-    'author': 'Codequarters',
-    'depends': ['account','sale','purchase'],
-    'installable': True,
-    'auto_install': False,
+    "author": "Codequarters",
+    "license": "LGPL-3",
+    "depends": ["account", "sale", "purchase"],
+    "development_status": "Mature",
+    "installable": True,
+    "auto_install": False,
 }
