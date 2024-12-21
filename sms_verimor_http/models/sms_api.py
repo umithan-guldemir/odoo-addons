@@ -1,6 +1,9 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+# Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 
 import requests
 
@@ -19,8 +22,7 @@ class SmsApi(models.AbstractModel):
             "username": account.sms_verimor_http_username,
             "password": account.sms_verimor_http_password,
             "source_addr": account.sms_verimor_http_sms_header,
-            "messages": [{'msg': message,
-                          'dest': ",".join(n for n in number)}],
+            "messages": [{"msg": message, "dest": ",".join(n for n in number)}],
         }
 
     def _send_sms_with_verimor_http(self, account, number, message):
@@ -35,24 +37,53 @@ class SmsApi(models.AbstractModel):
 
         return response
 
-
     def _get_balance_verimor_sms_api(self, account):
         r = requests.get(
             VERIMOR_GET_BALANCE_ENDPOINT,
             params={
                 "username": account.sms_verimor_http_username,
                 "password": account.sms_verimor_http_password,
-            }
+            },
         )
         response = r.text
         if r.status_code != 200:
             raise ValidationError(response)
         return response
 
-    @api.model
     def _send_sms(self, number, message):
         account = self.env["iap.account"].get("sms")
         if account.provider == "sms_verimor_http":
             self._send_sms_with_verimor_http(account, number, message)
         else:
             return super()._send_sms(number, message)
+
+    def _send_sms_batch(self, messages):
+        """Send SMS messages in batch using Verimor HTTP API"""
+        account = self.env["iap.account"].get("sms")
+        if account.provider != "sms_verimor_http":
+            return super()._send_sms_batch(messages)
+
+        result = []
+        for message in messages:
+            try:
+                number = message["number"]
+                content = message["content"]
+                # Send each SMS individually
+                response = self._send_sms_with_verimor_http(account, [number], content)
+                result.append(
+                    {
+                        "res_id": message["res_id"],
+                        "state": "success",
+                        "credit": 1,  # Adjust based on the response from the API
+                    }
+                )
+            except ValidationError as e:
+                result.append(
+                    {
+                        "res_id": message["res_id"],
+                        "state": str(e),
+                        "credit": 0,
+                    }
+                )
+
+        return result
