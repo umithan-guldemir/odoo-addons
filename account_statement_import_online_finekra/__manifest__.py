@@ -8,10 +8,14 @@
     "author": "Yiğit Budak, Odoo Turkey Localization Group",
     "license": "AGPL-3",
     "installable": True,
-    "depends": ["account_bank_statement_import_online", "sale", "sale_confirm_payment"],
+    "depends": [
+        "account_statement_import_online",
+        "sale",
+        # "sale_confirm_payment", # TODO: this module should be migrated also.
+    ],
     "data": [
         "view/online_bank_statement_provider.xml",
         "view/account_journal.xml",
-        "view/account_bank_statement_view.xml",
+        "view/account_bank_statement_line_view.xml",
     ],
 }

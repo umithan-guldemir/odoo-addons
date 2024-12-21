@@ -5,6 +5,6 @@ from odoo import models, fields
 
 
 class AccountJournal(models.Model):
-    _inherit = 'account.journal'
+    _inherit = "account.journal"
 
-    finekra_account_id = fields.Char('Finekra Account ID')
+    finekra_account_id = fields.Char("Finekra Account ID")

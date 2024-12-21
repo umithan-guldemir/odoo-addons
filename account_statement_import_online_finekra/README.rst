@@ -12,4 +12,4 @@ Ayrıca, banka havalesi ödemelerin açıklamasını otomatik olarak okuyarak, �
 
 
 ### Gereken Modüller:
- * account_bank_statement_import_online
+ * account__statement_import_online
