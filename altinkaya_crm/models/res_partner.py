@@ -9,7 +9,8 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    vat_status = fields.Char(string="Vat Status", compute="_compute_vat_status")
+    vat_status = fields.Char(string="Vat Status",
+                             compute="_compute_vat_status")
 
     def _compute_vat_status(self):
         for partner in self:
@@ -30,15 +31,19 @@ class ResPartner(models.Model):
         """
         Assigns a sales person to the partner. Logic:
         0. Try to use partner's commercial partner's sales person
-        1. If the current user is a member of a sales team, assign the current user
-        2. If there are sales persons defined for the country, assign a random sales person
-        3. If there is a sales team defined for the country, assign a random sales person from the sales team
+        1. If the current user is a member of a sales team,
+        assign the current user
+        2. If there are sales persons defined for the country,
+        assign a random sales person
+        3. If there is a sales team defined for the country,
+        assign a random sales person from the sales team
         :return:
         """
         self.ensure_one()
         if not self.country_id:
             return True
-        if self.commercial_partner_id != self and self.commercial_partner_id.user_id:
+        if (self.commercial_partner_id != self and
+                self.commercial_partner_id.user_id):
             self.user_id = self.commercial_partner_id.user_id.id
             return True
         current_user = self.env.user
@@ -47,11 +52,14 @@ class ResPartner(models.Model):
             self.user_id = current_user.id
         else:
             if self.country_id.sale_person_ids:
-                self.user_id = random.choice(self.country_id.sale_person_ids).id
+                self.user_id = random.choice
+                (self.country_id.sale_person_ids).id
             elif self.country_id.sale_team_id:
-                self.user_id = random.choice(self.country_id.sale_team_id.member_ids).id
+                self.user_id = random.choice
+                (self.country_id.sale_team_id.member_ids).id
             else:
-                raise ValidationError(_("Please define a sales team for this country."))
+                raise ValidationError(
+                    _("Please define a sales team for this country."))
         _logger.info("Sales person assigned to partner %s", self.name)
 
     @api.model
