@@ -25,7 +25,7 @@
         border-left: 1px solid $o-partner-org-chart-border-color;
 
         .o_org_chart_title {
-            color: gray('600')
+            color: $gray-600
         }
     }
 }
@@ -55,7 +55,7 @@
 
     .o_org_chart_group_up {
         &:before {
-            @include o-partner-org-chart-line;
+            size: size(o-partner-org-chart-line);
             border-left-width: $o-partner-org-chart-entry-line-w;
             height: calc(100% + #{$o-partner-org-chart-entry-pic-size*0.5}) ;
             @include o-position-absolute(
@@ -64,9 +64,9 @@
         }
         .o_org_chart_entry:last-of-type {
             &:before {
-                @include o-partner-org-chart-line;
+                size: size(o-partner-org-chart-line);
                 border-width: 0 0 $o-partner-org-chart-entry-line-w $o-partner-org-chart-entry-line-w;
-                @include size(($o-partner-org-chart-entry-pic-size*0.5) - ($o-partner-org-chart-entry-v-gap*2), $o-partner-org-chart-entry-pic-size*0.5 + $o-partner-org-chart-entry-v-gap*2 );
+                size: (($o-partner-org-chart-entry-pic-size*0.5) - ($o-partner-org-chart-entry-v-gap*2), $o-partner-org-chart-entry-pic-size*0.5 + $o-partner-org-chart-entry-v-gap*2 );
                 @include o-position-absolute(
                     $left: $o-partner-org-chart-entry-pic-size*0.5 - $o-partner-org-chart-entry-line-w*0.5,
                     $top: 100%
@@ -82,6 +82,7 @@
             padding-left: $tmp-gap-base*2;
 
             &:before {
+                size: size($tmp-gap-base, 0);
                 margin-left: $tmp-gap-base;
             }
         }
@@ -91,6 +92,7 @@
         padding-left: $tmp-gap-base;
 
         &:before {
+            size: size(o-partner-org-chart-line);
             @include o-partner-org-chart-line;
             border-left-width: $o-partner-org-chart-entry-line-w;
             height: 100%;
@@ -102,9 +104,7 @@
 
         .o_org_chart_entry {
             &:before {
-                @include o-partner-org-chart-line;
-                border-top-width:  $o-partner-org-chart-entry-line-w;
-                @include size($tmp-gap-base, 0);
+                size: size($tmp-gap-base, 0);
                 @include o-position-absolute(
                     $left: $tmp-gap-base*-0.5 + $o-partner-org-chart-entry-pic-size*0.1 + $o-partner-org-chart-entry-line-w*0.5,
                     $top: $o-partner-org-chart-entry-pic-size*0.5
@@ -149,9 +149,9 @@
                 float: right;
                 cursor: pointer;
                 margin-right: 5px;
-                color: gray('600');
+                color: $gray-600;
                 background: $o-partner-org-chart-bg;
-                border: 1px solid gray('600');
+                border: 1px solid $gray-600;
                 &:hover {
                     color: $o-brand-primary;
                     border-color: $o-brand-primary;
@@ -165,7 +165,7 @@
                 display: block;
                 line-height: 1.2;
                 font-size: 11px;
-                color: lighten(gray('600'), 15%);
+                color: lighten($gray-600, 15%);
             }
         }
 
@@ -207,7 +207,7 @@
                 display: block;
 
                 .o_media_heading {
-                    color: lighten(gray('600'), 5%);
+                    color: lighten($gray-600, 5%);
                     font-size: 13px;
                 }
             }
@@ -221,7 +221,7 @@
                         color: $o-brand-primary;
                     }
                     strong {
-                        color: lighten(gray('600'), 5%);
+                        color: lighten($gray-600, 5%);
                     }
                 }
             }
@@ -265,7 +265,7 @@
         }
 
         span {
-            @include size(30px, 30px);
+            size: size(30px, 30px);
             margin-right: 10px;
             border-radius: 100%;
             background-position: center;
