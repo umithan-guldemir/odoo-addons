@@ -1,5 +1,9 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
+# Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 import phonenumbers
 from odoo import _, fields, models, api
 from odoo.exceptions import ValidationError
@@ -19,7 +23,10 @@ YURTICI_OPERATION_CODES = {
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
-    delivery_type = fields.Selection(selection_add=[("yurtici", "Yurtiçi Kargo")])
+    delivery_type = fields.Selection(
+        selection_add=[("yurtici", "Yurtiçi Kargo")],
+        ondelete={"yurtici": "cascade"},
+        )
 
     yurtici_username = fields.Char(string="Username", help="Yurtiçi Username")
     yurtici_password = fields.Char(string="Password", help="Yurtiçi Password")

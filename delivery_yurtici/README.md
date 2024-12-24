@@ -20,18 +20,17 @@ Yurtiçi Kargo'nun API teknik dokümanı `api/` klasörünün içinde bulabilirs
 
 ### Gerekli Modüller:
 
-- 	delivery_integration_base ([odoo-turkey/integration](https://github.com/odoo-turkey/integration))
+- 	delivery_integration_base ([altinkaya-opensource/odoo-addons](https://github.com/altinkaya-opensource/odoo-addons))
+
 ### Python bağımlılıkları:
+
 - zeep
 - phonenumbers
 
-### Notlar:
-
-Bu modül henüz geliştirilme aşamasındadır. Odoo 12.0 temel alınarak tasarlanmıştır.
-
-### Geliştirici:
+### Geliştiriciler:
 
  -  [Yiğit Budak](https://github.com/yibudak)
+  - [Ismail Çağan Yılmaz](https://github.com/milleniumkid)
 
 
 ### Odoo Türkiye yerelleştirme projemize katkılarınızı bekliyoruz.
