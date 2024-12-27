@@ -40,7 +40,8 @@ class PartnerOrgChartController(http.Controller):
         # Compute children
         def _compute_partner_tree(partner):
             partner_data = self._prepare_partner_data(active_partner, partner)
-            child_data = [_compute_partner_tree(child) for child in partner.child_ids]
+            child_data = [_compute_partner_tree(child)
+                          for child in partner.org_chart_child_ids]
             return {
                 "data": partner_data,
                 "child_ids": child_data,
