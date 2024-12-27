@@ -47,6 +47,25 @@
 #o_partner_main_chart {
     $tmp-gap-base: $o-partner-org-chart-entry-pic-size*0.7;
 
+    .o_treeEntry {
+        position: absolute;
+
+        &:before {
+            size: size(o-partner-org-chart-line);
+            @include o-partner-org-chart-line;
+            border-left-width: $o-partner-org-chart-entry-line-w;
+            height: 100%;
+            @include o-position-absolute(
+                $top: 50%,
+                $left: $o-partner-org-chart-entry-pic-size*0.5
+            );
+        }
+
+        &:last-of-type:before {
+            height: 50%;
+        }
+    }
+
     // ORGANIGRAM LINES
     .o_field_widget, .o_org_chart_group_up, .o_org_chart_group_down {
         position: relative;
@@ -79,7 +98,7 @@
         margin-left: $tmp-gap-base;
 
         & + .o_org_chart_group_down {
-            padding-left: $tmp-gap-base*2;
+            padding-left: $tmp-gap-base*20;
 
             &:before {
                 size: size($tmp-gap-base, 0);

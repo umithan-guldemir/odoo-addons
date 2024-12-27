@@ -5,7 +5,6 @@ $o-partner-org-chart-entry-v-gap: 6px !default;
 $o-partner-org-chart-entry-pic-size: 46px !default;
 $o-partner-org-chart-entry-line-w: 1px !default;
 $o-partner-org-chart-entry-border-color: darken($o-partner-org-chart-bg, 25%) !default;
-$o-partner-org-chart-gray: lighten($gray-600, 15%) !default;
 
 // MIXINS
 @mixin o-partner-org-chart-line {

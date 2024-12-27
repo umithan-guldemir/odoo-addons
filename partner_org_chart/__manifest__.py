@@ -19,16 +19,13 @@ This module extend the partner form with a organizational chart.
     "data": [
         "views/partner_views.xml",
     ],
-    "qweb": [
-        "static/src/xml/partner_org_chart.xml",
-    ],
     'assets': {
-        'web.assets_backend': [
+        'web._assets_primary_variables': [
             'partner_org_chart/static/src/scss/variables.scss',
-            'partner_org_chart/static/src/scss/partner_org_chart.scss',
-            'partner_org_chart/static/src/js/partner_org_chart.js',
-            'partner_org_chart/static/description/icon.png',
-            'partner_org_chart/static/src/description/usage.png',
+        ],
+        'web.assets_backend': [
+            'partner_org_chart/static/src/fields/*',
         ],
     },
+    'license': 'LGPL-3',
 }
