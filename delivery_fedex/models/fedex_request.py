@@ -6,8 +6,8 @@ from odoo.exceptions import UserError
 
 
 FEDEX_API_URL = {
-    "test": "https://apis-sandbox.fedex.com",
-    #"prod": "https://eschenker.dbschenker.com",
+    "sandbox": "https://apis-sandbox.fedex.com",
+    "prod": "",  # TODO: Add production URL
 }
 
 FEDEX_SERVICES_URL = {
@@ -17,14 +17,11 @@ FEDEX_SERVICES_URL = {
 }
 
 
-class FedExRequest():
-   
-    def __init__(
-        self, prod=False, client_id=None, client_secret=None
-    ):
+class FedExRequest:
+    def __init__(self, prod=False, client_id=None, client_secret=None):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.api_env = "prod" if prod else "test"
+        self.api_env = "prod" if prod else "sandbox"
 
     def _get_service_url(self, service):
         return FEDEX_API_URL[self.api_env] + "/" + FEDEX_SERVICES_URL[service]
@@ -39,22 +36,36 @@ class FedExRequest():
     def _format_errors(self, errors):
         formatted_result = ""
         for code, message in errors:
-            formatted_result += "Error {code}: {message}\n".format(code=code, message=message)
+            formatted_result += "Error {code}: {message}\n".format(
+                code=code, message=message
+            )
 
         return formatted_result
 
-
     def _get_oauth_key(self):
-        res = self._send_api_request(request_type="POST", service_type="auth", content_type="application/x-www-form-urlencoded", auth=False, data={
-            "grant_type": "client_credentials",
-            "client_id": self.client_id,
-            "client_secret": self.client_secret
-        })
+        res = self._send_api_request(
+            request_type="POST",
+            service_type="auth",
+            content_type="application/x-www-form-urlencoded",
+            auth=False,
+            data={
+                "grant_type": "client_credentials",
+                "client_id": self.client_id,
+                "client_secret": self.client_secret,
+            },
+        )
         auth_data = res.json()
 
         return auth_data.get("access_token")
 
-    def _send_api_request(self, request_type, service_type, content_type="application/json", auth=True, data={}):
+    def _send_api_request(
+        self,
+        request_type,
+        service_type,
+        content_type="application/json",
+        auth=True,
+        data={},
+    ):
         if data is None:
             data = {}
         result = {}
@@ -62,15 +73,15 @@ class FedExRequest():
 
         try:
             headers = {
-                'Content-Type': content_type,
-                'X-locale': "en_US",
-                }
+                "Content-Type": content_type,
+                "X-locale": "en_US",
+            }
             if auth:
-                headers['Authorization'] = "Bearer " + self._get_oauth_key()
+                headers["Authorization"] = "Bearer " + self._get_oauth_key()
 
             if content_type == "application/json":
                 data = json.dumps(data)
-            
+
             if request_type == "GET":
                 res = requests.get(url=url, headers=headers, data=data, timeout=60)
             elif request_type == "POST":
@@ -87,26 +98,24 @@ class FedExRequest():
             raise UserError(
                 _("{error}\n{result}".format(error=e, result=result if result else ""))
             ) from e
-            
+
         errors = self._check_for_errors(result)
         if errors:
-            raise UserError(
-                _(self._format_errors(errors))
-            )
+            raise UserError(_(self._format_errors(errors)))
         return res
 
     def _format_rate_data(self, data):
-        price = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1]["totalNetChargeWithDutiesAndTaxes"]
-        currency = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1]["currency"]
+        price = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1][
+            "totalNetChargeWithDutiesAndTaxes"
+        ]
+        currency = data["output"]["rateReplyDetails"][0]["ratedShipmentDetails"][1][
+            "currency"
+        ]
 
-        return {
-            "price": price,
-            "currency": currency
-        }
+        return {"price": price, "currency": currency}
 
     def get_rates(self, data):
         res = self._send_api_request("POST", "rates", data=data)
-        print(res.text)
         return self._format_rate_data(res.json())
 
     def create_shipment(self, data):

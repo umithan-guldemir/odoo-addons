@@ -5,55 +5,21 @@
         <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
         <field name="arch" type="xml">
             <xpath expr="//notebook/page[1]" position='before'>
-                <page
-                    string="FedEx Configuration"
-                    attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}"
-                >
+                <page string="FedEx Configuration" attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}">
                     <group>
                         <group string="Connection">
-                            <field
-                                name="fedex_client_id"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
-                            <field
-                                name="fedex_client_secret"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                                password="True"
-                            />
-                            <field
-                                name="fedex_account_number"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
+                            <field name="fedex_client_id" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
+                            <field name="fedex_client_secret" attrs="{'required': [('delivery_type', '=', 'fedex')]}" password="True" />
+                            <field name="fedex_account_number" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
                         </group>
                         <group string="Delivery Information">
-                            <field
-                                name="service_type"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
-                            <field
-                                name="payment_type"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
-                            <field
-                                name="customs_payment_type"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
-                            <field
-                                name="shipment_purpose"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
-                            <field
-                                name="customer_fedex_number"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
-                            <field
-                                name="pickup_type"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
-                            <field
-                                name="carrier_code"
-                                attrs="{'required': [('delivery_type', '=', 'fedex')]}"
-                            />
+                            <field name="service_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
+                            <field name="payment_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
+                            <field name="customs_payment_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
+                            <field name="shipment_purpose" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
+                            <field name="customer_fedex_number" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
+                            <field name="pickup_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
+                            <field name="carrier_code" attrs="{'required': [('delivery_type', '=', 'fedex')]}" />
                         </group>
                     </group>
                 </page>
