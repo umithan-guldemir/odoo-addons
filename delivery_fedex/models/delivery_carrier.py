@@ -8,7 +8,11 @@ FEDEX_SERVICES = [
     ("INTERNATIONAL_PRIORITY_EXPRESS", "International Priority Express"),
 ]
 
-FEDEX_PICKUP_TYPES = [("DROPOFF_AT_FEDEX_LOCATION", "Dropoff at FedEx location")]
+FEDEX_PICKUP_TYPES = [
+    ("CONTACT_FEDEX_TO_SCHEDULE", "Contact FedEx to Schedule"),
+    ("DROPOFF_AT_FEDEX_LOCATION", "Dropoff at FedEx Location"),
+    ("USE_SCHEDULED_PICKUP", "Use Scheduled Pickup"),
+]
 
 FEDEX_PAYMENT_TYPES = [
     ("SENDER", "Sender"),
@@ -203,7 +207,8 @@ class DeliveryCarrier(models.Model):
                 customs_value = picking.invoice_ids.invoice_line_ids.filtered(
                     lambda invoice_line: invoice_line.product_id
                     != picking.carrier_id.product_id
-                ).price_subtotal
+                )
+                customs_value = customs_value.price_subtotal
                 data["commodities"].append(
                     self._prepare_fedex_commodities_data(
                         picking.move_ids[0].product_id,
