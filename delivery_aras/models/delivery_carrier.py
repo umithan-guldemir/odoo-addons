@@ -1,5 +1,9 @@
 # Copyright 2024 Ahmet Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
+# Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 import phonenumbers
 from odoo import _, fields, models, api
 from odoo.exceptions import ValidationError
@@ -20,7 +24,10 @@ ARAS_OPERATION_CODES = {
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
-    delivery_type = fields.Selection(selection_add=[("aras", "Aras Kargo")])
+    delivery_type = fields.Selection(
+        selection_add=[("aras", "Aras Kargo")],
+        ondelete={"aras": "cascade"},
+        )
 
     aras_username = fields.Char(string="Username", help="Aras Username")
     aras_password = fields.Char(string="Password", help="Aras Password")
@@ -161,7 +168,7 @@ class DeliveryCarrier(models.Model):
             result.append(vals)
         return result
 
-    @api.model
+    # @api.model
     def _aras_log_request(self, aras_request):
         """Helper to write raw request/response to the current picking. If debug
         is active in the carrier, those will be logged in the ir.logging as well"""
