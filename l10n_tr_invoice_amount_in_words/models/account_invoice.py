@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015, Eska Yazılım ve Danışmanlık A.Ş.
@@ -22,8 +21,9 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import models, fields, api
 import logging
+
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class AccountMove(models.Model):
                     "lang", record.sudo().company_id.partner_id.lang
                 )
                 record.invoice_amount_in_words = record.currency_id.with_context(
-                    {"lang": lang}
+                    lang=lang
                 ).amount_to_text(record.amount_total)
             except Exception as e:
                 _logger.error(f"Error computing invoice amount in words: {e}")
@@ -64,7 +64,7 @@ class SaleOrder(models.Model):
                     or record.sudo().company_id.partner_id.lang
                 )
                 record.sale_order_amount_in_words = record.currency_id.with_context(
-                    {"lang": lang}
+                    lang=lang
                 ).amount_to_text(record.amount_total)
             except Exception as e:
                 _logger.error(f"Error computing sale order amount in words: {e}")
@@ -86,7 +86,7 @@ class PurchaseOrder(models.Model):
                     "lang", record.sudo().company_id.partner_id.lang
                 )
                 record.purchase_order_amount_in_words = record.currency_id.with_context(
-                    {"lang": lang}
+                    lang=lang
                 ).amount_to_text(record.amount_total)
             except Exception as e:
                 _logger.error(f"Error computing purchase order amount in words: {e}")
@@ -108,7 +108,7 @@ class AccountPayment(models.Model):
                     "lang", record.sudo().company_id.partner_id.lang
                 )
                 record.account_payment_amount_in_words = (
-                    record.currency_id.with_context({"lang": lang}).amount_to_text(
+                    record.currency_id.with_context(lang=lang).amount_to_text(
                         record.amount
                     )
                 )

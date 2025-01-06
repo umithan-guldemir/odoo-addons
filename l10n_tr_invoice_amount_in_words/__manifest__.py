@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015, Eska Yazılım ve Danışmanlık A.Ş.
@@ -26,18 +25,10 @@
     "name": "Turkey - Invoice Amount In Words",
     "version": "16.0.1.0.0",
     "category": "Localization",
-    "description": """
-Invoice Amount to Text
-====================================================
-
-Converts total amount to text for printing on the invoice
-
-Fatura toplam tutarını yazdırmak için birleşik kelimeye çevirir
-
-    """,
-    "author": "Codequarters",
+    "author": "Codequarters, Altinkaya Enclosures",
     "license": "LGPL-3",
     "depends": ["account", "sale", "purchase"],
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "development_status": "Mature",
     "installable": True,
     "auto_install": False,
