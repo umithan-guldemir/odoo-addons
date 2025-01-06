@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import api, fields, models
+from odoo import api, models
 from odoo.http import request
 
 
@@ -10,12 +10,20 @@ class ProductPublicCategory(models.Model):
     @api.model
     @api.returns(
         "self",
-        upgrade=lambda self, value, domain, offset=0, limit=None, order=None, count=False: value
-        if count
-        else self.browse(value),
-        downgrade=lambda self, value, domain, offset=0, limit=None, order=None, count=False: value
-        if count
-        else value.ids,
+        upgrade=lambda self,
+        value,
+        domain,
+        offset=0,
+        limit=None,
+        order=None,
+        count=False: value if count else self.browse(value),
+        downgrade=lambda self,
+        value,
+        domain,
+        offset=0,
+        limit=None,
+        order=None,
+        count=False: value if count else value.ids,
     )
     def search(
         self,
@@ -45,7 +53,7 @@ class ProductPublicCategory(models.Model):
                         )
                     )
             domain = new_domain
-        return super(ProductPublicCategory, self).search(
+        return super().search(
             domain=domain,
             offset=offset,
             limit=limit,

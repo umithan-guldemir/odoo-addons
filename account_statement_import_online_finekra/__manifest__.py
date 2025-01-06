@@ -2,10 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Online Bank Statements: Finekra",
-    "version": "12.0.1.1.0",
+    "version": "16.0.1.1.0",
     "category": "Account",
-    "website": "https://github.com/odoo-turkey/integration",
-    "author": "Yiğit Budak, Odoo Turkey Localization Group",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yiğit Budak, Odoo Turkey Localization Group, Altinkaya Enclosures",
     "license": "AGPL-3",
     "installable": True,
     "depends": [

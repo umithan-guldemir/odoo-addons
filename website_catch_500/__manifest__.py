@@ -3,13 +3,11 @@
 {
     "name": "Website Catch 500 Errors",
     "summary": "Catch All 500 Errors and Log Them",
-    "description": "This module is designed to handle HTTP 500 errors."
-    "It logs all HTTP 500 errors and displays them in the back-end.",
     "development_status": "Beta",
     "version": "16.0.1.0.1",
-    "author": "Ismail Cagan Yilmaz",
+    "author": "Ismail Cagan Yilmaz, Altinkaya Enclosures",
     "license": "LGPL-3",
-    "website": "https://github.com/milleniumkid",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
     "depends": ["base", "website", "website_sale"],
     "data": [

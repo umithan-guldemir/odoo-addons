@@ -2,9 +2,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 import pprint
+
 from odoo import _, http
 from odoo.exceptions import ValidationError
 from odoo.http import request
+
 from odoo.addons.payment import utils as payment_utils
 
 _logger = logging.getLogger(__name__)
@@ -27,7 +29,7 @@ class ParamController(http.Controller):
     ):
         """Make a payment request and handle the notification data.
 
-        :param int provider_id: The provider handling the transaction, as a `payment.provider` id
+        :param int provider_id: The provider handling the transaction
         :param str reference: The reference of the transaction
         :param int amount: The amount of the transaction in minor units of the currency
         :param int currency_id: The currency of the transaction, as a `res.currency` id
@@ -43,9 +45,7 @@ class ParamController(http.Controller):
         if not payment_utils.check_access_token(
             access_token, reference, amount, partner_id
         ):
-            raise ValidationError(
-                "Param: " + _("Received tampered payment request data.")
-            )
+            raise ValidationError(_("Param: Received tampered payment request data."))
 
         # Prepare the payment request to Param
         provider_sudo = (

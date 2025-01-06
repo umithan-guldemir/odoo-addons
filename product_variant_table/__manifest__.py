@@ -4,12 +4,10 @@
 {
     "name": "Product Variant Table",
     "summary": "Select product variants in a table",
-    "description": "This module adds a table to the product page"
-    " to select product variants.",
     "version": "16.0.1.0.1",
-    "author": "Yiğit Budak",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
-    "website": "https://github.com/yibudak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
     "depends": ["altinkaya_ecommerce", "website_sale"],
     "data": [

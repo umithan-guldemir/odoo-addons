@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import http, _
+from odoo import _, http
 from odoo.exceptions import AccessError
 from odoo.http import request
 
@@ -14,7 +13,7 @@ class PartnerOrgChartController(http.Controller):
             is_self=active.id == partner.id,
             id=partner.id,
             name=partner.display_name,
-            link="/mail/view?model=res.partner&res_id=%s" % partner.id,
+            link=f"/mail/view?model=res.partner&res_id={partner.id}",
             partner_type=_(partner_type),
         )
 
@@ -40,8 +39,9 @@ class PartnerOrgChartController(http.Controller):
         # Compute children
         def _compute_partner_tree(partner):
             partner_data = self._prepare_partner_data(active_partner, partner)
-            child_data = [_compute_partner_tree(child)
-                          for child in partner.org_chart_child_ids]
+            child_data = [
+                _compute_partner_tree(child) for child in partner.org_chart_child_ids
+            ]
             return {
                 "data": partner_data,
                 "child_ids": child_data,

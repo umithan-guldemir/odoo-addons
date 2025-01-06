@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #############################################################################
 #
 #    Cybrosys Technologies Pvt. Ltd.
@@ -21,28 +20,27 @@
 #############################################################################
 
 {
-    'name': 'Whatsapp Floating Icon in Website',
-    'version': '16.0.1.0.0',
-    'category': 'Extra Tools',
-    'summary': """Whatsapp Floating Icon in Website""",
-    'description': """Whatsapp Floating Icon in Website, Website Floating WhatsApp Icon, Whatsapp Odoo Website,Whatsapp Odoo Coonector, Whatsapp website, Whatsapp""",
-    'author': 'Cybrosys Techno Solutions, Ahmet Yigit Budak',
-    'website': "https://www.cybrosys.com",
-    'company': 'Cybrosys Techno Solutions',
-    'maintainer': 'Cybrosys Techno Solutions',
-    'depends': ['base','website'],
-    'data': [
-        'views/portal_whatsapp_view.xml',
-        'views/website_inherited.xml',
+    "name": "Whatsapp Floating Icon in Website",
+    "version": "16.0.1.0.0",
+    "category": "Extra Tools",
+    "summary": """Whatsapp Floating Icon in Website""",
+    "author": "Cybrosys Techno Solutions, Ahmet Yigit Budak, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "company": "Cybrosys Techno Solutions",
+    "maintainer": "Cybrosys Techno Solutions",
+    "depends": ["base", "website"],
+    "data": [
+        "views/portal_whatsapp_view.xml",
+        "views/website_inherited.xml",
     ],
-    'images': ['static/description/banner.png'],
-    'assets': {
-        'web.assets_frontend': [
-            '/website_floating_whatsapp_icon/static/src/css/whatsapp.css',
+    "images": ["static/description/banner.png"],
+    "assets": {
+        "web.assets_frontend": [
+            "/website_floating_whatsapp_icon/static/src/css/whatsapp.css",
         ],
     },
-    'license': 'LGPL-3',
-    'installable': True,
-    'auto_install': False,
-    'application': False,
+    "license": "LGPL-3",
+    "installable": True,
+    "auto_install": False,
+    "application": False,
 }

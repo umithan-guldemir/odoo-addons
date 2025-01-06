@@ -1,8 +1,9 @@
 # Copyright 2024 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api, fields
-from odoo.tools import float_compare
 import re
+
+from odoo import api, fields, models
+from odoo.tools import float_compare
 
 
 class AccountBankStatementLine(models.Model):
@@ -23,7 +24,7 @@ class AccountBankStatementLine(models.Model):
         :param vals:
         :return:
         """
-        res = super(AccountBankStatementLine, self).create(vals)
+        res = super().create(vals)
         order_ref_pattern = r"\b[A-Za-z]{2}\d{6,7}\b"
         matched_refs = re.findall(order_ref_pattern, res.name)
         if matched_refs:
@@ -55,7 +56,7 @@ class AccountBankStatementLine(models.Model):
                     "counterpart_aml_dicts": [],
                     "new_aml_dicts": [
                         {
-                            "account_id": commercial_partner.property_account_receivable_id.id,
+                            "account_id": commercial_partner.property_account_receivable_id.id,  # noqa
                             "analytic_tag_ids": [[6, None, []]],
                             "credit": res.amount,
                             "company_id": res.company_id.id,

@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields
+from odoo import fields, models
 from odoo.http import request
 
 
@@ -9,13 +9,11 @@ class ProductTemplate(models.Model):
 
     next_product = fields.Many2one(
         "product.template",
-        string="Next Product",
         compute="_compute_next_previous_product",
     )
 
     previous_product = fields.Many2one(
         "product.template",
-        string="Previous Product",
         compute="_compute_next_previous_product",
     )
 

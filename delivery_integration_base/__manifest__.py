@@ -3,8 +3,8 @@
 {
     "name": "Delivery Integration Base Module",
     "summary": "Provides fields to be able to use integration modules.",
-    "author": "Ahmet Yiğit Budak, Odoo Turkey Localization Group",
-    "website": "https://github.com/odoo-turkey/integration",
+    "author": "Ahmet Yiğit Budak, Odoo Turkey Localization Group, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
     "category": "Delivery",
     "version": "16.0.1.1.0",

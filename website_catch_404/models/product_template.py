@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, _
+from odoo import _, fields, models
 
 
 class ProductTemplate(models.Model):
@@ -53,4 +53,4 @@ class ProductTemplate(models.Model):
             and self.is_published
         ):
             self._create_redirection(vals)
-        return super(ProductTemplate, self).write(vals)
+        return super().write(vals)

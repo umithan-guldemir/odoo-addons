@@ -1,7 +1,7 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+
 from odoo.addons import decimal_precision as dp
 
 
@@ -28,7 +28,6 @@ class SaleOrder(models.Model):
     )
 
     sale_deci = fields.Float(
-        string="Sale Deci",
         digits=dp.get_precision("Product Unit of Measure"),
         compute="_compute_sale_deci",
         store=True,
@@ -66,7 +65,7 @@ class SaleOrder(models.Model):
     # @api.multi
     # def action_confirm(self):
     #     """Inherit to check if sender_pays carrier line added to order lines."""
-    #     for order in self.filtered(lambda so: so.carrier_payment_type == "sender_pays"):
+    #     for order in self.filtered(lambda so: so.carrier_payment_type == "sender_pays"): # noqa
     #         if not order.order_line.filtered(
     #                 lambda ol: ol.product_id == order.carrier_id.product_id
     #         ):
