@@ -4,20 +4,27 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
-import requests
-import re
 import logging
+import re
+
+import requests
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
 http_regex = re.compile(
-    r"^(?:http|ftp)s?://"  # http:// or https://
-    r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"  # domain...
-    r"localhost|"  # localhost...
-    r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"  # ...or ip
-    r"(?::\d+)?"  # optional port
+    # http:// or https://
+    r"^(?:http|ftp)s?://"
+    # domain...
+    r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"
+    # localhost...
+    r"localhost|"
+    # ...or ip
+    r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"
+    # optional port
+    r"(?::\d+)?"
     r"(?:/?|[/?]\S+)$",
     re.IGNORECASE,
 )
@@ -39,10 +46,10 @@ class ShortURLYourls(models.Model):
             if record.shortened_urls:
                 record.total_shortened_urls = len(record.shortened_urls)
 
-    name = fields.Char(string="Name")
+    name = fields.Char()
     hostname = fields.Char(string="URL", required=True, help="Example: https://6sn.de")
-    username = fields.Char(string="Username")
-    password = fields.Char(string="Password")
+    username = fields.Char()
+    password = fields.Char()
     shortened_urls = fields.One2many(
         string="Shortened URLs",
         comodel_name="short.url.yourls.line",
@@ -55,7 +62,7 @@ class ShortURLYourls(models.Model):
 
     @api.model
     def create(self, vals):
-        res = super(ShortURLYourls, self).create(vals)
+        res = super().create(vals)
         if re.match(http_regex, res.hostname) is None:
             raise ValidationError(
                 _(
@@ -73,7 +80,7 @@ class ShortURLYourls(models.Model):
         :return: Shortened URL
         """
         line_obj = self.env["short.url.yourls.line"]
-        service_url = "%s/yourls-api.php" % self.hostname
+        service_url = f"{'self.hostname'}/yourls-api.php"
         vals = {
             "username": self.username,
             "password": self.password,
@@ -86,7 +93,8 @@ class ShortURLYourls(models.Model):
         exist_shortened_url = line_obj.search([("long_url", "=", url)], limit=1)
         if exist_shortened_url:
             return exist_shortened_url.short_url
-        retries = 0  # Will attempt to get a response from the server 3 times, if fails then returns False
+        retries = 0  # Will attempt to get a response from the server 3 times,
+        # if it fails, it will return False
         is_shortened = False
         response = False
         while not is_shortened and retries < 3:

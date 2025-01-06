@@ -1,13 +1,12 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
-    <data>
         <record id="view_short_url_yourls_tree" model="ir.ui.view">
             <field name="name">view.short.url.yourls.tree</field>
             <field name="model">short.url.yourls</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
-                    <field name="total_shortened_urls"/>
+                    <field name="name" />
+                    <field name="total_shortened_urls" />
                 </tree>
             </field>
         </record>
@@ -18,17 +17,17 @@
                 <form>
                     <sheet>
                         <group col="4">
-                            <field name="hostname"/>
-                            <field name="username"/>
-                            <field name="password"/>
+                            <field name="hostname" />
+                            <field name="username" />
+                            <field name="password" />
                         </group>
 
                         <notebook>
                             <page name="urls" string="Shortened URLs">
                                 <field name="shortened_urls" widget="many2many">
                                    <tree>
-                                      <field name="short_url" widget="url"/>
-                                      <field name="long_url" widget="url"/>
+                                      <field name="short_url" widget="url" />
+                                      <field name="long_url" widget="url" />
                                    </tree>
                                 </field>
                             </page>
@@ -50,8 +49,11 @@
               </p>
             </field>
         </record>
-        <menuitem id="short_url_yourls_menu" action="action_short_url_yourls"
-                  parent="iap.iap_root_menu" sequence="1"/>
+        <menuitem
+    id="short_url_yourls_menu"
+    action="action_short_url_yourls"
+    parent="iap.iap_root_menu"
+    sequence="1"
+  />
 
-   </data>
 </odoo>
