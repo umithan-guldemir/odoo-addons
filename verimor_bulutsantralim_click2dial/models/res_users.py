@@ -4,15 +4,14 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import fields, models
 
 
 class ResUsers(models.Model):
     _inherit = "res.users"
 
     internal_number = fields.Char(
-        string="Internal Number", copy=False, help="User's internal phone number."
+        string="User Internal Number", copy=False, help="User's internal phone number."
     )
 
     _sql_constraints = [

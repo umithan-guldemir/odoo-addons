@@ -4,9 +4,10 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import models, api, _
-from odoo.exceptions import UserError
 import logging
+
+from odoo import _, api, models
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 try:
@@ -58,7 +59,7 @@ class PhoneCommon(models.AbstractModel):
 
     @api.model
     def click2dial(self, erp_number):
-        res = super(PhoneCommon, self).click2dial(erp_number)
+        res = super().click2dial(erp_number)
         if not erp_number:
             raise UserError(_("Missing phone number"))
 

@@ -4,10 +4,12 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, ValidationError
 import logging
+
 import requests
+
+from odoo import _, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 BULUTSANTRALIM_ENDPOINT = "http://api.bulutsantralim.com"
@@ -15,14 +17,15 @@ BULUTSANTRALIM_ENDPOINT = "http://api.bulutsantralim.com"
 
 class BulutsantralimConnector(models.Model):
     """
-    Bulutsantralim server object, stores the API key and functions to communicate with the server
+    Bulutsantralim server object, stores the API key and
+    functions to communicate with the server
     """
 
     _name = "bulutsantralim.connector"
     _description = "Verimor Bulutsantralim Connector"
 
     name = fields.Char(string="Bulutsantralim Connector Name", required=True)
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(string="Active?", default=True)
     api_key = fields.Char(string="Verimor Bulutsantralim API Key", required=True)
     call_timeout = fields.Integer(
         "Call Timout",
@@ -31,7 +34,7 @@ class BulutsantralimConnector(models.Model):
         " must be between 10 and 60 seconds (default 30)",
     )
     manual_answer = fields.Boolean(
-        "Manual Answer",
+        "Manual Answer?",
         help="If its value is true, it waits for the extension"
         " to pick up the phone (Normally, the extension will"
         " open automatically and the caller will be called).",
@@ -54,7 +57,9 @@ class BulutsantralimConnector(models.Model):
             "manual_answer": self.manual_answer,
             "timeout": self.call_timeout,
         }
-        r = requests.get("%s/originate" % BULUTSANTRALIM_ENDPOINT, params=params)
+        r = requests.get(
+            f"{BULUTSANTRALIM_ENDPOINT}/originate", params=params, timeout=10
+        )
         if r.status_code != 200:
             if r.text == "USER_BUSY":
                 raise UserError(_("User is busy."))
@@ -63,6 +68,6 @@ class BulutsantralimConnector(models.Model):
             elif r.text == "NO_ANSWER":
                 raise UserError(_("No answer."))
             else:
-                raise ValidationError(_("Bulutsantralim API: %s" % r.text))
+                raise ValidationError(_(f"Bulutsantralim API: {r.text}"))
 
         return True

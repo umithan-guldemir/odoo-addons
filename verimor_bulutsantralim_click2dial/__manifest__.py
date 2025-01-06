@@ -10,13 +10,8 @@
     "category": "Phone",
     "license": "LGPL-3",
     "summary": "Verimor Bulutsantralim Odoo Connector",
-    "description": """
-Verimor connector
-==========================
-
-""",
-    "author": "Yiğit Budak, Odoo Turkey Localization Group",
-    "website": "https://github.com/odoo-turkey",
+    "author": "Yiğit Budak, Odoo Turkey Localization Group, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "depends": ["base", "crm", "base_phone"],
     "external_dependencies": {"python": ["phonenumbers"]},
     "data": [
