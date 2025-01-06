@@ -10,8 +10,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
     # To prevent remove the record wizard until 2 days old
     _transient_max_hours = 48
 
-    name = fields.Char(string="Name")
-    message = fields.Char("Message", default="Scan a barcode", readonly=1)
+    name = fields.Char()
+    message = fields.Char(default="Scan a barcode", readonly=1)
     message_type = fields.Selection(
         [("success", "Success"), ("error", "Error"), ("info", "Info")], default="info"
     )
@@ -24,8 +24,8 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
         string="Picking Lines",
         related="picking_id.move_ids_without_package",
     )
-    package_count = fields.Integer("Package Count", default=0)
-    package_weight = fields.Float("Package Weight", default=0.0)
+    package_count = fields.Integer(default=0)
+    package_weight = fields.Float(default=0.0)
 
     @api.onchange("picking_id")
     def onchange_picking_id(self):
@@ -38,7 +38,7 @@ class DeliveryPackageBarcodeWiz(models.TransientModel):
 
     @api.model
     def create(self, vals):
-        res = super(DeliveryPackageBarcodeWiz, self).create(vals)
+        res = super().create(vals)
         if not res.name:
             res.name = res.picking_id.name + _(" - PACK BARCODE")
         return res

@@ -4,10 +4,10 @@
 {
     "name": "Competitor Analysis",
     "summary": "Analyze your competitors",
-    "version": "12.0.1.0.1",
+    "version": "16.0.1.0.1",
     "category": "Tools",
-    "website": "https://github.com/odoo-turkey",
-    "author": "Yiğit Budak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
     "application": False,
     "installable": True,

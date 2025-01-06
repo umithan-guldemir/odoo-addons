@@ -3,7 +3,11 @@
 
     <template id="assets_common" inherit_id="web.assets_common">
         <xpath expr="." position="inside">
-            <link rel="stylesheet" type="text/scss" href="/competitor_analysis/static/src/scss/style.scss"/>
+            <link
+        rel="stylesheet"
+        type="text/scss"
+        href="/competitor_analysis/static/src/scss/style.scss"
+      />
         </xpath>
     </template>
 

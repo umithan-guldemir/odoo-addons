@@ -1,13 +1,8 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-import logging
+
 from zeep import Client, Settings
-from zeep.exceptions import Fault
 from zeep.plugins import HistoryPlugin
-from zeep import xsd
-from xml.etree import ElementTree as ET
-from odoo import _
-from odoo.exceptions import ValidationError
 
 PARAM_TEST_API = (
     "https://test-dmz.param.com.tr:4443/turkpos.ws/service_turkpos_test.asmx?wsdl"

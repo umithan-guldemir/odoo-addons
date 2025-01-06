@@ -1,9 +1,11 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
-from odoo.addons import decimal_precision as dp
-from odoo.tools import float_is_zero
 import logging
+
+from odoo import api, fields, models
+from odoo.tools import float_is_zero
+
+from odoo.addons import decimal_precision as dp
 
 _logger = logging.getLogger(__name__)
 
@@ -28,7 +30,6 @@ class SaleOrderLine(models.Model):
     )
 
     deci = fields.Float(
-        string="Deci",
         digits=dp.get_precision("Product Unit of Measure"),
         compute="_compute_deci",
     )
@@ -66,8 +67,8 @@ class SaleOrderLine(models.Model):
                 or float_is_zero(product.product_volume, uom_dp)
             ):
                 _logger.warning(
-                    "Cannot calculate Volume, Weight or Volume for product %s missing."
-                    % (product.display_name)
+                    "Cannot calculate Volume, Weight or "
+                    f"Volume for product {product.display_name} missing."
                 )
                 line.volume = 0.0
                 line.weight = 0.0
@@ -79,8 +80,7 @@ class SaleOrderLine(models.Model):
                 )
             except Exception as e:
                 _logger.warning(
-                    "Quantity conversion error for product %s: %s"
-                    % (product.display_name, e)
+                    f"Quantity conversion error for product {product.display_name}: {e}"
                 )
                 line.volume = 0.0
                 line.weight = 0.0

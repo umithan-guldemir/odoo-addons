@@ -1,6 +1,7 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import http, _
+from odoo import _, http
+
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 
 
@@ -22,7 +23,6 @@ class WebsiteSaleInherit(WebsiteSale):
         # domain = [('country_id', '=', 224)]  # Turkey
 
         if (res_model and res_model in address_models) and res_id:
-
             if res_model == "address.district":
                 domain = [("state_id", "=", res_id)]
 
@@ -40,12 +40,9 @@ class WebsiteSaleInherit(WebsiteSale):
         """
         Form validation method
         """
-        error, error_msg = super(WebsiteSaleInherit, self).checkout_form_validate(
-            mode, all_form_values, data
-        )
+        error, error_msg = super().checkout_form_validate(mode, all_form_values, data)
         country_id = all_form_values.get("country_id", "0")
         if country_id.isnumeric() and int(country_id) == 224:  # Turkey
-
             # Since we use another address fields for Turkey, it's okay to not
             # validate city.
             if error.get("city"):
@@ -92,7 +89,8 @@ class WebsiteSaleInherit(WebsiteSale):
     )
     def country_infos(self, country, mode, **kw):
         """
-        state seçiminin direkt olarak seçili gelmesini engeller. seçiniz diye boş option ekler
+        state seçiminin direkt olarak seçili gelmesini engeller.
+        seçiniz diye boş option ekler
         """
         res = super().country_infos(country, mode, **kw)
         states = res.get("states")
@@ -102,7 +100,8 @@ class WebsiteSaleInherit(WebsiteSale):
 
     def _get_country_related_render_values(self, kw, render_values):
         """
-        adresleri düzenlerken eklerken yeni eklediğimiz fieldları da render etmesini sağlar.
+        adresleri düzenlerken eklerken yeni eklediğimiz fieldları da
+        render etmesini sağlar.
         """
         res = super()._get_country_related_render_values(kw, render_values)
         vals = render_values["checkout"]

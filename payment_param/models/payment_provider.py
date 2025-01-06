@@ -1,10 +1,12 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
-from odoo import _, api, fields, models
+
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
-from odoo.addons.payment_param.const import PARAM_ERROR_CODES
-from odoo.addons.payment_param.models.param_connector import (
+
+from ..const import PARAM_ERROR_CODES
+from .param_connector import (
     PARAM_TEST_API,
     ParamConnector,
 )
@@ -19,27 +21,22 @@ class PaymentProvider(models.Model):
         selection_add=[("param", "Param")], ondelete={"param": "set default"}
     )
     param_client_code = fields.Char(
-        string="Param Client Code",
         help="Dealer code issued by the Param system",
         required_if_provider="param",
     )
     param_username = fields.Char(
-        string="Param Username",
         help="Api username given by Param system",
         groups="base.group_system",
     )
     param_password = fields.Char(
-        string="Param Password",
         help="Api password given by Param system",
         groups="base.group_system",
     )
     param_guid = fields.Char(
-        string="Param Guid",
         help="Guid given by Param system",
         groups="base.group_system",
     )
     param_live_endpoint = fields.Char(
-        string="Param Live Endpoint",
         help="Param live endpoint",
         groups="base.group_system",
     )
@@ -214,7 +211,7 @@ class PaymentProvider(models.Model):
             resp = connector._pos_odeme(vals)
             if resp.Sonuc != "1":
                 raise ValidationError(
-                    "%s" % PARAM_ERROR_CODES.get(resp.Sonuc, _("Unknown Error"))
+                    PARAM_ERROR_CODES.get(resp.Sonuc, _("Unknown Error"))
                 )
             else:
                 # Save the transaction id for validation
@@ -224,5 +221,8 @@ class PaymentProvider(models.Model):
                     }
                 )
                 return resp.UCD_URL
-        except:
-            raise ValidationError(_("Payment request failed."))
+        except Exception as exc:
+            _logger.error(
+                _("An error occurred while making a payment request: %(exc)s", exc=exc)
+            )
+            raise ValidationError(_("Payment request failed."))  # noqa: B904

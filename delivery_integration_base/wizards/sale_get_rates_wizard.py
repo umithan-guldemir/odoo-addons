@@ -1,10 +1,12 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
-from odoo.addons import decimal_precision as dp
 from datetime import datetime
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from odoo.addons import decimal_precision as dp
 
 
 class SaleGetRatesWizard(models.TransientModel):
@@ -21,7 +23,7 @@ class SaleGetRatesWizard(models.TransientModel):
         :param vals: dict
         :return: recordset
         """
-        res = super(SaleGetRatesWizard, self).create(vals)
+        res = super().create(vals)
         company_id = self.env.user.company_id
         date = datetime.now()
         for wizard in res.filtered(lambda w: w.sale_id):
@@ -95,7 +97,6 @@ class DeliveryCarrierLines(models.TransientModel):
     carrier_id = fields.Many2one("delivery.carrier", string="Carrier")
     currency_id = fields.Many2one("res.currency", string="Currency")
     price = fields.Monetary(
-        string="Price",
         currency_field="currency_id",
         digits=dp.get_precision("Product Price"),
     )
@@ -110,4 +111,4 @@ class DeliveryCarrierLines(models.TransientModel):
         digits=dp.get_precision("Product Price"),
     )
     order_id = fields.Many2one("sale.order", string="Sale Order")
-    selected = fields.Boolean(string="Selected", default=False)
+    selected = fields.Boolean(default=False)

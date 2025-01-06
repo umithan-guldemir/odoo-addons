@@ -4,11 +4,10 @@
     "name": "Checkout Address Fields TR",
     "version": "16.0.1.0.0",
     "summary": "Address fields for Turkey",
-    "description": """This Module is used to add custom fields to the checkout address form.""",
     "category": "Website/Website",
     "license": "LGPL-3",
-    "website": "https://github.com/odoo-turkey",
-    "author": "Yigit Budak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yigit Budak, Altinkaya Enclosures",
     "depends": ["web", "l10n_tr_address"],
     "data": [
         "templates/checkout.xml",
