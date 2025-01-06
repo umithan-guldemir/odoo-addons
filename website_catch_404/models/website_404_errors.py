@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api, fields
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -19,21 +19,20 @@ class Website404Errors(models.Model):
             ("OPTIONS", "OPTIONS"),
             ("PATCH", "PATCH"),
         ],
-        string="Request Method",
     )
-    hit_count = fields.Integer(string="Hit Count")
+    hit_count = fields.Integer()
     website_id = fields.Many2one(
         comodel_name="website",
         string="Website",
         ondelete="cascade",
     )
-    resolved = fields.Boolean(string="Resolved", default=False)
+    resolved = fields.Boolean(default=False)
 
     @api.constrains("url")
     def _check_url(self):
         for record in self:
             if self.search_count([("name", "=", record.name)]) > 1:
-                raise ValidationError("URL must be unique.")
+                raise ValidationError(_("URL must be unique."))
 
     def action_create_redirect(self):
         self.ensure_one()

@@ -1,24 +1,27 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class AddressDistrict(models.Model):
-    _description = 'District'
-    _name = 'address.district'
+    _description = "District"
+    _name = "address.district"
 
-    name = fields.Char(string='District')
-    state_id = fields.Many2one('res.country.state', 'State', required=True)
+    name = fields.Char(string="District")
+    state_id = fields.Many2one("res.country.state", "State", required=True)
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100,
-                     name_get_uid=None):
-        if self._context.get('state_id'):
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        if self._context.get("state_id"):
             args = args or []
-            args.append(('state_id', '=', self._context['state_id']))
-        return super(AddressDistrict, self)._name_search(name=name,
-                                                         args=args,
-                                                         operator=operator,
-                                                         limit=limit,
-                                                         name_get_uid=name_get_uid)
+            args.append(("state_id", "=", self._context["state_id"]))
+        return super()._name_search(
+            name=name,
+            args=args,
+            operator=operator,
+            limit=limit,
+            name_get_uid=name_get_uid,
+        )
         # if args is None:
         #     args = []
         # if name:
@@ -30,21 +33,20 @@ class AddressDistrict(models.Model):
 
 
 class AddressRegion(models.Model):
-    _name = 'address.region'
-    _description = 'Regions'
+    _name = "address.region"
+    _description = "Regions"
 
-    name = fields.Char(string='Region')
-    district_id = fields.Many2one('address.district', 'District', required=True)
-    state_id = fields.Many2one('res.country.state', 'State',
-                               related='district_id.state_id', store=True)
+    name = fields.Char(string="Region")
+    district_id = fields.Many2one("address.district", "District", required=True)
+    state_id = fields.Many2one(
+        "res.country.state", "State", related="district_id.state_id", store=True
+    )
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=80):
-        if self.env.context.get('district_id'):
-            args += [('district_id', '=', self.env.context.get('district_id'))]
-        return super(AddressRegion, self)._name_search(name, args=args,
-                                                       operator=operator,
-                                                       limit=limit)
+    def _name_search(self, name, args=None, operator="ilike", limit=80):
+        if self.env.context.get("district_id"):
+            args += [("district_id", "=", self.env.context.get("district_id"))]
+        return super()._name_search(name, args=args, operator=operator, limit=limit)
         # if args is None:
         #     args = []
         # if name:
@@ -56,38 +58,40 @@ class AddressRegion(models.Model):
 
 
 class AddressNeighbour(models.Model):
-    _name = 'address.neighbour'
-    _description = 'Neighbourhood'
+    _name = "address.neighbour"
+    _description = "Neighbourhood"
 
-    name = fields.Char(string='Neighbour')
-    region_id = fields.Many2one('address.region', 'Region', required=True)
-    code = fields.Char('Postal Code')
-    state_id = fields.Many2one('res.country.state', 'State',
-                               related='region_id.district_id.state_id')
-    district_id = fields.Many2one('address.district', 'District',
-                                  related='region_id.district_id')
+    name = fields.Char(string="Neighbour")
+    region_id = fields.Many2one("address.region", "Region", required=True)
+    code = fields.Char("Postal Code")
+    state_id = fields.Many2one(
+        "res.country.state", "State", related="region_id.district_id.state_id"
+    )
+    district_id = fields.Many2one(
+        "address.district", "District", related="region_id.district_id"
+    )
 
     def name_get2(self):
         res = []
         for inst in self:
-            name = inst.name or '/'
+            name = inst.name or "/"
             if name and inst.district_id and inst.state_id:
-                name = "%s, %s, %s" % (name, inst.district_id.name, inst.state_id.name)
+                name = f"{name}, {inst.district_id.name}, {inst.state_id.name}"
             res.append((inst.id, name))
         return res
 
     @api.model
-    def name_search(self, name, args=None, operator='ilike', limit=80):
+    def name_search(self, name, args=None, operator="ilike", limit=80):
         if args is None:
             args = []
         if name:
             if name.isdigit():
-                args += [('code', operator, name)]
+                args += [("code", operator, name)]
             else:
-                args += [('name', operator, name)]
-        if self.env.context.get('region_id'):
-            args += [('region_id', '=', self.env.context.get('region_id'))]
-        if self.env.context.get('state_id'):
-            args += [('state_id', '=', self.env.context.get('state_id'))]
+                args += [("name", operator, name)]
+        if self.env.context.get("region_id"):
+            args += [("region_id", "=", self.env.context.get("region_id"))]
+        if self.env.context.get("state_id"):
+            args += [("state_id", "=", self.env.context.get("state_id"))]
         ids = self.search(args, limit=limit)
         return ids.name_get2()

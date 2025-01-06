@@ -1,5 +1,4 @@
-from odoo import models, fields, api
-import re
+from odoo import api, fields, models
 
 
 class ResPartner(models.Model):
@@ -55,7 +54,7 @@ class ResPartner(models.Model):
 
     @api.model
     def _address_fields(self):
-        fields = super(ResPartner, self)._address_fields()
+        fields = super()._address_fields()
         return fields + ["district_id", "neighbour_id"]
 
     @api.model

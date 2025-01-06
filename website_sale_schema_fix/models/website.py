@@ -1,14 +1,14 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api, fields
 from datetime import datetime, timedelta
+
+from odoo import fields, models
 
 
 class Website(models.Model):
     _inherit = "website"
 
     brand_name = fields.Char(
-        string="Brand Name",
         help="The name of the brand of the website,"
         " this will shown in the Product Schema",
     )
@@ -24,7 +24,6 @@ class Website(models.Model):
     )
 
     price_validity_date = fields.Datetime(
-        string="Price Validity Date",
         compute="_compute_price_validity_date",
     )
 

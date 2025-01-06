@@ -1,11 +1,14 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
+
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.osv import expression
-from .garanti_connector import GarantiConnector
+
 from odoo.addons.payment import utils as payment_utils
+
+from .garanti_connector import GarantiConnector
 
 _logger = logging.getLogger(__name__)
 
@@ -152,12 +155,12 @@ class PaymentTransaction(models.Model):
         tx_code = notification_data.get("secure3dhash")
         if not tx_code:
             raise ValidationError(
-                "Garanti: " + _("Received data with missing transaction code.")
+                _("Garanti: Received data with missing transaction code.")
             )
 
         tx_ref = notification_data.get("orderid")
         if not tx_ref:
-            raise ValidationError("Garanti: " + _("Received data with missing ref."))
+            raise ValidationError(_("Garanti: Received data with missing ref."))
 
         tx = self.search(
             [
@@ -170,10 +173,9 @@ class PaymentTransaction(models.Model):
 
         if not tx:
             raise ValidationError(
-                "Garanti: "
-                + _(
-                    "No transaction found matching reference %s.",
-                    tx_code,
+                _(
+                    "Garanti: No transaction found matching reference %(tx_code)s.",
+                    tx_code=tx_code,
                 )
             )
         return tx

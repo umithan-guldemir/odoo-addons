@@ -3,13 +3,11 @@
 {
     "name": "Product Qty Increment Step",
     "summary": "Product Qty Increment Step",
-    "description": "This module allows you to set a step for product "
-                   "quantity increment in the product page.",
     "development_status": "Beta",
     "version": "16.0.1.0.1",
-    "author": "Yiğit Budak",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
-    "website": "https://github.com/yibudak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
     "depends": ["website", "website_sale", "altinkaya_ecommerce"],
     "data": [

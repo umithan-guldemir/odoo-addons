@@ -1,12 +1,12 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import models, fields, api, _
-from odoo.tools.safe_eval import safe_eval
-from odoo.exceptions import ValidationError
-from odoo.exceptions import UserError
-from odoo.tools import float_is_zero
-from datetime import timedelta, datetime
 import math
+from datetime import datetime, timedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_is_zero
+from odoo.tools.safe_eval import safe_eval
 
 
 class DeliveryCarrier(models.Model):
@@ -22,7 +22,6 @@ class DeliveryCarrier(models.Model):
         required=True,
     )
     payment_type = fields.Selection(
-        string="Payment Type",
         selection=[("customer_pays", "Customer Pays"), ("sender_pays", "Sender Pays")],
         default="sender_pays",
         required=True,
@@ -40,11 +39,9 @@ class DeliveryCarrier(models.Model):
     sms_service_id = fields.Many2one("iap.account", string="SMS Service")
 
     barcode_text_1 = fields.Char(
-        string="Barcode Text 1",
         help="Some static text for this carrier to package labels.",
     )
     deci_type = fields.Selection(
-        string="Deci Type",
         selection=[
             ("3000", "(3000)"),
             ("4000", "(4000)"),
@@ -59,15 +56,14 @@ class DeliveryCarrier(models.Model):
     )
     # Default values for factor_a and factor_b is important.
     # Do not change them unless you want to break the logarithmic calculation.
-    factor_a = fields.Float(string="Factor A", default=2.0)
-    factor_b = fields.Float(string="Factor B", default=0.1)
+    factor_a = fields.Float(default=2.0)
+    factor_b = fields.Float(default=0.1)
 
     show_in_price_table = fields.Boolean(
         string="Show in Price Table",
         help="Show this carrier in Sale Order Shipment " "Price table",
     )
     fuel_surcharge_percentage = fields.Float(
-        string="Fuel Surcharge Percentage",
         help="Additional Price to add after calculation of tables",
     )
     environment_fee_per_kg = fields.Float(
@@ -75,7 +71,6 @@ class DeliveryCarrier(models.Model):
         help="Environment fee per KG added after fuel surcharge",
     )
     postal_charge_percentage = fields.Float(
-        string="Postal Charge Percentage",
         help="For shipments below 30kg or Deci additional percentage to add",
     )
     emergency_fee_per_kg = fields.Float(
@@ -172,7 +167,7 @@ class DeliveryCarrier(models.Model):
         )
         if mobile_number:
             sms_template = self.env.ref(
-                "delivery_{0}.{0}_sms_template".format(self.delivery_type)
+                f"delivery_{self.delivery_type}.{self.delivery_type}_sms_template"
             )
             message = sms_template._render_template(
                 sms_template.body_html, sms_template.model, picking.id
@@ -186,7 +181,7 @@ class DeliveryCarrier(models.Model):
         :param picking: record of stock.picking
         :return str: an URL containing the tracking link or False
         """
-        res = super(DeliveryCarrier, self).get_tracking_link(picking)
+        res = super().get_tracking_link(picking)
         shortener = self.url_shortener_id
 
         if not res and picking.carrier_id.tracking_url_prefix_no_integration:
@@ -227,7 +222,7 @@ class DeliveryCarrier(models.Model):
             order = self.env["sale.order"].browse(order)
 
         order = order.with_context(rate_carrier_id=self.id)  # Do not lose context
-        order.order_line.invalidate_model()  # invalidate cache to recompute order line deci
+        order.order_line.invalidate_model()  # recompute order line deci
         dp = 4  # decimal precision
 
         deci = sum(order.order_line.mapped("deci"))
@@ -297,7 +292,8 @@ class DeliveryCarrier(models.Model):
         if not criteria_found:
             raise UserError(
                 _(
-                    "No price rule matching this order; delivery cost cannot be computed."
+                    "No price rule matching this order; "
+                    "delivery cost cannot be computed."
                 )
             )
 

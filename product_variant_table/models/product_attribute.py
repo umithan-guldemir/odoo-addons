@@ -7,12 +7,10 @@ class ProductAttribute(models.Model):
     _inherit = "product.attribute"
 
     grouped = fields.Boolean(
-        string="Grouped",
         help="If checked, attribute will be used as a special type."
         " This attribute will be treated as select input type.",
     )
     group_suffix = fields.Char(
-        "Group Suffix",
         help="Suffix for grouped attribute."
         " If filled, grouped attribute range will be"
         " displayed as 'value1 - value2 suffix'.",
@@ -24,8 +22,9 @@ class ProductAttribute(models.Model):
         self.ensure_one()
         value_list = [int(x) for x in ptal.value_ids.mapped("numeric_value")]
         if ptal.attribute_id.group_suffix:
-            return "{} - {} {}".format(
-                min(value_list), max(value_list), ptal.attribute_id.group_suffix
+            return (
+                f"{min(value_list)} - {max(value_list)}"
+                f" {ptal.attribute_id.group_suffix}"
             )
         else:
             return ", ".join(str(x) for x in ptal.value_ids.mapped("name"))

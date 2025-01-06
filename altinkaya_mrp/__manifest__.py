@@ -3,11 +3,10 @@
 {
     "name": "ALTINKAYA MRP Extension",
     "summary": "Extra features for MRP Module",
-    "description": "This module adds extra features to MRP Module.",
     "version": "16.0.1.0.1",
-    "author": "Yiğit Budak",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
-    "website": "https://github.com/yibudak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
     "depends": ["mrp", "product", "stock"],
     "data": [
