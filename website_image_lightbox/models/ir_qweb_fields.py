@@ -1,9 +1,11 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api
-from odoo.tools import html_escape as escape
 from collections import OrderedDict
+
 from markupsafe import Markup
+
+from odoo import api, models
+from odoo.tools import html_escape as escape
 from odoo.tools import pycompat
 
 
@@ -23,7 +25,7 @@ class Image(models.AbstractModel):
         )
 
         if options.get("qweb_img_raw_data", False):
-            return super(Image, self).record_to_html(record, field_name, options)
+            return super().record_to_html(record, field_name, options)
 
         aclasses = (
             ["img", "img-fluid"]

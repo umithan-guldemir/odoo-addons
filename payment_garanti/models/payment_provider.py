@@ -2,11 +2,14 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 import re
+
 import psycopg2
-from odoo import api, fields, models, registry, SUPERUSER_ID, _
+
+from odoo import SUPERUSER_ID, _, api, fields, models, registry
 from odoo.exceptions import ValidationError
+
+from ..const import CURRENCY_CODES, PROD_URL, TEST_URL
 from .garanti_connector import GarantiConnector
-from odoo.addons.payment_garanti.const import TEST_URL, PROD_URL, CURRENCY_CODES
 
 _logger = logging.getLogger(__name__)
 
@@ -81,10 +84,9 @@ class PaymentProvider(models.Model):
                             "line": 1,
                         }
                     )
-                    """
-                    Save the error message to the database, so we can handle
-                    the error message better.
-                    """
+
+                    # Save the error message to the database, so we can handle
+                    # the error message better.
                     error_obj = env["payment.provider.error"].sudo()
                     error_code = False
                     error_message = False
@@ -125,7 +127,10 @@ class PaymentProvider(models.Model):
                         )
                         error_record._onchange_error_message()
             except psycopg2.Error:
-                pass
+                _logger.error(
+                    "Error while logging the XML request."
+                    " Please check the database connection."
+                )
 
     def _garanti_get_api_url(self):
         """Return the API URL according to the provider state.
@@ -191,10 +196,9 @@ class PaymentProvider(models.Model):
         :return: The return url
         """
         self.ensure_one()
-        return (
-            self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-            + "/payment/garanti/return"
-        )
+
+        return f"{self.env["ir.config_parameter"].sudo(
+            ).get_param("web.base.url")}/payment/garanti/return"
 
     def _garanti_make_payment_request(self, tx, amount, currency, card_args, client_ip):
         """

@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
@@ -18,7 +18,6 @@ class SaleOrder(models.Model):
         return [("id", "in", res.ids)]
 
     my_team = fields.Boolean(
-        "My Team",
         compute="_compute_my_team",
         search="_search_my_team",
         store=False,

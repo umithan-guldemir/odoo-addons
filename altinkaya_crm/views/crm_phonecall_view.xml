@@ -3,7 +3,7 @@
     <record model="ir.ui.view" id="crm_phonecall_form_inherit_altinkaya">
         <field name="name">altinkaya.crm.phonecall.form.inherit</field>
         <field name="model">crm.phonecall</field>
-        <field name="inherit_id" ref="crm_phonecall.crm_case_phone_form_view"/>
+        <field name="inherit_id" ref="crm_phonecall.crm_case_phone_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="activity_type_id" />
@@ -20,10 +20,10 @@
     <record model="ir.ui.view" id="crm_phonecall_tree_inherit_altinkaya">
         <field name="name">altinkaya.crm.phonecall.tree.inherit</field>
         <field name="model">crm.phonecall</field>
-        <field name="inherit_id" ref="crm_phonecall.crm_case_phone_tree_view"/>
+        <field name="inherit_id" ref="crm_phonecall.crm_case_phone_tree_view" />
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
-                <attribute name="editable"></attribute>
+                <attribute name="editable" />
             </xpath>
 
             <field name="opportunity_id" position="attributes">

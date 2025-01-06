@@ -3,10 +3,13 @@
     <record model="ir.ui.view" id="bank_statement_line_tree_finekra">
         <field name="name">account.bank.statement.line.tree.finekra</field>
         <field name="model">account.bank.statement.line</field>
-        <field name="inherit_id" ref="account_statement_base.account_bank_statement_line_tree"/>
+        <field
+      name="inherit_id"
+      ref="account_statement_base.account_bank_statement_line_tree"
+    />
         <field name="arch" type="xml">
             <field name="ref" position="after">
-                <field name="order_ids"/>
+                <field name="order_ids" />
             </field>
         </field>
     </record>

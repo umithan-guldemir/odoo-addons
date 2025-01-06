@@ -5,9 +5,9 @@
     "name": "Website Cart Multi Currency",
     "summary": "Show company currency value and rate in cart",
     "version": "16.0.1.0.1",
-    "author": "Yiğit Budak",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
     "license": "AGPL-3",
-    "website": "https://github.com/yibudak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "category": "Extensions",
     "depends": ["website_sale", "website_sale_delivery"],
     "data": [

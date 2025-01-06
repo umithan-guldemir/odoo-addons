@@ -1,6 +1,6 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+# flake8: noqa: E501
 PARAM_ERROR_CODES = {
     "1": "Başarılı",
     "-1": "Başarısız",

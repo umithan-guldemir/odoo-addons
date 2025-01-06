@@ -1,12 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
-    <data>
         <record id="view_address_district_tree" model="ir.ui.view">
             <field name="name">view.address.region.tree</field>
             <field name="model">address.district</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
+                    <field name="name" />
                     <field name="state_id" />
                 </tree>
             </field>
@@ -18,8 +17,8 @@
                 <form>
                     <sheet>
                         <group col="4">
-                            <field name="name" required="1"/>
-                            <field name="state_id" required="1"/>
+                            <field name="name" required="1" />
+                            <field name="state_id" required="1" />
                         </group>
                     </sheet>
                 </form>
@@ -31,9 +30,9 @@
             <field name="model">address.region</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
-                    <field name="district_id"/>
-                    <field name="state_id"/>
+                    <field name="name" />
+                    <field name="district_id" />
+                    <field name="state_id" />
                 </tree>
             </field>
         </record>
@@ -44,9 +43,9 @@
                 <form>
                     <sheet>
                         <group col="4">
-                            <field name="name" required="1"/>
-                            <field name="district_id" required="1"/>
-                            <field name="state_id"/>
+                            <field name="name" required="1" />
+                            <field name="district_id" required="1" />
+                            <field name="state_id" />
                         </group>
                     </sheet>
                 </form>
@@ -58,11 +57,11 @@
             <field name="model">address.neighbour</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
+                    <field name="name" />
                     <field name="code" />
                     <field name="region_id" />
-                    <field name="district_id"/>
-                    <field name="state_id"/>
+                    <field name="district_id" />
+                    <field name="state_id" />
 
                 </tree>
             </field>
@@ -74,11 +73,11 @@
                 <form>
                     <sheet>
                         <group col="4">
-                            <field name="name" required="1"/>
-                            <field name="region_id" required="1"/>
-                            <field name="district_id"/>
-                            <field name="state_id"/>
-                            <field name="code"/>
+                            <field name="name" required="1" />
+                            <field name="region_id" required="1" />
+                            <field name="district_id" />
+                            <field name="state_id" />
+                            <field name="code" />
                         </group>
                     </sheet>
                 </form>
@@ -97,7 +96,12 @@
               </p>
             </field>
         </record>
-        <menuitem id="district_menu" action="action_district" parent="contacts.menu_localisation" sequence="5"/>
+        <menuitem
+    id="district_menu"
+    action="action_district"
+    parent="contacts.menu_localisation"
+    sequence="5"
+  />
 
         <record id="action_region" model="ir.actions.act_window">
             <field name="name">Regions</field>
@@ -111,7 +115,12 @@
               </p>
             </field>
         </record>
-        <menuitem id="region_menu" action="action_region" parent="contacts.menu_localisation" sequence="6"/>
+        <menuitem
+    id="region_menu"
+    action="action_region"
+    parent="contacts.menu_localisation"
+    sequence="6"
+  />
 
         <record id="action_neighbour" model="ir.actions.act_window">
             <field name="name">Neighbours</field>
@@ -125,12 +134,11 @@
               </p>
             </field>
         </record>
-        <menuitem id="neighbour_menu" action="action_neighbour" parent="contacts.menu_localisation" sequence="7"/>
+        <menuitem
+    id="neighbour_menu"
+    action="action_neighbour"
+    parent="contacts.menu_localisation"
+    sequence="7"
+  />
 
-   </data>
 </odoo>
-
-
-
-
-

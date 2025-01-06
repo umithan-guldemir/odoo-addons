@@ -5,27 +5,20 @@
     "name": "Partner Organization Chart",
     "summary": "Organization chart on partner form",
     "license": "LGPL-3",
-    "website": "https://github.com/odoo-turkey",
-    "author": "Ümithan Güldemir",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Ümithan Güldemir, Altinkaya Enclosures",
     "category": "CRM",
     "version": "16.0.1.0.0",
-    "description": """
-Org Chart Widget for Partners
-=======================
-Copied from hr_org_chart
-This module extend the partner form with a organizational chart.
-        """,
     "depends": ["base"],
     "data": [
         "views/partner_views.xml",
     ],
-    'assets': {
-        'web._assets_primary_variables': [
-            'partner_org_chart/static/src/scss/variables.scss',
+    "assets": {
+        "web._assets_primary_variables": [
+            "partner_org_chart/static/src/scss/variables.scss",
         ],
-        'web.assets_backend': [
-            'partner_org_chart/static/src/fields/*',
+        "web.assets_backend": [
+            "partner_org_chart/static/src/fields/*",
         ],
     },
-    'license': 'LGPL-3',
 }

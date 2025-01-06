@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
@@ -31,7 +31,7 @@ class WizardCreateRedirectFrom404(models.TransientModel):
             record.url_from = record.record_404_id.name
 
     def default_get(self, fields):
-        res = super(WizardCreateRedirectFrom404, self).default_get(fields)
+        res = super().default_get(fields)
         res["record_404_id"] = self.env.context.get("active_id")
         return res
 
