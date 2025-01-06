@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
         <record id="view_payment_provider_error_tree" model="ir.ui.view">
             <field name="name">view.payment.provider.error.tree</field>
             <field name="model">payment.provider.error</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="error_code"/>
-                    <field name="error_message"/>
+                    <field name="error_code" />
+                    <field name="error_message" />
                 </tree>
             </field>
         </record>
@@ -18,11 +17,11 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="error_code"/>
-                            <field name="error_message"/>
-                            <field name="sys_error_message"/>
+                            <field name="error_code" />
+                            <field name="error_message" />
+                            <field name="sys_error_message" />
                             <field name="log_id" />
-                            <field name="modified_error_message"/>
+                            <field name="modified_error_message" />
                         </group>
                     </sheet>
                 </form>
@@ -41,8 +40,10 @@
               </p>
             </field>
         </record>
-        <menuitem id="payment_provider_error_menu" action="action_payment_provider_error"
-                  parent="account.root_payment_menu" sequence="1"/>
-
-   </data>
+        <menuitem
+    id="payment_provider_error_menu"
+    action="action_payment_provider_error"
+    parent="account.root_payment_menu"
+    sequence="1"
+  />
 </odoo>

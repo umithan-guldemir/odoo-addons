@@ -1,13 +1,12 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields
+from odoo import fields, models
 
 
 class ProductPublicCategory(models.Model):
     _inherit = "product.public.category"
 
     description = fields.Html(
-        string="Description",
         sanitize_attributes=False,
         compute="_compute_description",
     )

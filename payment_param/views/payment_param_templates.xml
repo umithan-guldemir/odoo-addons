@@ -1,36 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <template id="inline_form">
         <div class="row">
             <div class="col-12 col-lg-8">
-                <input name="provider_id" type="hidden" id="provider_id"
-                       t-att-value="id"/>
-                <input name="partner_id" type="hidden"
-                       t-att-value="partner_id"/>
+                <input
+          name="provider_id"
+          type="hidden"
+          id="provider_id"
+          t-att-value="id"
+        />
+                <input name="partner_id" type="hidden" t-att-value="partner_id" />
                 <div id="credit-card">
                     <div class="form-group">
                         <label for="username">
                             <h6>Card Owner</h6>
                         </label>
-                        <input type="text"
-                               name="cardName"
-                               placeholder="Card Owner Name"
-                               class="form-control "/>
+                        <input
+              type="text"
+              name="cardName"
+              placeholder="Card Owner Name"
+              class="form-control "
+            />
                     </div>
                     <div class="form-group">
                         <label for="cardNumber">
                             <h6>Card number</h6>
                         </label>
                         <div class="input-group">
-                            <input type="text"
-                                   maxlength="19"
-                                   name="cardNumber"
-                                   placeholder="XXXX XXXX XXXX XXXX"
-                                   inputmode="numeric"
-                                   class="form-control "/>
+                            <input
+                type="text"
+                maxlength="19"
+                name="cardNumber"
+                placeholder="XXXX XXXX XXXX XXXX"
+                inputmode="numeric"
+                class="form-control "
+              />
                             <span class="input-group-text text-muted">
-                                <i class="fa fa-credit-card mx-1"></i>
+                                <i class="fa fa-credit-card mx-1" />
                             </span>
                         </div>
                     </div>
@@ -43,29 +50,35 @@
                                     </h6>
                                 </label>
                                 <div class="input-group">
-                                    <select name="validMonth"
-                                            t-attf-class="form-select">
-                                        <option value=""
-                                                disabled="disabled"
-                                                selected="selected">Month
+                                    <select
+                    name="validMonth"
+                    t-attf-class="form-select"
+                  >
+                                        <option
+                      value=""
+                      disabled="disabled"
+                      selected="selected"
+                    >Month
                                         </option>
-                                        <t t-foreach="range(1, 13)"
-                                           t-as="r">
+                                        <t t-foreach="range(1, 13)" t-as="r">
                                             <option t-att-value="r">
-                                                <t t-esc="('%s' % r).zfill(2)"/>
+                                                <t t-esc="('%s' % r).zfill(2)" />
                                             </option>
                                         </t>
                                     </select>
-                                    <select name="validYear"
-                                            t-attf-class="form-select">
-                                        <option value=""
-                                                disabled="disabled"
-                                                selected="selected">Year
+                                    <select name="validYear" t-attf-class="form-select">
+                                        <option
+                      value=""
+                      disabled="disabled"
+                      selected="selected"
+                    >Year
                                         </option>
-                                        <t t-foreach="range(datetime.date.today().year-1, datetime.date.today().year+13)"
-                                           t-as="r">
+                                        <t
+                      t-foreach="range(datetime.date.today().year-1, datetime.date.today().year+13)"
+                      t-as="r"
+                    >
                                             <option t-att-value="r">
-                                                <t t-esc="r"/>
+                                                <t t-esc="r" />
                                             </option>
                                         </t>
                                     </select>
@@ -74,15 +87,20 @@
                         </div>
                         <div class="col-4">
                             <div class="form-group mb-4">
-                                <label title="Three digit CV code on the back of your card">
+                                <label
+                  title="Three digit CV code on the back of your card"
+                >
                                     <h6>CVV
-                                        <i class="fa fa-question-circle d-inline"></i>
+                                        <i class="fa fa-question-circle d-inline" />
                                     </h6>
                                 </label>
                                 <div class="input-group">
-                                    <input type="text" name="cardCVV"
-                                           maxlength="3"
-                                           class="form-control"/>
+                                    <input
+                    type="text"
+                    name="cardCVV"
+                    maxlength="3"
+                    class="form-control"
+                  />
                                 </div>
                             </div>
                         </div>
@@ -90,10 +108,14 @@
                 </div>
             </div>
             <div class="col-12 col-lg-4 text-center my-auto">
-                    <img class="img-fluid w-50 w-lg-75"
-                         src="/payment_param/static/img/ssl_256bit.png"/>
-                    <img class="img-fluid w-50 w-lg-75"
-                         src="/payment_param/static/img/secure_payment.png"/>
+                    <img
+          class="img-fluid w-50 w-lg-75"
+          src="/payment_param/static/img/ssl_256bit.png"
+        />
+                    <img
+          class="img-fluid w-50 w-lg-75"
+          src="/payment_param/static/img/secure_payment.png"
+        />
             </div>
         </div>
     </template>

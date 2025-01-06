@@ -1,10 +1,11 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
+
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
+
 from odoo.addons.payment import utils as payment_utils
-from odoo.addons.payment_param.const import PARAM_ERROR_CODES
 
 _logger = logging.getLogger(__name__)
 
@@ -12,17 +13,13 @@ _logger = logging.getLogger(__name__)
 class PaymentTransaction(models.Model):
     _inherit = "payment.transaction"
 
-    param_islem_id = fields.Char(string="Param Islem ID", readonly=True, copy=False)
-    param_islem_guid = fields.Char(string="Param Islem GUID", readonly=True, copy=False)
-    param_islem_hash = fields.Char(string="Param Islem Hash", readonly=True, copy=False)
-    param_islem_tarihi = fields.Char(
-        string="Param Islem Tarihi", readonly=True, copy=False
-    )
-    param_dekont_id = fields.Char(string="Param Dekont ID", readonly=True, copy=False)
-    param_kk_no = fields.Char(string="Param KK No", readonly=True, copy=False)
-    param_tahsilat_tutari = fields.Char(
-        string="Param Tahsilat Tutari", readonly=True, copy=False
-    )
+    param_islem_id = fields.Char(readonly=True, copy=False)
+    param_islem_guid = fields.Char(sreadonly=True, copy=False)
+    param_islem_hash = fields.Char(readonly=True, copy=False)
+    param_islem_tarihi = fields.Char(readonly=True, copy=False)
+    param_dekont_id = fields.Char(readonly=True, copy=False)
+    param_kk_no = fields.Char(readonly=True, copy=False)
+    param_tahsilat_tutari = fields.Char(readonly=True, copy=False)
 
     # === BUSINESS METHODS ===#
 
@@ -105,12 +102,12 @@ class PaymentTransaction(models.Model):
         tx_code = notification_data.get("TURKPOS_RETVAL_Siparis_ID")
         if not tx_code:
             raise ValidationError(
-                "Param: " + _("Received data with missing transaction code.")
+                _("Param: Received data with missing transaction code.")
             )
 
         tx_param_id = notification_data.get("TURKPOS_RETVAL_SanalPOS_Islem_ID")
         if not tx_param_id:
-            raise ValidationError("Param: " + _("Received data with missing hash."))
+            raise ValidationError(_("Param: Received data with missing hash."))
 
         tx = self.search(
             [
@@ -122,6 +119,9 @@ class PaymentTransaction(models.Model):
 
         if not tx:
             raise ValidationError(
-                "Param: " + _("No transaction found matching reference %s.", tx_code)
+                _(
+                    "Param: No transaction found matching reference %(tx_code)s.",
+                    tx_code=tx_code,
+                )
             )
         return tx

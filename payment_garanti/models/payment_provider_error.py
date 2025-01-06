@@ -1,19 +1,18 @@
 # Copyright 2024 Ahmet Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class PaymentProviderError(models.Model):
     _name = "payment.provider.error"
     _description = "Payment Provider Error"
 
-    error_code = fields.Char(string="Error Code", required=True)
-    error_message = fields.Text(string="Error Message", required=True)
+    error_code = fields.Char(required=True)
+    error_message = fields.Text(required=True)
     sys_error_message = fields.Text("System Error Message")
     log_id = fields.Many2one("ir.logging", string="Log")
-    modified_error_message = fields.Text("Modified Error Message", translate=True)
+    modified_error_message = fields.Text(translate=True)
     full_message = fields.Text(
-        string="Full Message",
         store=True,
         compute="_compute_full_message",
     )
