@@ -80,7 +80,7 @@ class ShortURLYourls(models.Model):
         :return: Shortened URL
         """
         line_obj = self.env["short.url.yourls.line"]
-        service_url = f"{'self.hostname'}/yourls-api.php"
+        service_url = f"{self.hostname}/yourls-api.php"
         vals = {
             "username": self.username,
             "password": self.password,
