@@ -5,11 +5,12 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import logging
-from zeep import Client, Settings
+from xml.etree import ElementTree as ET
+
+from zeep import Client, Settings, xsd
 from zeep.exceptions import Fault
 from zeep.plugins import HistoryPlugin
-from zeep import xsd
-from xml.etree import ElementTree as ET
+
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -97,7 +98,7 @@ class YurticiRequest:
                 response = service(vals)
             else:
                 response = service(**vals)
-        except Fault as e:
+        except Fault:
             with self.client.settings(raw_response=True):
                 if not send_as_kw:
                     response = service(vals)
@@ -110,21 +111,23 @@ class YurticiRequest:
                     error_code = next(root.iter("code")).text
                     raise ValidationError(
                         _(
-                            "Error in the request to the Yurtiçi API. This is the "
-                            "thrown message:\n\n"
-                            "[%s]\n"
-                            "%s - %s" % (error_text, error_code, error_message)
+                            f"""Error in the request to the Yurtiçi API. This is the
+                            thrown message:\n\n
+                            [{error_text}]\n
+                            {error_code} - {error_message}"""
                         )
                     )
                 except ValidationError:
                     raise
                 # If we can't get the proper exception, fallback to the first
                 # exception error traceback
-                except Exception:
-                    raise Fault(e)
+                except Exception as e:
+                    raise Fault(e) from e
 
         if response.outFlag != "0":
-            raise ValidationError("%s:\n%s" % (response.outResult, response.shippingOrderDetailVO[0].errMessage))
+            raise ValidationError(
+                f"{response.outResult}:\n{response.shippingOrderDetailVO[0].errMessage}"
+            )
 
         return response
 

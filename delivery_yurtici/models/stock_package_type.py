@@ -13,8 +13,8 @@ class PackageType(models.Model):
     package_carrier_type = fields.Selection(
         selection_add=[
             ("yurtici", "Yurtiçi Kargo"),
-            ],
+        ],
         ondelete={
             "yurtici": "cascade",
-            },
+        },
     )

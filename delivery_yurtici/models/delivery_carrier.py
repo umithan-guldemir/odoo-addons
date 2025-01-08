@@ -4,21 +4,25 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-import phonenumbers
-from odoo import _, fields, models, api
-from odoo.exceptions import ValidationError
-from .yurtici_request import YurticiRequest
-from lxml import etree
 from datetime import datetime
 
+import phonenumbers
+from lxml import etree
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
+
+from .yurtici_request import YurticiRequest
+
 YURTICI_OPERATION_CODES = {
-    0: ('Kargo İşlem Görmemiş', 'shipping_recorded_in_carrier'),
-    1: ('Kargo Teslimattadır', 'in_transit'),
-    2: ('Kargo işlem görmüş, faturası henüz düzenlenmemiş', 'in_transit'),
-    3: ('Kargo Çıkışı Engellendi', 'canceled_shipment'),
-    4: ('Kargo daha önceden iptal edilmiştir.', 'canceled_shipment'),
-    5: ('Kargo Teslim edilmiştir.', 'customer_delivered'),
+    0: ("Kargo İşlem Görmemiş", "shipping_recorded_in_carrier"),
+    1: ("Kargo Teslimattadır", "in_transit"),
+    2: ("Kargo işlem görmüş, faturası henüz düzenlenmemiş", "in_transit"),
+    3: ("Kargo Çıkışı Engellendi", "canceled_shipment"),
+    4: ("Kargo daha önceden iptal edilmiştir.", "canceled_shipment"),
+    5: ("Kargo Teslim edilmiştir.", "customer_delivered"),
 }
+
 
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
@@ -26,11 +30,13 @@ class DeliveryCarrier(models.Model):
     delivery_type = fields.Selection(
         selection_add=[("yurtici", "Yurtiçi Kargo")],
         ondelete={"yurtici": "cascade"},
-        )
+    )
 
     yurtici_username = fields.Char(string="Username", help="Yurtiçi Username")
     yurtici_password = fields.Char(string="Password", help="Yurtiçi Password")
-    yurtici_user_lang = fields.Char('UserLanguage', help="UserLanguage field for Yurtiçi")
+    yurtici_user_lang = fields.Char(
+        "UserLanguage", help="UserLanguage field for Yurtiçi"
+    )
 
     def _get_yurtici_credentials(self):
         """Access key is mandatory for every request while group and user are
@@ -39,16 +45,15 @@ class DeliveryCarrier(models.Model):
             "prod": self.prod_environment,
             "username": self.yurtici_username,
             "password": self.yurtici_password,
-            'user_language': self.yurtici_user_lang,
+            "user_language": self.yurtici_user_lang,
         }
         return credentials
 
     def _yurtici_address(self, partner):
-        """Sender address is the address of the company, required field.
-        """
+        """Sender address is the address of the company, required field."""
         return partner._display_address()
 
-    def _yurtici_phone_number(self, partner, priority='mobile'):
+    def _yurtici_phone_number(self, partner, priority="mobile"):
         """
         Yurtici requires phone number without spaces and country code.
         We use priority selector to handle two different phone numbers.
@@ -60,28 +65,37 @@ class DeliveryCarrier(models.Model):
         if priority_field:
             return phonenumbers.format_number(
                 phonenumbers.parse(priority_field, partner.country_id.code or "TR"),
-                phonenumbers.PhoneNumberFormat.E164).lstrip('+9')
+                phonenumbers.PhoneNumberFormat.E164,
+            ).lstrip("+9")
         elif partner.phone or partner.mobile:
             return phonenumbers.format_number(
-                phonenumbers.parse(partner.phone or partner.mobile, partner.country_id.code or "TR"),
-                phonenumbers.PhoneNumberFormat.E164).lstrip('+9')
+                phonenumbers.parse(
+                    partner.phone or partner.mobile, partner.country_id.code or "TR"
+                ),
+                phonenumbers.PhoneNumberFormat.E164,
+            ).lstrip("+9")
         else:
-            raise ValidationError(_("%s\nPartner's phone number is missing."
-                                    " It's a required field for dispatch."
-                                    % partner.name))
+            raise ValidationError(
+                _(
+                    f"{partner.name}\nPartner's phone number is missing."
+                    " It's a required field for dispatch."
+                )
+            )
 
     def _prepare_yurtici_pack_info(self, picking):
         """Prepare pack info for Yurtiçi, no need to send deci and kg fields.
-         They are calculated by Yurtiçi Kargo."""
+        They are calculated by Yurtiçi Kargo."""
         if picking.carrier_package_count < 1:
-            raise ValidationError(_("%s\nPackage count must be greater than 0.") % picking.name)
+            raise ValidationError(
+                _("%s\nPackage count must be greater than 0.") % picking.name
+            )
 
         # TODO: implement stock.quant.package
 
         vals = {
-            'desi': 1,
-            'kg': 1,
-            'cargoCount': picking.carrier_package_count,
+            "desi": 1,
+            "kg": 1,
+            "cargoCount": picking.carrier_package_count,
         }
         return vals
 
@@ -101,8 +115,12 @@ class DeliveryCarrier(models.Model):
                 "invoiceKey": picking.name,  # TODO: implement invoice key
                 "receiverCustName": picking.partner_id.display_name,
                 "receiverAddress": self._yurtici_address(picking.partner_id),
-                "receiverPhone1": self._yurtici_phone_number(picking.partner_id, priority='mobile'),
-                "receiverPhone2": self._yurtici_phone_number(picking.partner_id, priority='phone'),
+                "receiverPhone1": self._yurtici_phone_number(
+                    picking.partner_id, priority="mobile"
+                ),
+                "receiverPhone2": self._yurtici_phone_number(
+                    picking.partner_id, priority="phone"
+                ),
                 "cityName": picking.partner_id.state_id.name,
                 "townName": picking.partner_id.district_id.name,
                 "waybillNo": picking.name,  # TODO: implement waybill number
@@ -171,12 +189,21 @@ class DeliveryCarrier(models.Model):
         """
         yurtici_request = YurticiRequest(**self._get_yurtici_credentials())
         for picking in pickings.filtered("carrier_tracking_ref"):
+            if hasattr(
+                self, f"{self.delivery_type}_tracking_state_update"
+            ):  # check state before cancel
+                getattr(self, f"{self.delivery_type}_tracking_state_update")(picking)
 
-            if hasattr(self, '%s_tracking_state_update' % self.delivery_type):  # check state before cancel
-                getattr(self, '%s_tracking_state_update' % self.delivery_type)(picking)
-
-            if picking.delivery_state not in ['shipping_recorded_in_carrier', 'canceled_shipment']:
-                raise ValidationError(_("You can't cancel a shipment that already has been sent to Yurtiçi"))
+            if picking.delivery_state not in [
+                "shipping_recorded_in_carrier",
+                "canceled_shipment",
+            ]:
+                raise ValidationError(
+                    _(
+                        """You can't cancel a shipment that
+                        already has been sent to Yurtiçi"""
+                    )
+                )
 
             try:
                 yurtici_request._cancel_shipment(picking.carrier_tracking_ref)
@@ -211,9 +238,9 @@ class DeliveryCarrier(models.Model):
             return False
 
         vals = {
-                "tracking_state": response.operationMessage,
-                "delivery_state": YURTICI_OPERATION_CODES[response.operationCode][1],
-            }
+            "tracking_state": response.operationMessage,
+            "delivery_state": YURTICI_OPERATION_CODES[response.operationCode][1],
+        }
 
         if response.operationCode != 0 and response.shippingDeliveryItemDetailVO:
             vals.update(self._yurtici_update_picking_fields(response))
@@ -222,29 +249,45 @@ class DeliveryCarrier(models.Model):
         return True
 
     def _yurtici_update_picking_fields(self, response):
-
         vals = {
-            'shipping_number': response.shippingDeliveryItemDetailVO.docId,
+            "shipping_number": response.shippingDeliveryItemDetailVO.docId,
         }
 
         if len(response.shippingDeliveryItemDetailVO.invDocCargoVOArray) > 0:
             text = ""
             for line in response.shippingDeliveryItemDetailVO.invDocCargoVOArray:
-                text += "[%s] [%s] %s\n" % (line.eventDate, line.unitName, line.eventName)
+                text += f"[{line.eventDate}] [{line.unitName}] {line.eventName}\n"
             vals.update({"tracking_state_history": text})
 
         if response.shippingDeliveryItemDetailVO:
-            vals.update({
-                'carrier_total_deci': float(response.shippingDeliveryItemDetailVO.totalDesiKg),
-                'carrier_shipping_cost': float(response.shippingDeliveryItemDetailVO.totalPrice),
-                'carrier_shipping_vat': float(response.shippingDeliveryItemDetailVO.totalVat),
-                'carrier_shipping_total': float(response.shippingDeliveryItemDetailVO.totalAmount),
-            })
+            vals.update(
+                {
+                    "carrier_total_deci": float(
+                        response.shippingDeliveryItemDetailVO.totalDesiKg
+                    ),
+                    "carrier_shipping_cost": float(
+                        response.shippingDeliveryItemDetailVO.totalPrice
+                    ),
+                    "carrier_shipping_vat": float(
+                        response.shippingDeliveryItemDetailVO.totalVat
+                    ),
+                    "carrier_shipping_total": float(
+                        response.shippingDeliveryItemDetailVO.totalAmount
+                    ),
+                }
+            )
 
         if response.operationCode == 5:  # Delivered
-            vals.update({'carrier_received_by': response.shippingDeliveryItemDetailVO.receiverInfo,
-                         'date_delivered': datetime.strptime(response.shippingDeliveryItemDetailVO.deliveryDate,
-                                                             '%Y%m%d')})
+            vals.update(
+                {
+                    "carrier_received_by": (
+                        response.shippingDeliveryItemDetailVO.receiverInfo
+                    ),
+                    "date_delivered": datetime.strptime(
+                        response.shippingDeliveryItemDetailVO.deliveryDate, "%Y%m%d"
+                    ),
+                }
+            )
 
         return vals
 
@@ -254,9 +297,7 @@ class DeliveryCarrier(models.Model):
         They are not implemented common label on their systems.
         """
         raise NotImplementedError(
-            _(
-                "Yurtiçi API doesn't provide methods to print label."
-            )
+            _("Yurtiçi API doesn't provide methods to print label.")
         )
 
     def yurtici_rate_shipment(self, order):
