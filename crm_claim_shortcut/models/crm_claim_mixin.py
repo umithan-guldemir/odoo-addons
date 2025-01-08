@@ -4,7 +4,7 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import models, api, fields
+from odoo import api, fields, models
 
 
 class CRMClaimMapping(models.AbstractModel):
@@ -48,7 +48,7 @@ class CRMClaimMapping(models.AbstractModel):
         return action
 
     def _prepare_claim_context(self):
-        vals = {"default_model_ref_id": "%s,%s" % (self._name, self.id)}
+        vals = {"default_model_ref_id": "{self._name},{self.id}"}
 
         if self._name == "sale.order":
             sale_order = self

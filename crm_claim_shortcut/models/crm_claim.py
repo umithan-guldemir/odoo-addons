@@ -4,7 +4,8 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, models, fields
+from odoo import fields, models
+
 from odoo.addons.crm_claim.models.crm_claim import APPLICABLE_MODELS
 
 APPLICABLE_MODELS.append("stock.picking")  # Add stock.picking to model_ref_id
@@ -17,7 +18,7 @@ class CRMClaim(models.Model):
     carrier_id = fields.Many2one("delivery.carrier", string="Carrier")
 
     def create(self, vals):
-        res = super(CRMClaim, self).create(vals)
+        res = super().create(vals)
         for rec in res.filtered(lambda x: x.model_ref_id):
             rec.model_ref_id.crm_claim_ids = [(4, rec.id)]
         return res
@@ -25,4 +26,4 @@ class CRMClaim(models.Model):
     def unlink(self):
         for rec in self:
             rec.model_ref_id.crm_claim_ids = [(3, rec.id)]
-        return super(CRMClaim, self).unlink()
+        return super().unlink()
