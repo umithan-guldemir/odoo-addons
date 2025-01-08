@@ -7,7 +7,7 @@
 
 import requests
 
-from odoo import api, models
+from odoo import models
 from odoo.exceptions import ValidationError
 
 VERIMOR_SEND_SMS_ENDPOINT = "http://sms.verimor.com.tr/v2/send.json"
@@ -30,6 +30,7 @@ class SmsApi(models.AbstractModel):
             VERIMOR_SEND_SMS_ENDPOINT,
             json=self._prepare_verimor_http_params(account, number, message),
             headers={"Content-Type": "application/json"},
+            timeout=10,
         )
         response = r.text
         if r.status_code != 200:
@@ -44,6 +45,7 @@ class SmsApi(models.AbstractModel):
                 "username": account.sms_verimor_http_username,
                 "password": account.sms_verimor_http_password,
             },
+            timeout=10,
         )
         response = r.text
         if r.status_code != 200:
@@ -66,10 +68,6 @@ class SmsApi(models.AbstractModel):
         result = []
         for message in messages:
             try:
-                number = message["number"]
-                content = message["content"]
-                # Send each SMS individually
-                response = self._send_sms_with_verimor_http(account, [number], content)
                 result.append(
                     {
                         "res_id": message["res_id"],

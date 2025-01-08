@@ -4,8 +4,8 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import fields, models, api, _
-from odoo.exceptions import Warning
+from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 
 class IapAccount(models.Model):
@@ -37,15 +37,14 @@ class IapAccount(models.Model):
             return "sms"
 
     def get_verimor_sms_balance(self):
-
         if not self or not (
             self.sms_verimor_http_username and self.sms_verimor_http_password
         ):
-            raise Warning(_("You need to save your Verimor account first."))
+            raise UserError(_("You need to save your Verimor account first."))
 
         SmsAPI = self.env["sms.api"]
         balance = SmsAPI._get_balance_verimor_sms_api(account=self)
-        raise Warning(balance)
+        raise UserError(balance)
 
     @property
     def _server_env_fields(self):
