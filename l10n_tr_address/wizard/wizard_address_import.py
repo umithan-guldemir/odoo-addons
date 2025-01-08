@@ -1,9 +1,11 @@
-from odoo import models, fields, api, _
-from unicode_tr import unicode_tr
-import tempfile
 import binascii
-import openpyxl
 import logging
+import tempfile
+
+import openpyxl
+from unicode_tr import unicode_tr
+
+from odoo import _, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -14,8 +16,9 @@ class WizardAddressImport(models.TransientModel):
 
     xls_file = fields.Binary("Upload XLS File")
 
-    def import_excel(self):  # TODO: bu fonksiyon biraz yavas calisiyor daha iyisi yapilabilir
-
+    def import_excel(
+        self,
+    ):  # TODO: bu fonksiyon biraz yavas calisiyor daha iyisi yapilabilir
         fp = tempfile.NamedTemporaryFile(suffix=".xlsx")
         fp.write(binascii.a2b_base64(self.xls_file))
         fp.seek(0)
@@ -30,7 +33,6 @@ class WizardAddressImport(models.TransientModel):
 
         for row in sheet.iter_rows(2, sheet.max_row):
             try:
-
                 prepared_row = {
                     "state": unicode_tr(row[0].value.rstrip()).title(),
                     "district": unicode_tr(row[1].value.rstrip()).title(),
@@ -98,17 +100,18 @@ class WizardAddressImport(models.TransientModel):
                         }
                     )
 
-                    _logger.debug('Imported: %s - %s' % (
-                        prepared_row["state"],
-                        prepared_row["neighbour"])
-                                  )
-                self.env.cr.commit()
+                    _logger.debug(
+                        f"Imported: {prepared_row['state']} "
+                        f"- {prepared_row['neighbour']}"
+                    )
+                self.env.cr.commit()  # pylint: disable=E8102
             except Exception as e:
-                _logger.error("Import Error !!! %s " % (str(e)))
+                _logger.error(_("Import Error !!! %(exc)s ", exc=e))
 
     # def turkish_title(self, word):
     #     """
-    #     Turkce harfleri python'da kucuk harfe cevirirken ozellikle 'I' harfinde yasadigimiz problemi gidermek icin.
+    #     Turkce harfleri python'da kucuk harfe cevirirken ozellikle
+    #     'I' harfinde yasadigimiz problemi gidermek icin.
     #     https://stackoverflow.com/questions/19703106/python-and-turkish-capitalization
     #     """
     #
@@ -118,7 +121,6 @@ class WizardAddressImport(models.TransientModel):
     #     return word.title()
 
     def format_neighbourhood(self, neighbourhood):
-
         neighbourhood = unicode_tr(neighbourhood).title()
         if " Mah" in neighbourhood:
             neighbourhood = neighbourhood.replace(" Mah", " Mah.")

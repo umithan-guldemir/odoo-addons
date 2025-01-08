@@ -5,8 +5,8 @@
     "version": "16.0.0.1.0",
     "category": "Accounting/Payment Providers",
     "license": "LGPL-3",
-    "website": "https://github.com/odoo-turkey",
-    "author": "Ahmet Yiğit Budak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Ahmet Yiğit Budak, Altinkaya Enclosures",
     "summary": "Garanti BBVA Sanal POS, internet üzerinden yapılan satışlarda"
     " kredi kartı ile ödeme alınabilmesi için oluşturulan güvenli"
     " bir ödeme çözümüdür.",

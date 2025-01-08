@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
         <!-- Competitors -->
         <record id="view_res_competitor_tree" model="ir.ui.view">
@@ -6,11 +6,11 @@
             <field name="model">res.competitor</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
-                    <field name="website_url"/>
-                    <field name="last_crawled"/>
-                    <field name="crawled_url_count"/>
-                    <field name="crawling_active"/>
+                    <field name="name" />
+                    <field name="website_url" />
+                    <field name="last_crawled" />
+                    <field name="crawled_url_count" />
+                    <field name="crawling_active" />
 
 
                 </tree>
@@ -22,32 +22,38 @@
             <field name="arch" type="xml">
                 <form string="Competitor">
                     <header>
-                        <button string="Crawl Competitor" name="do_crawling"
-                                type="object"
-                                attrs="{'invisible':[('crawling_active','=',False)]}"
-                                class="oe_highlight"/>
+                        <button
+            string="Crawl Competitor"
+            name="do_crawling"
+            type="object"
+            attrs="{'invisible':[('crawling_active','=',False)]}"
+            class="oe_highlight"
+          />
                     </header>
                     <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" type="object"
-                                name="action_open_crawled_urls"
-                                icon="fa-tasks"
-                                attrs="{'invisible': [('crawling_active', '=', False)]}">
+                        <button
+              class="oe_stat_button"
+              type="object"
+              name="action_open_crawled_urls"
+              icon="fa-tasks"
+              attrs="{'invisible': [('crawling_active', '=', False)]}"
+            >
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value">
-                                    <field name="crawled_url_count"/>
+                                    <field name="crawled_url_count" />
                                 </span>
                                 <span class="o_stat_text">Crawled URL(s)</span>
                             </div>
                         </button>
                     </div>
                         <group col="4">
-                            <field name="name"/>
-                            <field name="website_url"/>
-                            <field name="crawler_proxy_id"/>
-                            <field name="crawling_active"/>
-                            <field name="crawled_url_count"/>
-                            <field name="last_crawled"/>
+                            <field name="name" />
+                            <field name="website_url" />
+                            <field name="crawler_proxy_id" />
+                            <field name="crawling_active" />
+                            <field name="crawled_url_count" />
+                            <field name="last_crawled" />
                         </group>
                     </sheet>
                 </form>

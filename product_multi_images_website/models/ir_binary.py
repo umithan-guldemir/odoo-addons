@@ -1,6 +1,10 @@
 # Copyright 2024 Ahmet Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, tools
+import logging
+
+from odoo import models
+
+_logger = logging.getLogger(__name__)
 
 
 class IrBinary(models.AbstractModel):
@@ -40,9 +44,13 @@ class IrBinary(models.AbstractModel):
             try:
                 field_name = image_mapping[field_name]
             except KeyError:
-                pass
+                _logger.warning(
+                    "Image field %s not found in image_mapping. "
+                    "Please add it to the mapping.",
+                    field_name,
+                )
 
-        return super(IrBinary, self)._get_stream_from(
+        return super()._get_stream_from(
             record=record,
             field_name=field_name,
             filename=filename,

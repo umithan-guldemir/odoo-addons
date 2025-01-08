@@ -1,8 +1,9 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
 from usp.tree import sitemap_tree_for_homepage
 from usp.web_client.requests_client import RequestsWebClient
+
+from odoo import api, fields, models
 
 
 class ResCompetitor(models.Model):
@@ -18,15 +19,14 @@ class ResCompetitor(models.Model):
         for rec in self:
             rec.crawled_url_count = len(rec.crawled_urls)
 
-    name = fields.Char(string="Name")
-    use_proxy = fields.Boolean(string="Use Proxy", default=False)
+    name = fields.Char()
+    use_proxy = fields.Boolean(default=False)
     website_url = fields.Char(
         string="Website URL",
         required=True,
         help="Example: https://www.example.com",
     )
     crawling_active = fields.Boolean(
-        string="Crawling Active",
         default=False,
     )
     crawled_urls = fields.One2many(
@@ -40,7 +40,6 @@ class ResCompetitor(models.Model):
         store=True,
     )
     last_crawled = fields.Date(
-        string="Last Crawled",
         readonly=True,
     )
     crawler_proxy_id = fields.Many2one(
@@ -48,7 +47,6 @@ class ResCompetitor(models.Model):
         comodel_name="res.competitor.proxy",
     )
 
-    @api.multi
     def unlink(self):
         """
         Delete all related records when competitor is deleted
@@ -56,7 +54,7 @@ class ResCompetitor(models.Model):
         """
         for rec in self:
             rec.crawled_urls.unlink()
-        return super(ResCompetitor, self).unlink()
+        return super().unlink()
 
     @api.model
     def run_crawl_competitors(self, domain=None):

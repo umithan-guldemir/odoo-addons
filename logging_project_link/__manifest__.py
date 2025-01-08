@@ -3,11 +3,11 @@
 {
     "name": "Logging Project Link",
     "summary": "Provides linking logging with project with a button.",
-    "author": "Samet Altuntaş, Odoo Turkey Localization Group",
-    "website": "https://github.com/odoo-turkey/utility-addons",
+    "author": "Samet Altuntaş, Odoo Turkey Localization Group, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "AGPL-3",
     "category": "",
-    "version": "12.0.0.1.0",
+    "version": "16.0.0.1.0",
     "depends": ["project"],
     "data": [
         "views/ir_logging_views.xml",

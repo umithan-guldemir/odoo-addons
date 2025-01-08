@@ -1,10 +1,18 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, tools
+from odoo import api, fields, models, tools
 
 
 class BaseMultiImageImage(models.AbstractModel):
     _inherit = "base_multi_image.image"
+
+    is_published = fields.Boolean(
+        string="Is published",
+        default=True,
+        help="If you leave it empty, all variants will show this image. "
+        "Selecting one or several of the available variants, you "
+        "restrict the availability of the image to those variants.",
+    )
 
     image_1920 = fields.Image(
         string="1920", related="image_main", max_width=1920, max_height=1920

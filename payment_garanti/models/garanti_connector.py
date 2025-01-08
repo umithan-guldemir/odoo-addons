@@ -1,15 +1,18 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from lxml import etree
-from bs4 import BeautifulSoup
-from hashlib import sha1
-from odoo.exceptions import ValidationError
-from odoo.addons.payment_garanti.const import PROVISION_URL
-from odoo import _
-import requests
-import time
 import re
+import time
+from hashlib import sha1
+
+import requests
+from bs4 import BeautifulSoup
+from lxml import etree
+
+from odoo import _
+from odoo.exceptions import ValidationError
+
+from ..const import PROVISION_URL
 
 
 class GarantiConnector:
@@ -56,17 +59,12 @@ class GarantiConnector:
 
         def _serialize_request(request):
             return _anonymize_sensitive_data(
-                "Request: %s %s\n%s\n\n"
-                % (
-                    request.method,
-                    request.url,
-                    request.body,
-                )
+                f"Request: {request.method} {request.url}\n{request.body}\n\n"
             )
 
         def _serialize_response(resp):
             return _anonymize_sensitive_data(
-                "Response: %s\n%s\n\n" % (resp.status_code, resp.text)
+                f"Response: {resp.status_code}\n{resp.text}\n\n"
             )
 
         self.provider.log_xml(_serialize_request(response.request), "garanti_request")
@@ -83,7 +81,7 @@ class GarantiConnector:
                 method=method,
                 url=url,
                 timeout=self.timeout,
-                *args,
+                *args,  # noqa: B026
                 **kwargs,
             )
             self._process_http_request(response)
@@ -135,7 +133,7 @@ class GarantiConnector:
             )
             return self._garanti_parse_response_html(resp)
         except requests.RequestException:
-            raise ValidationError(_("Payment Error. Please contact us."))
+            raise ValidationError(_("Payment Error. Please contact us."))  # noqa: B904
 
     def _garanti_compute_security_data(self):
         return (
@@ -188,10 +186,9 @@ class GarantiConnector:
             "card_number": card_args.get("card_number").replace(" ", ""),
             "card_cvv": card_args.get("card_cvv"),
             "card_name": card_args.get("card_name"),
-            "card_expire": "%s%s"
-            % (
-                card_args.get("card_valid_month").zfill(2),
-                card_args.get("card_valid_year")[2:],
+            "card_expire": (
+                f"{card_args.get("card_valid_month").zfill(2)}"
+                f"{card_args.get("card_valid_year")[2:]}"
             ),
             "oid": self.reference,
             "txntype": "sales",
@@ -274,9 +271,9 @@ class GarantiConnector:
         etree.SubElement(terminal, "ProvUserID").text = self.notification_data.get(
             "terminalprovuserid"
         )
-        etree.SubElement(terminal, "HashData").text = (
-            self._garanti_compute_callback_hash_data()
-        )
+        etree.SubElement(
+            terminal, "HashData"
+        ).text = self._garanti_compute_callback_hash_data()
         etree.SubElement(terminal, "UserID").text = self.notification_data.get(
             "terminaluserid"
         )
@@ -360,9 +357,9 @@ class GarantiConnector:
         etree.SubElement(transaction, "Type").text = self.notification_data.get(
             "txntype"
         )
-        etree.SubElement(transaction, "InstallmentCnt").text = (
-            self.notification_data.get("txninstallmentcount")
-        )
+        etree.SubElement(
+            transaction, "InstallmentCnt"
+        ).text = self.notification_data.get("txninstallmentcount")
         etree.SubElement(transaction, "Amount").text = self.notification_data.get(
             "txnamount"
         )
@@ -375,12 +372,12 @@ class GarantiConnector:
         etree.SubElement(transaction, "MotoInd").text = "N"
         if not self.notification_data.get("non_3ds"):
             secure3d = etree.SubElement(transaction, "Secure3D")
-            etree.SubElement(secure3d, "AuthenticationCode").text = (
-                self.notification_data.get("cavv")
-            )
-            etree.SubElement(secure3d, "SecurityLevel").text = (
-                self.notification_data.get("eci")
-            )
+            etree.SubElement(
+                secure3d, "AuthenticationCode"
+            ).text = self.notification_data.get("cavv")
+            etree.SubElement(
+                secure3d, "SecurityLevel"
+            ).text = self.notification_data.get("eci")
             etree.SubElement(secure3d, "TxnID").text = self.notification_data.get("xid")
             etree.SubElement(secure3d, "Md").text = self.notification_data.get("md")
         return True
@@ -423,15 +420,18 @@ class GarantiConnector:
                 "POST", PROVISION_URL, data=xml_data.decode("utf-8")
             )
         except requests.RequestException:
-            raise ValidationError(_("Payment Error. Please contact us."))
+            raise ValidationError(_("Payment Error. Please contact us."))  # noqa: B904
 
         try:
             root = etree.fromstring(resp.content)
             reason_code = root.find(".//Transaction/Response/ReasonCode").text
             message = root.find(".//Transaction/Response/Message").text
             if reason_code != "00" or message != "Approved":
-                return f"{reason_code}: {root.find('.//Transaction/Response/ErrorMsg').text}"
+                return (
+                    f"{reason_code}: "
+                    f"{root.find('.//Transaction/Response/ErrorMsg').text}"
+                )
             else:
                 return message
         except Exception:  # pylint: disable=broad-except
-            raise ValidationError(_("Payment Error. Please contact us."))
+            raise ValidationError(_("Payment Error. Please contact us."))  # noqa: B904

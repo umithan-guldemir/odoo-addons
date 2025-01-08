@@ -1,12 +1,14 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import models, fields, _
-from odoo.tools import float_is_zero
-from odoo.exceptions import ValidationError
-from io import BytesIO
-from base64 import b64encode
-import xlsxwriter
 import itertools
+from base64 import b64encode
+from io import BytesIO
+
+import xlsxwriter
+
+from odoo import _, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools import float_is_zero
 
 
 class ProductPricelistExportWiz(models.TransientModel):
@@ -88,7 +90,7 @@ class ProductPricelistExportWiz(models.TransientModel):
                 "datas": fl_b64,
             }
         )
-        download_url = "/web/content/%s?download=true" % attachment_id.id
+        download_url = f"/web/content/{attachment_id.id}?download=true"
         return {
             "type": "ir.actions.act_url",
             "url": base_url + download_url,
