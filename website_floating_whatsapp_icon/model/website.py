@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #############################################################################
 #
 #    Cybrosys Technologies Pvt. Ltd.
@@ -24,6 +23,6 @@ from odoo import fields, models
 
 
 class Website(models.Model):
-    _inherit = 'website'
+    _inherit = "website"
 
-    mobile_number = fields.Char(string='Mobile Number', translate=True)
+    mobile_number = fields.Char(translate=True)

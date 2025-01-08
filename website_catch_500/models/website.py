@@ -1,13 +1,13 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
-from odoo import models, fields
-from urllib.parse import urlparse, urlunparse
+
+from odoo import fields, models
 
 
 class Website(models.Model):
     _inherit = "website"
 
-    catch_500_errors = fields.Boolean(string="Catch 500 Errors")
+    catch_500_errors = fields.Boolean()
     catched_500_errors = fields.One2many(
         comodel_name="website.500.errors",
         inverse_name="website_id",
@@ -16,7 +16,7 @@ class Website(models.Model):
 
     def _catch_500_error(self, request):
         url = request.url
-        form_data_str = "\n".join("%s: %s" % (k,v) for k,v in dict(request.form).items())
+        form_data_str = "\n".join(f"{k}: {v}" for k, v in dict(request.form).items())
         request_method = request.method
         website_id = self.id
         error = (
@@ -43,5 +43,5 @@ class Website(models.Model):
                     "form_data": form_data_str or "",
                 }
             )
-        self.env.cr.commit()
+        self.env.cr.commit()  # pylint: disable=E8102
         return True

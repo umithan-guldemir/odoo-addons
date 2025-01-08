@@ -8,7 +8,7 @@ $o-partner-org-chart-entry-border-color: darken($o-partner-org-chart-bg, 25%) !d
 
 // MIXINS
 @mixin o-partner-org-chart-line {
-    content: '';
-    background-color: $o-partner-org-chart-bg;
-    border: 0px solid $o-partner-org-chart-entry-border-color;
+  content: "";
+  background-color: $o-partner-org-chart-bg;
+  border: 0px solid $o-partner-org-chart-entry-border-color;
 }
