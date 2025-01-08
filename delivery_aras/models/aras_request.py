@@ -4,15 +4,17 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-import logging
 import json
+import logging
 import os
 from urllib.parse import urlparse
+from xml.etree import ElementTree as ET
+
 from zeep import Client, Settings
 from zeep.exceptions import Fault
-from zeep.transports import Transport
 from zeep.plugins import HistoryPlugin
-from xml.etree import ElementTree as ET
+from zeep.transports import Transport
+
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -45,13 +47,13 @@ class LocalSchemaTransport(Transport):
 
         scheme = urlparse(url).scheme
         if scheme in ("http", "https", "file"):
-
             if self.cache:
                 response = self.cache.get(url)
                 if response:
                     return bytes(response)
 
-            # this url was causing some issues (404 errors); it is now saved locally for fast retrieval when needed
+            # this url was causing some issues (404 errors);
+            # it is now saved locally for fast retrieval when needed
             if url == "http://schemas.xmlsoap.org/soap/encoding/":
                 base_dir = os.path.dirname(os.path.realpath(__file__))
                 # Save soap-encodings.xml locally in the same directory as the script.
@@ -118,17 +120,13 @@ class ArasRequest:
             error = ET.fromstring(fault)
             error_code = error.find("faultcode").text
             error_message = error.find("faultstring").text
-            raise ValidationError(
-                _("Error %s: %s") % (error_code, error_message)
-            ) from fault
+            raise ValidationError(_(f"Error {error_code}: {error_message}")) from fault
 
-        if type(response) == list:
+        if type(response) is list:
             response = response[0]
 
         if response.ResultCode != "0":
-            raise ValidationError(
-                "%s: %s" % (response.ResultCode, response.ResultMessage)
-            )
+            raise ValidationError(f"{response.ResultCode}: {response.ResultMessage}")
 
         return response
 
@@ -181,19 +179,15 @@ class ArasRequest:
         :returns: Aras queryInfo object
         """
         vals = {
-            "loginInfo": """<LoginInfo>
-                    <UserName>{}</UserName>
-                    <Password>{}</Password>
-                    <CustomerCode>{}</CustomerCode>
-                </LoginInfo>""".format(
-                self.query_username, self.query_password, self.customer_code
-            ),
-            "queryInfo": """<QueryInfo>
+            "loginInfo": f"""<LoginInfo>
+                    <UserName>{self.query_username}</UserName>
+                    <Password>{self.query_password}</Password>
+                    <CustomerCode>{self.customer_code}</CustomerCode>
+                </LoginInfo>""",
+            "queryInfo": f"""<QueryInfo>
                     <QueryType>1</QueryType>
-                    <IntegrationCode>{}</IntegrationCode>
-                </QueryInfo>""".format(
-                picking.carrier_tracking_ref
-            ),
+                    <IntegrationCode>{picking.carrier_tracking_ref}</IntegrationCode>
+                </QueryInfo>""",
         }
         response = self._query_process_reply(
             self.query_client.service.GetQueryJSON, vals

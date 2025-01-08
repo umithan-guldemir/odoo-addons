@@ -4,12 +4,15 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-import phonenumbers
-from odoo import _, fields, models, api
-from odoo.exceptions import ValidationError
-from .aras_request import ArasRequest
-from lxml import etree
 from datetime import datetime
+
+import phonenumbers
+from lxml import etree
+
+from odoo import _, fields, models
+from odoo.exceptions import ValidationError
+
+from .aras_request import ArasRequest
 
 ARAS_OPERATION_CODES = {
     1: ("Çıkış Şubesinde", "in_transit"),
@@ -27,7 +30,7 @@ class DeliveryCarrier(models.Model):
     delivery_type = fields.Selection(
         selection_add=[("aras", "Aras Kargo")],
         ondelete={"aras": "cascade"},
-        )
+    )
 
     aras_username = fields.Char(string="Username", help="Aras Username")
     aras_password = fields.Char(string="Password", help="Aras Password")
@@ -80,24 +83,24 @@ class DeliveryCarrier(models.Model):
         else:
             raise ValidationError(
                 _(
-                    "%s\nPartner's phone number is missing."
-                    " It's a required field for dispatch." % partner.name
+                    f"{partner.name}\nPartner's phone number is missing."
+                    " It's a required field for dispatch."
                 )
             )
 
     def _prepare_aras_piece_details(self, picking):
         """It's required to write down product barcodes for Piece Detail"""
+        # This is a bit tricky, we need a unique barcode for
+        # each package, so we can use the same method as we use
+        # for the integration code.
         self.ensure_one()
-        piece_details = []
-        for _ in range(max(picking.carrier_package_count, 1)):
-            piece_details.append(
-                {
-                    # This is a bit tricky, we need a unique barcode for
-                    # each package, so we can use the same method as we use
-                    # for the integration code.
-                    "BarcodeNumber": self._get_ref_number(),
-                }
-            )
+        # Calculate the number of packages only once
+        num_packages = max(picking.carrier_package_count, 1)
+        # Use list comprehension to build the piece_details list
+        piece_details = [
+            {"BarcodeNumber": self._get_ref_number()} for _ in range(num_packages)
+        ]
+
         return {"PieceDetail": piece_details}
 
     def _prepare_aras_shipping(self, picking):
@@ -199,9 +202,9 @@ class DeliveryCarrier(models.Model):
         aras_request = ArasRequest(**self._get_aras_credentials())
         for picking in pickings.filtered("carrier_tracking_ref"):
             if hasattr(
-                self, "%s_tracking_state_update" % self.delivery_type
+                self, f"{self.delivery_type}_tracking_state_update"
             ):  # check state before cancel
-                getattr(self, "%s_tracking_state_update" % self.delivery_type)(picking)
+                getattr(self, f"{self.delivery_type}_tracking_state_update")(picking)
 
             if picking.delivery_state not in [
                 "shipping_recorded_in_carrier",
@@ -209,7 +212,8 @@ class DeliveryCarrier(models.Model):
             ]:
                 raise ValidationError(
                     _(
-                        "You can't cancel a shipment that already has been sent to Aras Kargo"
+                        """You can't cancel a shipment that
+                        already has been sent to Aras Kargo"""
                     )
                 )
 
@@ -223,10 +227,8 @@ class DeliveryCarrier(models.Model):
 
     def aras_get_tracking_link(self, picking):
         """Provide tracking link for the customer"""
-        return (
-            "https://kargotakip.araskargo.com.tr/mainpage.aspx?code=%s"
-            % picking.shipping_number
-        )
+        return f"""https://kargotakip.araskargo.com.tr
+            /mainpage.aspx?code={picking.carrier_tracking_ref}"""
 
     def aras_tracking_state_update(self, picking):
         """Tracking state update"""
@@ -249,12 +251,9 @@ class DeliveryCarrier(models.Model):
             response = response[-1]
 
         vals = {
-            "tracking_state": "%s - %s - %s"
-            % (
-                response["DURUMU"],
-                response["DURUM_EN"],
-                response.get("IADE_SEBEBI", ""),
-            ),
+            "tracking_state": f"""{response['DURUMU']} -
+            {response['DURUM_EN']} -
+            {response.get('IADE_SEBEBI', '')}""",
             "delivery_state": ARAS_OPERATION_CODES[int(response["DURUM_KODU"])][1],
             "shipping_number": response["KARGO_TAKIP_NO"],
             "carrier_shipping_cost": float(response["TUTAR"]),
@@ -273,7 +272,7 @@ class DeliveryCarrier(models.Model):
     def _aras_update_tracking_history(self, picking, response, vals):
         """Update tracking history"""
         self.ensure_one()
-        new_state = "%s - %s" % (response["ISLEM_TARIHI"], vals["tracking_state"])
+        new_state = f"{response['ISLEM_TARIHI']} - {vals['tracking_state']}"
         if not picking.tracking_state_history:
             vals["tracking_state_history"] = new_state
         else:
