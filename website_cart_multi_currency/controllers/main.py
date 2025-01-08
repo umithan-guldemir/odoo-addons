@@ -1,7 +1,8 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo.addons.website_sale_delivery.controllers.main import WebsiteSaleDelivery
 from odoo.http import request
+
+from odoo.addons.website_sale_delivery.controllers.main import WebsiteSaleDelivery
 
 
 class WebsiteSaleDeliveryInherit(WebsiteSaleDelivery):

@@ -3,12 +3,9 @@
 {
     "name": "Cron in Seconds",
     "summary": "Run cron jobs in seconds",
-    "description": """
-    This module adds the ability to run cron jobs in seconds.
-    """,
     "version": "16.0.1.0.0",
-    "author": "Yiğit Budak",
-    "website": "https://github.com/yibudak",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
     "category": "Tools",
     "depends": [

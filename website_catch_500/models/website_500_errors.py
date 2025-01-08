@@ -1,7 +1,6 @@
 # Copyright 2024 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
-from odoo import models, api, fields
-from odoo.exceptions import ValidationError
+from odoo import fields, models
 
 
 class Website500Errors(models.Model):
@@ -20,13 +19,11 @@ class Website500Errors(models.Model):
             ("OPTIONS", "OPTIONS"),
             ("PATCH", "PATCH"),
         ],
-        string="Request Method",
     )
-    form_data = fields.Text(string="Form Data")
-    hit_count = fields.Integer(string="Hit Count")
+    form_data = fields.Text()
+    hit_count = fields.Integer()
     website_id = fields.Many2one(
         comodel_name="website",
         string="Website",
         ondelete="cascade",
     )
-

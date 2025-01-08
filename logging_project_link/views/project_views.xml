@@ -3,10 +3,10 @@
     <record id="task_type_edit_inherit" model="ir.ui.view">
         <field name="name">project.task.type.form.inherit</field>
         <field name="model">project.task.type</field>
-        <field name="inherit_id" ref="project.task_type_edit"/>
+        <field name="inherit_id" ref="project.task_type_edit" />
         <field name="arch" type="xml">
             <field name="mail_template_id" position="after">
-                <field name="default_log_save"/>
+                <field name="default_log_save" />
             </field>
         </field>
     </record>
@@ -14,10 +14,10 @@
     <record id="view_task_form2_inherit" model="ir.ui.view">
         <field name="name">view.task.form2.inherit</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
             <field name="user_id" position="after">
-                <field name="log_id"/>
+                <field name="log_id" />
             </field>
         </field>
     </record>

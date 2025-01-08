@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api
+from odoo import fields, models
 
 
 class SaleOrderLine(models.Model):
@@ -33,7 +33,7 @@ class SaleOrderLine(models.Model):
         to_explode_again_ids = self.env["sale.order.line"]
 
         for line in self.filtered(
-            lambda l: l.set_product and l.state in ["draft", "sent"]
+            lambda ln: ln.set_product and ln.state in ["draft", "sent"]
         ):
             # Avoid using self in this loop, we are passing context to lines
             if not (parent_id := line._context.get("set_parent_product_id", False)):
@@ -60,7 +60,7 @@ class SaleOrderLine(models.Model):
                     line.product_id, factor, picking_type=bom_id.picking_type_id
                 )
 
-                for bom_line, data in lines:
+                for _bom_line, data in lines:
                     product = data["target_product"]
                     sol = line.env["sale.order.line"].new()
                     sol.order_id = line.order_id
@@ -71,14 +71,12 @@ class SaleOrderLine(models.Model):
                     # sol.product_uom_change()
                     # sol._onchange_discount()
                     # sol._compute_amount()
-                    sol.name = product.with_context(
-                        {"lang": customer_lang}
-                    ).display_name
+                    sol.name = product.with_context(lang=customer_lang).display_name
                     vals = sol._convert_to_write(sol._cache)
                     existing_sol = sol.order_id.order_line.filtered(
-                        lambda l: l.id
-                        and l.product_id == sol.product_id
-                        and l.set_parent_product_id.id == parent_id
+                        lambda ln, sol=sol, parent_id=parent_id: ln.id
+                        and ln.product_id == sol.product_id
+                        and ln.set_parent_product_id.id == parent_id
                     )
                     if existing_sol:
                         existing_sol.write(
