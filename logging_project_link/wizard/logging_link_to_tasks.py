@@ -6,7 +6,7 @@ class LoggingLinker(models.TransientModel):
     _name = "logging.linker"
     _description = "Links a logging record to project easily with the help of a button"
 
-    task_title = fields.Char(string="Task Title", required=True)
+    task_title = fields.Char(required=True)
     assigned_to = fields.Many2one(
         comodel_name="res.users",
         string="Assigned to",
@@ -15,7 +15,7 @@ class LoggingLinker(models.TransientModel):
 
     @api.model
     def default_get(self, fields_list):
-        res = super(LoggingLinker, self).default_get(fields_list)
+        res = super().default_get(fields_list)
         ctx = self._context
         if ctx.get("active_model") == "ir.logging" and ctx.get("active_id"):
             res["log_id"] = ctx.get("active_id")

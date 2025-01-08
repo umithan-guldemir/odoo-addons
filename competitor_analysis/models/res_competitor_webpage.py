@@ -1,6 +1,6 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import models, fields, _
+from odoo import _, fields, models
 
 
 class ResCompetitorWebPage(models.Model):
@@ -16,7 +16,6 @@ class ResCompetitorWebPage(models.Model):
     ]
 
     name = fields.Char(
-        string="Name",
         help="Crawled web page URL",
     )
     competitor_id = fields.Many2one(
@@ -26,11 +25,9 @@ class ResCompetitorWebPage(models.Model):
         readonly=True,
     )
     first_seen = fields.Date(
-        string="First Seen",
         readonly=True,
     )
     last_seen = fields.Date(
-        string="Last Seen",
         readonly=True,
     )
 
@@ -42,5 +39,6 @@ class ResCompetitorWebPage(models.Model):
         res = []
         for rec in self:
             name = rec.name
-            res.append((rec.id, "%s%s" % (name[:50], "..." if len(name) > 50 else "")))
+
+            res.append((rec.id, f"{name[:50]}{'...' if len(name) > 50 else ''}"))
         return res

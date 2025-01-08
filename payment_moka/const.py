@@ -1,8 +1,8 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
-TEST_URL = 'https://service.refmoka.com'
-PROD_URL = 'https://service.moka.com'
+# flake8: noqa: E501
+TEST_URL = "https://service.refmoka.com"
+PROD_URL = "https://service.moka.com"
 
 MOKA_3D_ERRORS = {
     "000": "Genel Hata",

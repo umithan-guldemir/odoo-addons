@@ -1,11 +1,10 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, api, fields
-from odoo.tools import float_compare
+from odoo import api, models
 
 
 class ProductProduct(models.Model):
-    _inherit = 'product.product'
+    _inherit = "product.product"
 
     @api.multi
     def button_compute_quants_cost(self):
@@ -15,14 +14,13 @@ class ProductProduct(models.Model):
         :return: bool
         """
         for product in self:
-            quants = self.env['stock.quant'].search(
-                [('product_id', '=', product.id)]
-            )
+            quants = self.env["stock.quant"].search([("product_id", "=", product.id)])
             for quant in quants:
                 vals = quant._compute_quant_cost()
                 quant.write(vals)
         return True
 
+    # flake8: noqa: E501
     # @api.multi
     # def _set_standard_price(self, value):
     #     """

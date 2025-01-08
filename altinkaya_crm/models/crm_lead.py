@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class CRMLead(models.Model):
@@ -20,7 +20,6 @@ class CRMLead(models.Model):
         return [("id", "in", res.ids)]
 
     my_team_activity = fields.Boolean(
-        "My Team Activity",
         compute="_compute_my_team_activity",
         search="_search_my_team_activity",
         store=False,

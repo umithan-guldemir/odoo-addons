@@ -5,13 +5,13 @@
     "version": "16.0.0.1.0",
     "category": "Accounting/Payment Providers",
     "license": "LGPL-3",
-    "website": "https://github.com/odoo-turkey",
-    "author": "Yigit Budak",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yigit Budak, Altinkaya Enclosures",
     "sequence": 350,
     "summary": "ParamPOS is an online collection system that"
-               " enables payments to be received through"
-               " Virtual POS without the need to make"
-               " individual agreements with banks.",
+    " enables payments to be received through"
+    " Virtual POS without the need to make"
+    " individual agreements with banks.",
     "depends": ["payment"],
     "external_dependencies": {"python": ["phonenumbers", "zeep"]},
     "data": [

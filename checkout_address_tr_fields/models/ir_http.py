@@ -12,5 +12,5 @@ class IrHttp(models.AbstractModel):
         Add the module name to the list of modules to load translations for
         frontend translations. (javascript translations)
         """
-        mods = super(IrHttp, cls)._get_translation_frontend_modules_name()
+        mods = super()._get_translation_frontend_modules_name()
         return mods + ["checkout_address_tr_fields"]

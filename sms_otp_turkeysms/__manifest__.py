@@ -3,12 +3,9 @@
 {
     "name": "SMS OTP TurkeySMS",
     "summary": "Allow users to login with SMS OTP.",
-    "description": """
-    This module allows users to login with SMS OTP.
-    """,
     "version": "16.0.1.0.0",
-    "author": "Yiğit Budak",
-    "website": "https://github.com/odoo-turkey/integration",
+    "author": "Yiğit Budak, Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "license": "LGPL-3",
     "category": "Tools",
     "depends": [

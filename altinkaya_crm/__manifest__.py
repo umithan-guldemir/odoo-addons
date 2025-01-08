@@ -4,11 +4,10 @@
 {
     "name": "Altinkaya CRM Extension",
     "summary": "Adds tracking and conversion rates to orders.",
-    "description": "This is a CRM module made for Altinkaya.",
     "version": "16.0.1.0.0",
     "category": "General",
-    "website": "https://github.com/TrueYouface",
-    "author": "Yousef Sheta",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "Yousef Sheta, Altinkaya Enclosures",
     "license": "AGPL-3",
     "application": False,
     "installable": True,

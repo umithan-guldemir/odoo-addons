@@ -1,17 +1,16 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
 from urllib.parse import quote
+
+from odoo import api, fields, models
 
 
 class ResCompetitorProxy(models.Model):
     _name = "res.competitor.proxy"
     _description = "Competitor Analysis Proxy"
 
-    name = fields.Char(string="Name")
+    name = fields.Char()
     proxy_type = fields.Selection(
-        string="Proxy Type",
         selection=[
             ("http", "HTTP"),
             ("https", "HTTPS"),
@@ -21,11 +20,11 @@ class ResCompetitorProxy(models.Model):
         required=True,
         default="http",
     )
-    username = fields.Char(string="Username")
-    password = fields.Char(string="Password")
-    ip_address = fields.Char(string="IP Address", required=True)
-    port = fields.Integer(string="Port", required=True)
-    active = fields.Boolean(string="Active", default=True)
+    username = fields.Char()
+    password = fields.Char()
+    ip_address = fields.Char(required=True)
+    port = fields.Integer(required=True)
+    active = fields.Boolean(default=True)
     proxy_url = fields.Char(
         string="Proxy URL",
         compute="_compute_proxy_url",

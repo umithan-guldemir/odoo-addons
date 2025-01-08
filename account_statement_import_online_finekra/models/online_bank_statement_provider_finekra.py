@@ -1,12 +1,11 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import requests
 from datetime import datetime, timedelta
 
-import uuid
+import requests
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 FINEKRA_ENDPOINT = "https://test-api.finekra.com"
@@ -50,19 +49,22 @@ class OnlineBankStatementProviderFinekra(models.Model):
         :return:
         """
         headers = {
-            "Content-Type": "application/json;odata.metadata=minimal;odata.streaming=true",
-            "Authorization": "Bearer %s" % self.finekra_jwt_token,
+            "Content-Type": (
+                "application/json;odata.metadata=minimal;odata.streaming=true"
+            ),
+            "Authorization": f"Bearer {self.finekra_jwt_token}",
         }
-        response = requests.get(endpoint, params=data, headers=headers)
-        
+        response = requests.get(endpoint, params=data, headers=headers, timeout=10)
 
         if response.status_code == 200:
             return response.json()
         else:
-            for i in range(len(response.text)):
-                print(i)
-            print(response.text)
-            raise UserError(_(response))
+            raise UserError(
+                _(
+                    "Finekra API returned an error: %(resp_content)d",
+                    resp_content=response.content,
+                ),
+            )
 
     def _finekra_post_request(self, endpoint, data=None):
         """
@@ -72,10 +74,12 @@ class OnlineBankStatementProviderFinekra(models.Model):
         :return:
         """
         headers = {
-            "Content-Type": "application/json;odata.metadata=minimal;odata.streaming=true",
-            "Authorization": "Bearer %s" % self.finekra_jwt_token,
+            "Content-Type": (
+                "application/json;odata.metadata=minimal;odata.streaming=true"
+            ),
+            "Authorization": f"Bearer {self.finekra_jwt_token}",
         }
-        response = requests.post(endpoint, json=data, headers=headers)
+        response = requests.post(endpoint, json=data, headers=headers, timeout=10)
 
         if response.status_code == 200:
             return response.json()
@@ -85,7 +89,6 @@ class OnlineBankStatementProviderFinekra(models.Model):
     def _finekra_get_auth(self):
         self.ensure_one()
         if self.finekra_email and self.finekra_password and self.finekra_tenant_code:
-
             if (
                 not self.finekra_jwt_token
                 or self.finekra_token_interval < datetime.now()
@@ -97,7 +100,7 @@ class OnlineBankStatementProviderFinekra(models.Model):
                     "screenOption": 0,
                 }
                 resp = requests.post(
-                    "%s/api/Auth/DealerLogin" % FINEKRA_ENDPOINT, json=vals
+                    f"{FINEKRA_ENDPOINT}/api/Auth/DealerLogin", json=vals, timeout=10
                 ).json()
                 if resp.get("success"):
                     self.write(
@@ -111,17 +114,12 @@ class OnlineBankStatementProviderFinekra(models.Model):
             raise UserError(_("Please fill email, password and tenant code."))
 
     def _finekra_get_transaction(self, account_id, date_since, date_until):
-        page_url = "%s/api/AccountTransaction" % FINEKRA_ENDPOINT
+        page_url = f"{FINEKRA_ENDPOINT}/api/AccountTransaction"
 
         vals = {
-            "$filter": "TenantAccountId eq %s and"
-            " date(TransactionDateValue) le %s and"
-            " date(TransactionDateValue) ge %s"
-            % (
-                account_id,
-                date_until.strftime("%Y-%m-%d"),
-                date_since.strftime("%Y-%m-%d"),
-            )
+            "$filter": f"TenantAccountId eq {account_id} and"
+            f" date(TransactionDateValue) le {date_until.strftime('%Y-%m-%d')} and"
+            f" date(TransactionDateValue) ge {date_since.strftime('%Y-%m-%d')}"
         }
 
         data = self._finekra_get_request(endpoint=page_url, data=vals)
@@ -136,7 +134,6 @@ class OnlineBankStatementProviderFinekra(models.Model):
         return dt
 
     def _finekra_obtain_statement_data(self, date_since, date_until):
-        # currency_dict = {x.name: x.id for x in self.env['res.currency'].search([('active', '=', True)])}
         self.ensure_one()
         self._finekra_get_auth()
         journal = self.journal_id
