@@ -196,9 +196,8 @@ class PaymentProvider(models.Model):
         :return: The return url
         """
         self.ensure_one()
-
-        return f"{self.env["ir.config_parameter"].sudo(
-            ).get_param("web.base.url")}/payment/garanti/return"
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        return f"{base_url}/payment/garanti/return"
 
     def _garanti_make_payment_request(self, tx, amount, currency, card_args, client_ip):
         """
