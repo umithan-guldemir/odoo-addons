@@ -206,8 +206,8 @@ class DeliveryCarrier(models.Model):
 
             for package in picking.package_ids:
                 customs_value = picking.invoice_ids.invoice_line_ids.filtered(
-                    lambda inv_line: inv_line.product_id
-                    != inv_line.move_id.picking_id.carrier_id.product_id
+                    lambda invoice_line, picking=picking: invoice_line.product_id
+                    != picking.carrier_id.product_id
                 )
                 customs_value = customs_value.price_subtotal
                 data["commodities"].append(
