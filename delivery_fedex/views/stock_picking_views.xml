@@ -5,8 +5,8 @@
         <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='delivery_type']" position="after">
-                <field name="tracking_ref" invisible="1"/>
-                <field name="exact_fedex_price" invisible="1"/>
+                <field name="tracking_ref" invisible="1" />
+                <field name="exact_fedex_price" invisible="1" />
             </xpath>
         </field>
     </record>

@@ -1,4 +1,5 @@
 from odoo import fields, models
+
 from .fedex_request import FedExRequest
 
 FEDEX_SERVICES = [
@@ -60,23 +61,23 @@ class DeliveryCarrier(models.Model):
         string="Account Number", help="FedEx Account Number"
     )
 
-    service_type = fields.Selection(selection=FEDEX_SERVICES, string="Service Type")
-    pickup_type = fields.Selection(selection=FEDEX_PICKUP_TYPES, string="Pickup Type")
+    service_type = fields.Selection(selection=FEDEX_SERVICES)
+    pickup_type = fields.Selection(selection=FEDEX_PICKUP_TYPES)
     payment_type = fields.Selection(
-        selection=FEDEX_PAYMENT_TYPES, string="Payment Type"
+        selection=FEDEX_PAYMENT_TYPES,
     )
-    document_shipment = fields.Boolean(string="Document Shipment")
+    document_shipment = fields.Boolean()
     shipment_purpose = fields.Selection(
-        selection=FEDEX_SHIPMENT_PURPOSES, string="Shipment Purpose"
+        selection=FEDEX_SHIPMENT_PURPOSES,
     )
     customs_payment_type = fields.Selection(
-        selection=FEDEX_PAYMENT_TYPES, string="Customs Payment Type"
+        selection=FEDEX_PAYMENT_TYPES,
     )
     customer_fedex_number = fields.Integer(
         selection=FEDEX_PAYMENT_TYPES, string="Customer FedEx Number"
     )
 
-    carrier_code = fields.Selection(selection=FEDEX_CARRIER_CODE, string="Carrier Code")
+    carrier_code = fields.Selection(selection=FEDEX_CARRIER_CODE)
 
     def _prepare_fedex_address(self, partner):
         return {
@@ -205,8 +206,8 @@ class DeliveryCarrier(models.Model):
 
             for package in picking.package_ids:
                 customs_value = picking.invoice_ids.invoice_line_ids.filtered(
-                    lambda invoice_line: invoice_line.product_id
-                    != picking.carrier_id.product_id
+                    lambda inv_line: inv_line.product_id
+                    != inv_line.move_id.picking_id.carrier_id.product_id
                 )
                 customs_value = customs_value.price_subtotal
                 data["commodities"].append(
