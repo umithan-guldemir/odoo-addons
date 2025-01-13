@@ -4,10 +4,9 @@
 from odoo import models, api
 
 
-class AccountInvoice(models.Model):
-    _inherit = "account.invoice"
+class AccountMove(models.Model):
+    _inherit = "account.move"
 
-    @api.multi
     def register_payment(
         self, payment_line, writeoff_acc_id=False, writeoff_journal_id=False
     ):
@@ -18,7 +17,7 @@ class AccountInvoice(models.Model):
         """
         if not self:
             return True
-        return super(AccountInvoice, self).register_payment(
+        return super(AccountMove, self).register_payment(
             payment_line,
             writeoff_acc_id=writeoff_acc_id,
             writeoff_journal_id=writeoff_journal_id,

@@ -7,6 +7,7 @@
     ],
     'demo': [],
     'depends': [
+        # TODO: This module is not migrated yet.
         'account',
     ],
     'installable': True,
