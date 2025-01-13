@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Cybrosys Technologies Pvt. Ltd.
@@ -18,26 +17,24 @@
 #
 ##############################################################################
 {
-    'name': 'Access Restriction By IP',
-    'summary': """User Can Access His Account Only From Specified IP Address""",
-    'version': '12.0.1.0.0',
-    'description': """User Can Access His Account Only From Specified IP Address""",
-    'author': 'Cybrosys Techno Solutions',
-    'company': 'Cybrosys Techno Solutions',
-    'website': 'https://www.cybrosys.com',
-    'category': 'Tools',
-    'depends': ['base', 'mail'],
-    'external_dependencies': {
-        'python': ['ipaddress'],
+    "name": "Access Restriction By IP",
+    "summary": """User Can Access His Account Only From Specified IP Address""",
+    "version": "16.0.1.0.0",
+    "author": "Cybrosys Techno Solutions, Altinkaya Enclosures",
+    "company": "Cybrosys Techno Solutions",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "category": "Tools",
+    "depends": ["base", "mail"],
+    "external_dependencies": {
+        "python": ["ipaddress"],
     },
-    'license': 'LGPL-3',
-    'data': [
-        'security/ir.model.access.csv',
-        'views/allowed_ips_view.xml',
+    "license": "LGPL-3",
+    "data": [
+        "security/ir.model.access.csv",
+        "views/allowed_ips_view.xml",
     ],
-    'images': ['static/description/banner.jpg'],
-    'demo': [],
-    'installable': True,
-    'auto_install': False,
+    "images": ["static/description/banner.jpg"],
+    "demo": [],
+    "installable": True,
+    "auto_install": False,
 }
-
