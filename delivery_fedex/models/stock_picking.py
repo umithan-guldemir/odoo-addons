@@ -1,11 +1,10 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
     exact_fedex_price = fields.Float(
-        string="Exact Fedex Price",
         default=0.0,
     )
 

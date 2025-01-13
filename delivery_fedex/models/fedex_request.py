@@ -1,9 +1,9 @@
-import requests
 import json
+
+import requests
 
 from odoo import _
 from odoo.exceptions import UserError
-
 
 FEDEX_API_URL = {
     "sandbox": "https://apis-sandbox.fedex.com",
@@ -36,9 +36,7 @@ class FedExRequest:
     def _format_errors(self, errors):
         formatted_result = ""
         for code, message in errors:
-            formatted_result += "Error {code}: {message}\n".format(
-                code=code, message=message
-            )
+            formatted_result += f"Error {code}: {message}\n"
 
         return formatted_result
 
@@ -64,7 +62,7 @@ class FedExRequest:
         service_type,
         content_type="application/json",
         auth=True,
-        data={},
+        data=None,
     ):
         if data is None:
             data = {}

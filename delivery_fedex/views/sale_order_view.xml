@@ -5,8 +5,8 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <field name="state" position="after">
-                <field name="customs_value" invisible="1"/>
-                <field name="customs_value_currency_id" invisible="1"/>
+                <field name="customs_value" invisible="1" />
+                <field name="customs_value_currency_id" invisible="1" />
             </field>
         </field>
     </record>

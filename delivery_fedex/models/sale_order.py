@@ -9,6 +9,4 @@ class SaleOrder(models.Model):
         string="Customs Value Currency",
         domain="[('name', 'in', ['USD', 'EUR'])]",
     )
-    customs_value = fields.Monetary(
-        string="Customs Value", currency_field="customs_value_currency_id"
-    )
+    customs_value = fields.Monetary(currency_field="customs_value_currency_id")
