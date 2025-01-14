@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="account_invoice_gelir_fatura" model="xlsx.template">
-        <field name="res_model">report.account.invoice</field>
+    <record id="account_move_gelir_fatura" model="xlsx.template">
+        <field name="res_model">report.account.move</field>
         <field name="fname">gelir_fatura.xlsx</field>
         <field name="name">Gelir Fatura Şablonu</field>
-        <field name="description">Zirve Muhasebe programına uygun biçimde faturaların içeri aktarılabilmesini sağlayan Excel şablonu.</field>
+        <field
+      name="description"
+    >Zirve Muhasebe programına uygun biçimde faturaların içeri aktarılabilmesini sağlayan Excel şablonu.</field>
         <field name="input_instruction">
             {
                 '__EXPORT__': {
@@ -43,6 +45,6 @@
     </record>
 
     <function model="xlsx.template" name="load_xlsx_template">
-        <value eval="[ref('account_invoice_gelir_fatura')]"/>
+        <value eval="[ref('account_move_gelir_fatura')]" />
     </function>
 </odoo>

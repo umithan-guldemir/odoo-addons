@@ -1,26 +1,27 @@
+# Copyright 2019 Ecosoft Co., Ltd (http://ecosoft.co.th/)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
 # Copyright 2025 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
-class ReportAccountPayment(models.TransientModel):
-    _name = "report.account.payment"
-    _description = "Wizard for report.account.payment"
+class ReportAccountInvoice(models.TransientModel):
+    _name = "report.account.move"
+    _description = "Wizard for report.account.move"
     _inherit = "xlsx.report"
 
-    # Report Result, account.invoice
+    # Report Result, account.move
     results = fields.Many2many(
-        comodel_name="account.payment",
-        string="Payments",
-        compute="_compute_payments",
+        comodel_name="account.move",
+        string="Invoices",
+        compute="_compute_invoices",
         help="Use compute fields, so there is nothing stored in database",
     )
 
-    def _compute_payments(self):
+    def _compute_invoices(self):
         selected_ids = self.env.context.get("active_ids", [])
-        ids = self.env["account.payment"].browse(selected_ids)
+        ids = self.env["account.move"].browse(selected_ids)
         for rec in self:
             rec.results = ids

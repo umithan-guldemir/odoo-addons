@@ -4,7 +4,9 @@
         <field name="res_model">purchase.order</field>
         <field name="fname">po_rfq_en.xlsx</field>
         <field name="name">Purchase Order RFQ Template</field>
-        <field name="description">Sample Purchase Order RFQ Template for use in international purchases.</field>
+        <field
+      name="description"
+    >Sample Purchase Order RFQ Template for use in international purchases.</field>
         <field name="input_instruction">
             {
                 '__EXPORT__': {
@@ -35,6 +37,6 @@
     </record>
 
     <function model="xlsx.template" name="load_xlsx_template">
-        <value eval="[ref('purchase_order_rfq_xlsx_temp_en')]"/>
+        <value eval="[ref('purchase_order_rfq_xlsx_temp_en')]" />
     </function>
 </odoo>

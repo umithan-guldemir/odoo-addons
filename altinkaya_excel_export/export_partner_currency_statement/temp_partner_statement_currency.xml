@@ -4,7 +4,9 @@
         <field name="res_model">report.partner.statement.currency</field>
         <field name="fname">partner_statement_currency.xlsx</field>
         <field name="name">Cari Dövizli Ekstre</field>
-        <field name="description">Müşterilerin dövizli ekstresini excel olarak basan şablon.</field>
+        <field
+      name="description"
+    >Müşterilerin dövizli ekstresini excel olarak basan şablon.</field>
         <field name="input_instruction">
                         {
                 '__EXPORT__': {
@@ -46,6 +48,6 @@
     </record>
 
     <function model="xlsx.template" name="load_xlsx_template">
-        <value eval="[ref('partner_statement_currency')]"/>
+        <value eval="[ref('partner_statement_currency')]" />
     </function>
 </odoo>

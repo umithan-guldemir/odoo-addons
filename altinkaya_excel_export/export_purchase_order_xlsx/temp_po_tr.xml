@@ -4,7 +4,9 @@
         <field name="res_model">purchase.order</field>
         <field name="fname">purchase_order_tr.xlsx</field>
         <field name="name">Satınalma Siparişi Şablonu</field>
-        <field name="description">Türkiye sınırları içinde yapılan satınalmalarda kullanılmak üzere tasarlanmış Satınalma Siparişi Şablonu.</field>
+        <field
+      name="description"
+    >Türkiye sınırları içinde yapılan satınalmalarda kullanılmak üzere tasarlanmış Satınalma Siparişi Şablonu.</field>
         <field name="input_instruction">
             {
                 '__EXPORT__': {
@@ -50,6 +52,6 @@
     </record>
 
     <function model="xlsx.template" name="load_xlsx_template">
-        <value eval="[ref('purchase_order_xlsx_temp_tr')]"/>
+        <value eval="[ref('purchase_order_xlsx_temp_tr')]" />
     </function>
 </odoo>

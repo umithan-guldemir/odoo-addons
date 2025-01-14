@@ -4,7 +4,9 @@
         <field name="res_model">report.partner.statement</field>
         <field name="fname">partner_statement.xlsx</field>
         <field name="name">Cari Ekstre</field>
-        <field name="description">Müşterilerin ekstresini excel olarak basan şablon.</field>
+        <field
+      name="description"
+    >Müşterilerin ekstresini excel olarak basan şablon.</field>
         <field name="input_instruction">
                         {
                 '__EXPORT__': {
@@ -36,6 +38,6 @@
     </record>
 
     <function model="xlsx.template" name="load_xlsx_template">
-        <value eval="[ref('partner_statement')]"/>
+        <value eval="[ref('partner_statement')]" />
     </function>
 </odoo>
