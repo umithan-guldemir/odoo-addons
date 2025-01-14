@@ -14,7 +14,7 @@ class StockQuant(models.Model):
     def action_show_reserved_moves(self):
         action = self.env.ref("altinkaya_stock.stock_move_line_action").read()[0]
         action["domain"] = [
-            ("move_line_ids.location_id", '=', self.location_id.id),
+            ("move_line_ids.location_id", "=", self.location_id.id),
             ("product_id", "=", self.product_id.id),
         ]
         return action

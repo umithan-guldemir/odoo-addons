@@ -16,9 +16,9 @@ class StockMoveLine(models.Model):
         params = self._context.get("params")
 
         if params and params.get("model") == "mrp.production":
-            production_id = self.env["mrp.production"].browse(
-                self._context["params"].get("id")
-            ).id
+            production_id = (
+                self.env["mrp.production"].browse(self._context["params"].get("id")).id
+            )
         else:
             production_id = False
 

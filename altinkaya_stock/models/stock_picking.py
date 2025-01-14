@@ -24,80 +24,92 @@ from odoo import models, api, fields
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
-    @api.multi
     def open_sales_order(self):
         self.ensure_one()
-        action = self.env.ref('sale.action_orders').read()[0]
-        form = self.env.ref('sale.view_order_form')
-        action['views'] = [(form.id, 'form')]
-        action['res_id'] = self.sale_id.id
+        action = self.env.ref("sale.action_orders").read()[0]
+        form = self.env.ref("sale.view_order_form")
+        action["views"] = [(form.id, "form")]
+        action["res_id"] = self.sale_id.id
         return action
 
     x_durum = fields.Selection(
-        [('1', u'İthal Eksik'),
-         ('2', u'CNC Kesimde'),
-         ('3', u'Enjeksiyonda'),
-         ('4', u'Montajda'),
-         ('5', u'Çıkacak'),
-         ('6', u'ACİL'),
-         ('7', u'Müsteriyi Bekliyor'),
-         ('8', u'Profil Kesimde'),
-         ('9', u'Sac Üretiminde'),
-         ('A', u'Boyada'),
-         ('B', u'Piyasadan Teminde')
-         ],
-        'Durumu', index=True)
+        [
+            ("1", "İthal Eksik"),
+            ("2", "CNC Kesimde"),
+            ("3", "Enjeksiyonda"),
+            ("4", "Montajda"),
+            ("5", "Çıkacak"),
+            ("6", "ACİL"),
+            ("7", "Müsteriyi Bekliyor"),
+            ("8", "Profil Kesimde"),
+            ("9", "Sac Üretiminde"),
+            ("A", "Boyada"),
+            ("B", "Piyasadan Teminde"),
+        ],
+        "Durumu",
+        index=True,
+    )
     x_hazirlayan = fields.Selection(
-        [("Asim", u"Asım"),
-         ("Muhammet", u"Muhammet"),
-         ("Harun", u"Harun"),
-         ("Bilal", u"Bilal"),
-         ("Saffet", u"Saffet"),
-         ("Esra", u"Esra"),
-         ("Selma", u"Selma"),
-         (u"Uğur", u"Uğur"),
-         (u"Çağrı", u"Çağrı"),
-         ("Hatice", u"Hatice"),
-         ("Muhsin", u"Muhsin"),
-         ("Muharrem", u"Muharrem"),
-         ("Sefer", "Sefer")
-         ],
-        u'Siparişi Hazırlayan', readonly=True)
-    comment_irsaliye = fields.Text('İrsaliye Notu')
-    hazirlayan = fields.Many2one('hr.employee', 'Sevki Hazırlayan')
-    teslim_alan = fields.Char('Malı Teslim Alan', size=32)
-    country_id = fields.Many2one('res.country',
-                                 string='Country',
-                                 related='partner_id.country_id',
-                                 store=True,
-                                 )
-    partner_invoice_id = fields.Many2one('res.partner',
-                                         string='Invoice Address',
-                                         related='sale_id.partner_invoice_id',
-                                         store=True,
-                                         )
-    sales_uid = fields.Many2one('res.users',
-                                string='Sales Person',
-                                related='sale_id.create_uid',
-                                store=True,
-                                )
-    sale_note = fields.Text('Sale Note', related='sale_id.note', readonly=True)
-    trimmed_sale_note = fields.Text('Sale Note', compute='_compute_trimmed_sale_note', readonly=True, store=False)
+        [
+            ("Asim", "Asım"),
+            ("Muhammet", "Muhammet"),
+            ("Harun", "Harun"),
+            ("Bilal", "Bilal"),
+            ("Saffet", "Saffet"),
+            ("Esra", "Esra"),
+            ("Selma", "Selma"),
+            ("Uğur", "Uğur"),
+            ("Çağrı", "Çağrı"),
+            ("Hatice", "Hatice"),
+            ("Muhsin", "Muhsin"),
+            ("Muharrem", "Muharrem"),
+            ("Sefer", "Sefer"),
+        ],
+        "Siparişi Hazırlayan",
+        readonly=True,
+    )
+    comment_irsaliye = fields.Text("İrsaliye Notu")
+    hazirlayan = fields.Many2one("hr.employee", "Sevki Hazırlayan")
+    teslim_alan = fields.Char("Malı Teslim Alan", size=32)
+    country_id = fields.Many2one(
+        "res.country",
+        string="Country",
+        related="partner_id.country_id",
+        store=True,
+    )
+    partner_invoice_id = fields.Many2one(
+        "res.partner",
+        string="Invoice Address",
+        related="sale_id.partner_invoice_id",
+        store=True,
+    )
+    sales_uid = fields.Many2one(
+        "res.users",
+        string="Sales Person",
+        related="sale_id.create_uid",
+        store=True,
+    )
+    sale_note = fields.Text("Sale Note", related="sale_id.note", readonly=True)
+    trimmed_sale_note = fields.Text(
+        "Sale Note", compute="_compute_trimmed_sale_note", readonly=True, store=False
+    )
 
-    @api.onchange('carrier_id')
+    @api.onchange("carrier_id")
     def _onchange_carrier_id(self):
         source = self.sale_id or self.purchase_id
         if self.carrier_id and source:
-            source.write({'carrier_id': self.carrier_id.id})
+            source.write({"carrier_id": self.carrier_id.id})
 
     def force_assign(self):
         for pick in self:
-            move_ids = [x for x in pick.move_lines if x.state in ['confirmed', 'waiting']]
-            self.env['stock.move'].force_assign(moves=move_ids)
+            move_ids = [
+                x for x in pick.move_lines if x.state in ["confirmed", "waiting"]
+            ]
+            self.env["stock.move"].force_assign(moves=move_ids)
             pick.button_validate()
         return True
 
-    @api.depends('sale_id.note')
+    @api.depends("sale_id.note")
     def _compute_trimmed_sale_note(self):
         """
         Trims the sale note to the first 50 characters.
@@ -108,16 +120,15 @@ class StockPicking(models.Model):
             else:
                 pick.trimmed_sale_note = pick.sale_id.note
 
-    @api.multi
     def open_record(self):
-        form_id = self.env.ref('stock.view_picking_form')
+        form_id = self.env.ref("stock.view_picking_form")
         return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.picking',
-            'res_id': self.id,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'view_id': form_id.id,
-            'context': {},
-            'target': 'current',
+            "type": "ir.actions.act_window",
+            "res_model": "stock.picking",
+            "res_id": self.id,
+            "view_type": "form",
+            "view_mode": "form",
+            "view_id": form_id.id,
+            "context": {},
+            "target": "current",
         }

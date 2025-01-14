@@ -29,7 +29,6 @@ class StockMove(models.Model):
             )
         return True
 
-    @api.multi
     def action_create_procurement(self):
         self.ensure_one()
         warehouses = self.env["stock.warehouse"].search(
@@ -54,7 +53,6 @@ class StockMove(models.Model):
             "target": "new",
         }
 
-    @api.multi
     def action_make_mts(self):
         self.ensure_one()
         return {
@@ -67,7 +65,6 @@ class StockMove(models.Model):
             "target": "new",
         }
 
-    @api.multi
     def action_view_origin_moves(self):
         self.ensure_one()
         return {
