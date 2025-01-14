@@ -166,7 +166,7 @@ msgstr ""
 #. module: product_merge_wizard
 #: model:ir.model,name:product_merge_wizard.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Вариант продукта"
 
 #. module: product_merge_wizard
 #: model:ir.model,name:product_merge_wizard.model_product_merge_wizard_attribute_line

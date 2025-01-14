@@ -1,4 +1,5 @@
 {
+    # TODO: REMOVE THIS MODULE IF NOT NEEDED
     'website': 'https://www.codequarters.com',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',

@@ -5,7 +5,8 @@
         <field name="name">account.checkbook.tree</field>
         <field name="model">account.checkbook</field>
         <field name="arch" type="xml">
-            <tree string="Checkbooks" colors="blue:state == 'draft';black:state in ('active');red:state == 'hrejected';gray:state == 'used'" editable="bottom">
+        <!-- colors="blue:state == 'draft';black:state in ('active');red:state == 'hrejected';gray:state == 'used'" -->
+            <tree string="Checkbooks" editable="bottom">
                 <field name="issue_check_subtype"/>
                 <field name="name"/>
                 <field name="next_number"/>
