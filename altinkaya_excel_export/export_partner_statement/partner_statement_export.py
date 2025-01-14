@@ -70,11 +70,17 @@ class ReportPartnerStatement(models.TransientModel):
                         LEFT JOIN account_account a ON (l.account_id=a.id)
                         LEFT JOIN account_move am ON (l.move_id=am.id)
                         LEFT JOIN account_journal aj ON (am.journal_id=aj.id)
-                        WHERE (l.date BETWEEN %s AND %s) AND l.partner_id = %s AND  a.account_type IN %s
+                        WHERE (l.date BETWEEN %s AND %s)
+                        AND l.partner_id = %s AND  a.account_type IN %s
             GROUP BY aj.name,move_id,am.name,am.state,l.date,l.date_maturity
             ,l.amount_currency,l.currency_id,l.company_currency_id\
                          ORDER BY l.date , l.currency_id """,
-            (str(start_date), str(end_date), str(partner.commercial_partner_id.id), move_type),
+            (
+                str(start_date),
+                str(end_date),
+                str(partner.commercial_partner_id.id),
+                move_type,
+            ),
         )
         for each_dict in self.env.cr.dictfetchall():
             seq += 1
@@ -143,4 +149,3 @@ class StatementLines(models.TransientModel):
     sec_curr_total = fields.Char()
     primary_currency = fields.Many2one("res.currency")
     secondary_currency = fields.Many2one("res.currency")
-

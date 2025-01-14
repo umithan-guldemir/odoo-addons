@@ -20,7 +20,7 @@
     <record id="action_partner_statement_excel_export" model="ir.actions.act_window">
         <field name="name">Cari Ekstresi</field>
         <field name="res_model">report.partner.statement</field>
-        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner" />
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field

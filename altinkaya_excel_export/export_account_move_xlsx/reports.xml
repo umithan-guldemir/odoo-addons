@@ -14,13 +14,18 @@
         </field>
     </record>
 
-    <record id="action_account_invoice_excel_export_gelir_fatura" model="ir.actions.act_window">
+    <record
+    id="action_account_invoice_excel_export_gelir_fatura"
+    model="ir.actions.act_window"
+  >
         <field name="name">Gelir Fatura Excel</field>
         <field name="res_model">report.account.move</field>
         <field name="binding_model_id" ref="account.model_account_move" />
         <field name="view_mode">form</field>
         <field name="target">new</field>
-        <field name="context">{'template_domain': [('res_model', '=', 'report.account.move'),
+        <field
+      name="context"
+    >{'template_domain': [('res_model', '=', 'report.account.move'),
                                                    ('fname', '=', 'gelir_fatura.xlsx'),
                                                    ('gname', '=', False)]}</field>
     </record>
@@ -32,7 +37,9 @@
         <field name="binding_model_id" ref="account.model_account_move" />
         <field name="view_mode">form</field>
         <field name="target">new</field>
-        <field name="context">{'template_domain': [('res_model', '=', 'report.account.move'),
+        <field
+      name="context"
+    >{'template_domain': [('res_model', '=', 'report.account.move'),
                                                    ('fname', '=', 'zirve_masraf_fatura.xlsx'),
                                                    ('gname', '=', False)]}</field>
     </record>

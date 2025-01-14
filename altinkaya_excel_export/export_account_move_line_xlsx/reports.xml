@@ -17,7 +17,7 @@
     <record id="action_account_move_line_excel_export" model="ir.actions.act_window">
         <field name="name">Yevmiye Excel</field>
         <field name="res_model">report.account.move.line</field>
-        <field name="binding_model_id" ref="account.model_account_move_line"/>
+        <field name="binding_model_id" ref="account.model_account_move_line" />
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field

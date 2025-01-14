@@ -26,14 +26,14 @@
             'K2': '${"%s" % (object.partner_id.z_payable_export or "") if object.type != "out_refund" else "%s" % (object.partner_id.z_receivable_export or "")}#{border=thin_border;align=left;style=text}',
             'L2': '${" ".join("* %s ^" % x.account_id.code for x in object.invoice_line_ids)}#{border=thin_border;align=left;style=text}',
             'M2': '${object.invoice_line_ids[0].account_id.code if object.invoice_line_ids else ""}#{border=thin_border;align=left;style=text}',
-            
+
             'N2': '${"".join("\'%s" % tax.account_id.code for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=text}',
             'O2': '${"".join("%s" % tax.account_id.code for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=text}',
             'P2': '${"".join("\'%.2f" % tax.base for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=number}',
             'Q2': '${"".join("%.2f" % tax.base for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=number}',
             'R2': '${"".join("\'%.2f" % tax.amount for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=number}',
             'S2': '${"".join("%.2f" % tax.amount for index, tax in enumerate(object.tax_line_ids) if index == 0) or ""}#{border=thin_border;align=left;style=number}',
-            
+
             'T2': '${"".join("\'%s" % tax.account_id.code for index, tax in enumerate(object.tax_line_ids) if index == 1) or ""}#{border=thin_border;align=left;style=text}',
             'U2': '${"".join("%s" % tax.account_id.code for index, tax in enumerate(object.tax_line_ids) if index == 1) or ""}#{border=thin_border;align=left;style=text}',
             'V2': '${"".join("\'%.2f" % tax.base for index, tax in enumerate(object.tax_line_ids) if index == 1) or ""}#{border=thin_border;align=left;style=number}',

@@ -7,6 +7,3 @@ access_export_partner_currency_statement,access.export.partner.currency.statemen
 access_export_partner_statement,access.export.partner.statement,model_report_partner_statement,base.group_user,1,1,1,1
 access_export_purchase_order_xlsx,access.export.purchase.order.xlsx,purchase.model_purchase_order,base.group_user,1,1,1,1
 access_export_partner_statement_lines,access.export.partner.statement.lines,model_partner_statement_lines,base.group_user,1,1,1,1
-
-
-
