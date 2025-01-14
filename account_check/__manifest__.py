@@ -10,7 +10,7 @@
     ],
     'depends': [
         'account',
-        'account_payment_fix',
+        # 'account_payment_fix',
         # TODO: This module is not migrated yet.
         # TODO we should move field amount_company_currency to
         # account_payment_fix so that we dont need to depend on

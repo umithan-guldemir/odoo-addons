@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -20,7 +19,7 @@
 ##############################################################################
 {
     "name": "Altinkaya Sale Order Extensions",
-    "version": "12.0",
+    "version": "16.0.0.1.0",
     "category": "General",
     "depends": [
         "base",
@@ -36,11 +35,8 @@
         "portal",
         "sale_stock",
     ],
-    "author": "MAkifOzdemir,Codequarters,Acespritech Solutions Pvt. Ltd.,Yavuz Avcı",
-    "description": """
-    Sales Order Customization
-    """,
-    "website": "http://www.codequarters.com",
+    "author": "Altinkaya Enclosures",
+    "website": "https://github.com/altinkaya-opensource/odoo-addons",
     "data": [
         "security/ir.model.access.csv",
         "views/sale_workflow_new_menus_actions.xml",

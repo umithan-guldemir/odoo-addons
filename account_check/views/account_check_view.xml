@@ -6,9 +6,9 @@
         <field name="name">account.check.tree</field>
         <field name="model">account.check</field>
         <field name="priority">100</field>
-        <field name="groups_id" eval="[(4, ref('account.group_account_manager'))]"/>
         <field name="arch" type="xml">
-            <tree colors="blue:state == 'draft';black:state in ('handed');red:state == 'rejected';gray:state == 'cancel'" create="false" string="Checks">
+        <!-- colors='{"draft":"primary", "handed":"secondary", "rejected":"danger", "cancel":"muted"}' -->
+            <tree  create="false" string="Checks">
                 <field name="checkbook_id" invisible="context.get('default_type',False) not in ('issue_check','issue_promissory_note')"/>
                 <field name="journal_id" invisible="1"/>
                 <field name="number" />
@@ -30,7 +30,6 @@
     <record model="ir.ui.view" id="view_account_check_create_tree">
         <field name="name">account.check.create.tree</field>
         <field name="model">account.check</field>
-        <field name="groups_id" eval="[(4, ref('account.group_account_manager'))]"/>
         <field name="inherit_id" ref="view_account_check_tree"/>
         <field name="arch" type="xml">
                 <tree position="attributes">
@@ -105,21 +104,20 @@
                         </form>
                     </field>
                 </group>
-            </sheet>    
+            </sheet>
             <div class="oe_chatter">
                 <field name="message_follower_ids" widget="mail_followers"/>
                 <field name="activity_ids" widget="mail_activity"/>
                 <field name="message_ids" widget="mail_thread"/>
-            </div>                
+            </div>
             </form>
         </field>
-    </record> 
+    </record>
 
     <record model="ir.ui.view" id="view_account_check_create_form">
         <field name="name">account.check.create.form</field>
         <field name="model">account.check</field>
         <field name="inherit_id" ref="view_account_check_form"/>
-        <field name="groups_id" eval="[(4, ref('account.group_account_manager'))]"/>
         <field name="arch" type="xml">
                 <form position="attributes">
                 <attribute name="create">true</attribute>
@@ -207,33 +205,32 @@
     <record model="ir.actions.act_window" id="action_third_check">
         <field name="name">Third Checks</field>
         <field name="res_model">account.check</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,calendar,graph,pivot</field>
         <field name="domain">[('type','=','third_check')]</field>
         <field name="context">{'default_type':'third_check'}</field>
     </record>
 
-    <menuitem
+    <!--TODO: Enable This-->
+    <!-- <menuitem
         action="action_third_check"
         id="menu_third_check"
         sequence="40"
-        parent="account_payment_fix.menu_finance_check_and_promissory_note"/>
+        parent="account_payment_fix.menu_finance_check_and_promissory_note"/> -->
 
     <!-- Issued Check Menu -->
     <record model="ir.actions.act_window" id="action_issue_check">
         <field name="name">Issue Checks</field>
         <field name="res_model">account.check</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,calendar,graph,pivot</field>
         <field name="domain">[('type','=','issue_check')]</field>
         <field name="context">{'default_type':'issue_check'}</field>
     </record>
-
-    <menuitem
+    <!--TODO: Enable This-->
+    <!-- <menuitem
         action="action_issue_check"
         id="menu_issue_check"
         sequence="50"
-        parent="account_payment_fix.menu_finance_check_and_promissory_note"/>
+        parent="account_payment_fix.menu_finance_check_and_promissory_note"/> -->
 
 	<!-- Deposit Promissory Note Menu -->
 <!-- 	<record model="ir.actions.act_window" id="action_deposit_promissory_note"> -->

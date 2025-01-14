@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* product_merge_wizard
+# 	* product_merge_wizard
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-18 20:05+0000\n"
-"PO-Revision-Date: 2017-12-18 20:05+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-01-14 08:25+0000\n"
+"PO-Revision-Date: 2025-01-14 08:25+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,96 +16,91 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: product_merge_wizard
-#: model:res.groups,name:product_merge_wizard.group_productvariant_change
-msgid "Alter Product Variant Attributes"
-msgstr "Ürün Çeşitlerinin Niteliklerini Değiştirme Sihirbazı"
-
-#. module: product_merge_wizard
-#: field:product.merge.wizard.attribute_line,attribute_id:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__attribute_id
 msgid "Attribute"
-msgstr "Ürün Niteliği"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.move.wizard,value_ids:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__attribute_value_ids
+msgid "Attribute Value"
+msgstr ""
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__value_ids
 msgid "Attribute Value IDs"
-msgstr "Bağlanacak Nitelikler"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,attribute_value_ids:0
-msgid "Attribute value ids"
-msgstr "Bağlanacak Nitelikler"
-
-#. module: product_merge_wizard
-#: field:product.merge.wizard,attribute_line_ids:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__attribute_line_ids
 msgid "Attributes"
-msgstr "Nitelikler"
+msgstr ""
 
 #. module: product_merge_wizard
-#: view:product.merge.wizard:product_merge_wizard.view_product_merge_wizard_form
-#: view:product.move.wizard:product_merge_wizard.view_product_move_wizard_form
+#: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_merge_wizard_form
+#: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_move_wizard_form
 msgid "Cancel"
-msgstr "İptal"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,create_uid:0
-#: field:product.merge.wizard.attribute_line,create_uid:0
-#: field:product.merge.wizard.product_line,create_uid:0
-#: field:product.move.wizard,create_uid:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__create_uid
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__create_uid
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__create_uid
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__create_uid
 msgid "Created by"
-msgstr "Oluşturan"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,create_date:0
-#: field:product.merge.wizard.attribute_line,create_date:0
-#: field:product.merge.wizard.product_line,create_date:0
-#: field:product.move.wizard,create_date:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__create_date
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__create_date
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__create_date
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__create_date
 msgid "Created on"
-msgstr "Oluşturulma"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,display_name:0
-#: field:product.merge.wizard.attribute_line,display_name:0
-#: field:product.merge.wizard.product_line,display_name:0
-#: field:product.move.wizard,display_name:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__display_name
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__display_name
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__display_name
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__display_name
 msgid "Display Name"
-msgstr "Görünen Adı"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,id:0
-#: field:product.merge.wizard.attribute_line,id:0
-#: field:product.merge.wizard.product_line,id:0
-#: field:product.move.wizard,id:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__id
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__id
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__id
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,__last_update:0
-#: field:product.merge.wizard.attribute_line,__last_update:0
-#: field:product.merge.wizard.product_line,__last_update:0
-#: field:product.move.wizard,__last_update:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard____last_update
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line____last_update
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line____last_update
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard____last_update
 msgid "Last Modified on"
-msgstr "Son Güncelleme"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,write_uid:0
-#: field:product.merge.wizard.attribute_line,write_uid:0
-#: field:product.merge.wizard.product_line,write_uid:0
-#: field:product.move.wizard,write_uid:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__write_uid
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__write_uid
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__write_uid
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Son Güncelleyen"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,write_date:0
-#: field:product.merge.wizard.attribute_line,write_date:0
-#: field:product.merge.wizard.product_line,write_date:0
-#: field:product.move.wizard,write_date:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__write_date
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__write_date
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__write_date
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__write_date
 msgid "Last Updated on"
-msgstr "Son Güncelleme"
+msgstr ""
 
 #. module: product_merge_wizard
-#: view:product.merge.wizard:product_merge_wizard.view_product_merge_wizard_form
+#: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_merge_wizard_form
 msgid "Merge"
-msgstr "Birleştir"
+msgstr ""
 
 #. module: product_merge_wizard
 #: model:ir.actions.act_window,name:product_merge_wizard.product_merge_wizard_action
@@ -115,19 +110,19 @@ msgid "Merge Product Variants"
 msgstr "Ürün Çeşitlerini Birleştir"
 
 #. module: product_merge_wizard
-#: view:product.merge.wizard:product_merge_wizard.view_product_merge_wizard_form
+#: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_merge_wizard_form
 msgid "Merge Products"
-msgstr "Ürünleri Birleştir"
+msgstr ""
 
 #. module: product_merge_wizard
-#: view:product.move.wizard:product_merge_wizard.view_product_move_wizard_form
+#: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_move_wizard_form
 msgid "Move"
-msgstr "Kaydet"
+msgstr ""
 
 #. module: product_merge_wizard
-#: view:product.move.wizard:product_merge_wizard.view_product_move_wizard_form
+#: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_move_wizard_form
 msgid "Move Product"
-msgstr "Ürün Çeşidi Nitelikleri"
+msgstr ""
 
 #. module: product_merge_wizard
 #: model:ir.actions.act_window,name:product_merge_wizard.product_move_wizard_action
@@ -135,59 +130,90 @@ msgid "Move to Other Template"
 msgstr "Çeşit Niteliklerini Değiştir"
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,product_tmpl_id:0
-#: field:product.move.wizard,product_tmpl_id:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__product_tmpl_id
 msgid "New Product Name"
-msgstr "Yeni Ürün Adı"
+msgstr ""
 
 #. module: product_merge_wizard
-#: code:addons/product_merge_wizard/wizard/product_merge_wizard.py:76
-#: field:product.merge.wizard.product_line,product_id:0
-#: field:product.move.wizard,product_id:0
+#. odoo-python
+#: code:addons/product_merge_wizard/wizard/product_merge_wizard.py:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__product_id
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__product_id
 #, python-format
 msgid "Product"
 msgstr "Ürün"
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard,product_line_ids:0
+#: model:ir.model,name:product_merge_wizard.model_product_merge_wizard
+msgid "Product Merge Wizard"
+msgstr ""
+
+#. module: product_merge_wizard
+#: model:ir.model,name:product_merge_wizard.model_product_merge_wizard_product_line
+msgid "Product Merge Wizard Line"
+msgstr ""
+
+#. module: product_merge_wizard
+#: model:ir.model,name:product_merge_wizard.model_product_move_wizard
+msgid "Product Move Wizard"
+msgstr ""
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_move_wizard__product_tmpl_id
+msgid "Product Name"
+msgstr ""
+
+#. module: product_merge_wizard
+#: model:ir.model,name:product_merge_wizard.model_product_product
+msgid "Product Variant"
+msgstr "Ürün Varyantı"
+
+#. module: product_merge_wizard
+#: model:ir.model,name:product_merge_wizard.model_product_merge_wizard_attribute_line
+msgid "Product merge wizard attribute line"
+msgstr ""
+
+#. module: product_merge_wizard
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard__product_line_ids
 msgid "Products"
-msgstr "Ürünler"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard.attribute_line,required:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__required
 msgid "Required"
-msgstr "Gerekli"
+msgstr ""
 
 #. module: product_merge_wizard
-#: view:product.merge.wizard:product_merge_wizard.view_product_merge_wizard_form
+#: model_terms:ir.ui.view,arch_db:product_merge_wizard.view_product_merge_wizard_form
 msgid "Select product as merge target"
-msgstr "Ürünlerin birleştirileceği bir hedef ürün seçin"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard.product_line,value_ids:0
-msgid "Value ids"
-msgstr "Ürüne Atanacak Nitelik Değerleri"
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__value_ids
+msgid "Value"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard.attribute_line,value_ids:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__value_ids
 msgid "Values"
-msgstr "Olası Nitelik Değerleri"
+msgstr ""
 
 #. module: product_merge_wizard
-#: field:product.merge.wizard.attribute_line,wizard_id:0
-#: field:product.merge.wizard.product_line,wizard_id:0
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_attribute_line__wizard_id
+#: model:ir.model.fields,field_description:product_merge_wizard.field_product_merge_wizard_product_line__wizard_id
 msgid "Wizard"
-msgstr "Sihirbaz"
+msgstr ""
 
 #. module: product_merge_wizard
-#: code:addons/product_merge_wizard/wizard/product_move_wizard.py:32
+#. odoo-python
+#: code:addons/product_merge_wizard/wizard/product_move_wizard.py:0
 #, python-format
 msgid "Wrong context propagation"
 msgstr "Hatalı bağlam yayılımı"
 
 #. module: product_merge_wizard
-#: code:addons/product_merge_wizard/wizard/product_merge_wizard.py:49
+#. odoo-python
+#: code:addons/product_merge_wizard/wizard/product_merge_wizard.py:0
 #, python-format
 msgid "You can not add an attribute more than once"
 msgstr "Bir niteliği birden fazla ekleyemezsiniz."
-
