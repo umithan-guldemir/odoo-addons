@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -19,7 +20,7 @@
 ##############################################################################
 {
     "name": "Altinkaya Sale Order Extensions",
-    "version": "16.0.0.1.0",
+    "version": "12.0",
     "category": "General",
     "depends": [
         "base",
@@ -34,9 +35,14 @@
         "delivery_package_barcode",
         "portal",
         "sale_stock",
+        "stock_picking_invoicing",  # TODO: This module needs to be migrated from our codebase.
+        "sale_variant_configurator",
     ],
-    "author": "Altinkaya Enclosures",
-    "website": "https://github.com/altinkaya-opensource/odoo-addons",
+    "author": "MAkifOzdemir,Codequarters,Acespritech Solutions Pvt. Ltd.,Yavuz Avcı",
+    "description": """
+    Sales Order Customization
+    """,
+    "website": "http://www.codequarters.com",
     "data": [
         "security/ir.model.access.csv",
         "views/sale_workflow_new_menus_actions.xml",
@@ -46,9 +52,9 @@
         "views/pricelist.xml",
         "views/res_partner.xml",
         "data/mail_data.xml",
-        "views/portal_templates.xml",
-        "data/sale_portal_data.xml",
-        "views/sale_portal_templates.xml",
+        # "views/portal_templates.xml", # TODO: migration needed
+        # "data/sale_portal_data.xml",
+        # "views/sale_portal_templates.xml",
         "views/res_partner_segment_view.xml",
         "views/res_country_view.xml",
         "views/res_bank_view.xml",

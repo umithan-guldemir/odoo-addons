@@ -7,6 +7,7 @@
     "summary": "add specialized stock extensions",
     "depends": [
         "stock",
+        "sale_stock",
         "delivery",
         "delivery_integration_base",
         "altinkaya_sales",

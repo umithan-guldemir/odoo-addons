@@ -24,7 +24,7 @@ from odoo.tools import float_compare
 #     qty_virtual = fields.Float('Tahmini', compute='_compute_qty')
 #
 #
-#     
+#
 #     @api.depends('wizard_id', 'warehouse_id')
 #     def _compute_qty(self):
 #         for record in self:
@@ -45,10 +45,10 @@ from odoo.tools import float_compare
 class CreateProcurementMove(models.TransientModel):
     _name = 'create.procurement.move'
     _description = 'Create procurement move'
-        
+
     move_id = fields.Many2one('stock.move','Move', readonly=True)
     product_id = fields.Many2one('product.product',string='Product', related='move_id.product_id', readonly=True)
-    
+
     move_qty = fields.Float('Demand Quantity', related='move_id.product_uom_qty', readonly=True)
     procure_move = fields.Boolean('Harekete Tedarik Oluştur',default=True)
     uom = fields.Many2one('uom.uom', string='UoM', related='move_id.product_uom', readonly=True)
@@ -72,23 +72,24 @@ class CreateProcurementMove(models.TransientModel):
     pending_orderline_ids = fields.Many2many('sale.order.line', string='Pending Orders',
                                              compute='_compute_pending_orderlines')
 
-    sale_qty30days = fields.Float(u'Son 1 ayda satılan', related='move_id.product_id.sale_qty30days', readonly=True, store=False)
-    sale_qty180days = fields.Float(u'Son 6 ayda satılan', related='move_id.product_id.sale_qty180days', readonly=True, store=False)
-    sale_qty360days = fields.Float(u'Son 1 senede satılan', related='move_id.product_id.sale_qty360days', readonly=True, store=False)
+    # TODO: these related fields don't exist
+    # sale_qty30days = fields.Float(u'Son 1 ayda satılan', related='move_id.product_id.sale_qty30days', readonly=True, store=False)
+    # sale_qty180days = fields.Float(u'Son 6 ayda satılan', related='move_id.product_id.sale_qty180days', readonly=True, store=False)
+    # sale_qty360days = fields.Float(u'Son 1 senede satılan', related='move_id.product_id.sale_qty360days', readonly=True, store=False)
 
-    
+
     @api.depends('product_id')
     def _compute_productions(self):
         for wizard in self:
             wizard.production_ids = self.env['mrp.production'].search([('product_id','=',wizard.product_id.id),('state','not in', ['done','cancel'])],limit=40,order='create_date desc')
 
-    
+
     @api.depends('product_id')
     def _compute_customer_transfers(self):
         for wizard in self:
             wizard.transfers_to_customer_ids = self.env['stock.move'].search([('product_id','=',wizard.product_id.id),('state','not in', ['draft','done','cancel'])],limit=40,order='create_date desc')
 
-    
+
     @api.depends('product_id')
     def _compute_pending_orderlines(self):
         for wizard in self:
@@ -98,9 +99,9 @@ class CreateProcurementMove(models.TransientModel):
     @api.onchange('move_id')
     def onchange_move_id(self):
         self.qty = self.move_id.remaining_qty
-        
-    
-    
+
+
+
     def action_create(self):
         self.ensure_one()
         if (self.move_id.state == 'cancel'):
@@ -123,7 +124,7 @@ class CreateProcurementMove(models.TransientModel):
         if self.qty_to_merkez > 0.0:
             self.create_replenishment(location_id=1, qty=self.qty_to_merkez)
 
-    
+
     def create_replenishment(self, location_id, qty):
         self.ensure_one()
         warehouse = self.env['stock.warehouse'].search([('id', '=', location_id)])
@@ -143,7 +144,7 @@ class CreateProcurementMove(models.TransientModel):
         group_id.run(product, product_qty, product_uom, location, "/", origin, values)
 
 
-    
+
     def create_procurement(self, group_id, location_id, qty):
         self.ensure_one()
         warehouse = self.env['stock.warehouse'].search([('id', '=', location_id.get_warehouse().id)])

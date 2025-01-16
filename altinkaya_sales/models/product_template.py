@@ -3,7 +3,6 @@ Created on Jan 17, 2019
 
 @author: cq
 """
-
 from odoo import models, fields, api, _
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
@@ -17,12 +16,12 @@ class ProductTemplateAttributeLine(models.Model):
     _inherit = "product.template.attribute.line"
     attr_base_price = fields.Float(
         "Base Price",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         help="Base price used to compute product price based on attribute value.",
     )
     attr_val_price_coef = fields.Float(
         "Value Price Multiplier",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         help="Attribute value coefficient used to compute product price based on attribute value.",
     )
     use_in_pricing = fields.Boolean("Use in pricing")
@@ -33,26 +32,26 @@ class ProductTemplate(models.Model):
 
     # for sale configurator
     attr_price = fields.Float(
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         string="Attr. Value Price",
         help="Price calculated based on the product's attribute values.",
         default=0.0,
     )
     v_tl_fiyat = fields.Float(
         "USD Fiyatı",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         help="Birim işçilik Fiyatı USD",
         default=0.0,
     )
     v_iscilik_fiyat = fields.Float(
         "işçilik Fiyatı USD",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         help="Birim işçilik Fiyatı USD",
         default=0.0,
     )
     v_min_iscilik_fiy = fields.Float(
         "Minimum işçilik Fiyatı USD",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         help="En Az Toplam işçilik Fiyatı USD",
         default=0.0,
     )
@@ -63,13 +62,13 @@ class ProductTemplate(models.Model):
     # altinkaya
     v_fiyat_dolar = fields.Float(
         "Dolar Fiyatı",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         help="Dolarla satılan ürünlerin fiyatı",
         default=0.0,
     )
     v_fiyat_euro = fields.Float(
         "Euro Fiyatı",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         help="Euro ile satılırken kullanılan temel fiyat",
         default=0.0,
     )
@@ -78,7 +77,7 @@ class ProductTemplate(models.Model):
         "Has production BoM", compute="_compute_has_production_bom", store=True
     )
 
-    @api.one
+    
     @api.depends("bom_ids", "bom_ids.type")
     def _compute_has_production_bom(self):
         self.has_production_bom = any(
@@ -119,11 +118,33 @@ class ProductTemplate(models.Model):
                 "date_order": fields.Datetime.now(),
             }
         )
-        batch = self.env["queue.job.batch"].get_new_batch("Compute Set Product Price")
-        for product in products_2compute:
-            product.with_context(job_batch=batch).with_delay(
-                channel="import_channel"
-            )._compute_single_set_product_price(dummy_so)
-        # # Clear the dummy sale order
-        # dummy_so.unlink()
+        for product in self.web_progress_iter(products_2compute, msg="Set ürünlerin fiyatı hesaplanıyor..."):
+            bom = self.env["mrp.bom"].sudo()._bom_find(product=product)
+            if not bom.type == "phantom":
+                continue
+            # Create a new sale order line
+            dummy_sol = self.env["sale.order.line"].create(
+                {
+                    "order_id": dummy_so.id,
+                    "product_id": product.id,
+                    "product_uom_qty": 1,
+                    "product_uom": product.uom_id.id,
+                    "price_unit": product.v_fiyat_dolar,
+                }
+            )
+            # Explode the phantom bom
+            dummy_sol.explode_set_contents()
+            # Compute the price
+            dummy_so.recalculate_prices()
+            # Update the product price
+            _logger.info(
+                "Updating product price for product %s: %s -> %s"
+                % (product.display_name, product.v_fiyat_dolar, dummy_so.amount_untaxed)
+            )
+            product.v_fiyat_dolar = dummy_so.amount_untaxed
+            # Clear sale order lines
+            dummy_so.order_line.unlink()
+        # Clear the dummy sale order
+        dummy_so.unlink()
+        self.env.cr.commit()
         return True

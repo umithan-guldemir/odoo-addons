@@ -4,13 +4,13 @@ from odoo import models, fields, api
 from odoo.tools.translate import html_translate
 
 
-class StockLocationRouteInherit(models.Model):
+class StockRouteInherit(models.Model):
     """
-    Inherit stock.location.route model to add mail activity
+    Inherit stock.route model to add mail activity
     """
 
-    _name = "stock.location.route"
-    _inherit = ["mail.thread", "stock.location.route"]
+    _name = "stock.route"
+    _inherit = ["mail.thread", "stock.route"]
 
     description = fields.Html(
         "Description for routes",
@@ -37,7 +37,7 @@ class StockLocationRouteInherit(models.Model):
                         "%s" % "<br>".join(route.rule_ids.mapped("name"))
                     }
                 )
-        res = super(StockLocationRouteInherit, self).write(vals)
+        res = super().write(vals)
         for route in self:
             if "rule_ids" in vals:
                 msg[route] += (

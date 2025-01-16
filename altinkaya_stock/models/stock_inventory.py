@@ -27,16 +27,17 @@ class StockInventory(models.Model):
         return res
 
 
-class StockInventoryLine(models.Model):
-    _inherit = "stock.inventory.line"
+# TODO: Stock Inventory / Stock Inventory Line do not exist in 16.0
+# class StockInventoryLine(models.Model):
+#     _inherit = "stock.inventory.line"
 
-    @api.constrains("product_id")
-    def _check_product_id(self):
-        """
-        Skip product type on negative_qty filter
-        :return:
-        """
-        if self.inventory_id.filter == "negative_qty":
-            return True
-        else:
-            return super(StockInventoryLine, self)._check_product_id()
+#     @api.constrains("product_id")
+#     def _check_product_id(self):
+#         """
+#         Skip product type on negative_qty filter
+#         :return:
+#         """
+#         if self.inventory_id.filter == "negative_qty":
+#             return True
+#         else:
+#             return super(StockInventoryLine, self)._check_product_id()
