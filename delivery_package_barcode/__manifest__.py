@@ -12,7 +12,11 @@
     "data": [
         "security/ir.model.access.csv",
         "wizard/delivery_package_barcode_wiz_views.xml",
-        "views/assets.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "delivery_package_barcode/static/src/js/delivery_package_barcode.js",
+        ],
+    },
     "installable": True,
 }
