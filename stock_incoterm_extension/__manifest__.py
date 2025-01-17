@@ -18,7 +18,7 @@
 
 {
     "name": "Stock Incoterm Extension",
-    "version": "8.0.1.0.0",
+    "version": "16.0.0.1.0",
     "license": "AGPL-3",
     "depends": ["stock_account",
                 "sale_stock",
@@ -31,7 +31,7 @@
     'data': ["security/ir.model.access.csv",
              "views/account_incoterm_view.xml",
              "views/stock_view.xml",
-             "views/account_invoice_view.xml",
+             "views/account_move_view.xml",
              "views/sale_order_view.xml",
             # "views/purchase_order_view.xml"
              ],

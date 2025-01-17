@@ -19,20 +19,22 @@
 from odoo import models, fields, api
 
 
-class AccountInvoice(models.Model):
-
-    _inherit = 'account.invoice'
+class AccountMove(models.Model):
+    _inherit = "account.move"
 
     @api.model
     def _get_selection_transport_type(self):
-        return self.env['sale.order'].fields_get(
-            allfields=['transport_type'])['transport_type']['selection']
+        return self.env["sale.order"].fields_get(allfields=["transport_type"])[
+            "transport_type"
+        ]["selection"]
 
-
-    req_destination_port = fields.Boolean(string="Requires destination port",
-                                          related="incoterm_id.destination_port")
-    req_transport_type = fields.Boolean(string="Requires transport type",
-                                        related="incoterm_id.transport_type")
+    req_destination_port = fields.Boolean(
+        string="Requires destination port", related="invoice_incoterm_id.destination_port"
+    )
+    req_transport_type = fields.Boolean(
+        string="Requires transport type", related="invoice_incoterm_id.transport_type"
+    )
     destination_port = fields.Char(string="Destination port")
     transport_type = fields.Selection(
-        selection='_get_selection_transport_type', string="Transport type")
+        selection="_get_selection_transport_type", string="Transport type"
+    )

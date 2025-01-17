@@ -15,9 +15,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-from . import account_incoterm
+from . import account_incoterms
+from . import account_move
 from . import sale_order
 from . import stock
-from . import account_invoice
-#from . import purchase_order
+from . import account_move
+# from . import purchase_order
