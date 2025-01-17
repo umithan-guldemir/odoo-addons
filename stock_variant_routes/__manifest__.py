@@ -3,7 +3,7 @@
 {
     "name": "Routes on product variants",
     "website": "www.codequarters.com",
-    "version": "13.0.0.1.0",
+    "version": "16.0.0.1.0",
     "description": "Adds variant specific routes",
     "author": "CODEQUARTERS",
     "depends": ["product", "stock"],

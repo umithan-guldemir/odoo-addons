@@ -12,6 +12,7 @@
         "delivery_integration_base",
         "altinkaya_sales",
         "barcodes_generator_product",
+        "partner_ranking",
     ],
     "data": [
         "views/stock_quant_view.xml",
