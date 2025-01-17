@@ -1,8 +1,7 @@
 # Copyright 2022 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo import api, fields, models
 
 
 class PurchaseOrder(models.Model):
@@ -30,7 +29,6 @@ class PurchaseOrder(models.Model):
             if order.partner_id and order.partner_id.property_purchase_pricelist:
                 order.pricelist_id = order.partner_id.property_purchase_pricelist
 
-    
     def recalculate_prices(self):
         for line in self.mapped("order_line"):
             dict = line._convert_to_write(line.read()[0])
@@ -45,7 +43,6 @@ class PurchaseOrder(models.Model):
             )
         return True
 
-    
     def recompute_descriptions(self):
         for line in self.mapped("order_line"):
             dict = line._convert_to_write(line.read()[0])
@@ -87,7 +84,6 @@ class PurchaseOrderLine(models.Model):
             )
         return res
 
-    
     def _get_display_price(self, product):
         supplier_info = product.seller_ids.filtered(
             lambda r: r.name == self.order_id.partner_id
