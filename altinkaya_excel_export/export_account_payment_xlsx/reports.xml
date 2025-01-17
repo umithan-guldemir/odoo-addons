@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="report_account_payment" model="ir.ui.view">
+        <field name="name">report.account.payment</field>
+        <field name="model">report.account.payment</field>
+        <field name="inherit_id" ref="excel_import_export.xlsx_report_view" />
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='criteria']" position="after">
+                Ödemeleri, Zirve Yazılım sistemine uygun şekilde çıktı almak için aşağıdaki butonları kullanınız.
+                <field name="results" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_account_payment_excel_export" model="ir.actions.act_window">
+        <field name="name">Ödemeler Excel</field>
+        <field name="res_model">report.account.payment</field>
+        <field name="binding_model_id" ref="account.model_account_payment" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field
+      name="context"
+    >{'template_domain': [('res_model', '=', 'report.account.payment'), ('fname', '=', 'payments.xlsx'), ('gname', '=', False)]}</field>
+    </record>
+
+</odoo>
