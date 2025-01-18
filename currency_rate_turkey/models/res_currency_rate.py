@@ -1,8 +1,12 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields
+
+# Copyright 2025 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 import logging
 
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -54,13 +58,11 @@ class ResCurrencyRateSecond(models.Model):
         digits=(12, 6),
         default=1.0,
         help="The second rate of the currency to the currency of rate 1",
-        string="Altinkaynak Buying",
     )
     altinkaynak_selling = fields.Float(
         digits=(12, 6),
         default=1.0,
         help="The second rate of the currency to the currency of rate 1",
-        string="Altinkaynak Selling",
     )
 
     #### INVERSE RATES ####
@@ -88,12 +90,10 @@ class ResCurrencyRateSecond(models.Model):
     altinkaynak_buying_inverse = fields.Float(
         digits=(12, 6),
         compute="_compute_inverse_rates",
-        string="Altinkaynak Buying Inverse",
     )
     altinkaynak_selling_inverse = fields.Float(
         digits=(12, 6),
         compute="_compute_inverse_rates",
-        string="Altinkaynak Selling Inverse",
     )
 
     def _compute_inverse_rates(self):

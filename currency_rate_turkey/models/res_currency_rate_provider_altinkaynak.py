@@ -1,12 +1,18 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api
-from datetime import datetime, timedelta, date
-from odoo.tools.translate import _
-from odoo.addons.currency_rate_turkey.models.altinkaynak_connector import (
+
+# Copyright 2025 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
+import logging
+from datetime import date, timedelta
+
+from altinkaynak_connector import (
     AltinkaynakConnector,
 )
-import logging
+
+from odoo import fields, models
+from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
@@ -23,12 +29,10 @@ class ResCurrencyRateProviderTCMB(models.Model):
             ("AltinkaynakBuying", _("Buying")),
             ("AltinkaynakSelling", _("Selling")),
         ],
-        string="Service Rate Type",
         default="AltinkaynakSelling",
         required=True,
     )
 
-    @api.multi
     def _get_supported_currencies(self):
         self.ensure_one()
         if self.service != "altinkaynak":
@@ -55,11 +59,12 @@ class ResCurrencyRateProviderTCMB(models.Model):
             "KWD",
         ]
 
-    @api.multi
     def _obtain_rates(self, base_currency, currencies, date_from, date_to):
         self.ensure_one()
         if self.service != "altinkaynak":
-            return super()._obtain_rates(base_currency, currencies, date_from, date_to)
+            return super()._obtain_rates(
+base_currency, currencies, date_from, date_to
+)
 
         invert_calculation = False
         if base_currency != "TRY":
@@ -85,7 +90,7 @@ class ResCurrencyRateProviderTCMB(models.Model):
                 self._action_log_update(rate_date)
             except Exception:
                 _logger.error(
-                    _("No currency rate on %s" % (date_from.strftime("%Y-%m-%d")))
+                    _("No currency rate on %s") % date_from.strftime("%Y-%m-%d")
                 )
         else:
             for single_date in daterange(date_from, date_to):
@@ -96,7 +101,7 @@ class ResCurrencyRateProviderTCMB(models.Model):
                     self._action_log_update(rate_date)
                 except Exception:
                     _logger.error(
-                        _("No currency rate on %s" % (single_date.strftime("%Y-%m-%d")))
+                        _("No currency rate on %s") % single_date.strftime("%Y-%m-%d")
                     )
                     continue
 

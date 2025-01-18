@@ -1,13 +1,14 @@
 # Copyright 2021 Yiğit Budak (https://github.com/yibudak)
-# -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+# Copyright 2025 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 import logging
-from sys import exc_info
-from odoo.exceptions import UserError
-from odoo.tools import float_compare
-from odoo.addons.currency_rate_turkey.models.res_currency_rate import RATE_FIELD_MAPPING
 
+from models.res_currency_rate import RATE_FIELD_MAPPING
+
+from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -15,7 +16,6 @@ _logger = logging.getLogger(__name__)
 class ResCurrencyRateProviderSecondRate(models.Model):
     _inherit = "res.currency.rate.provider"
 
-    @api.multi
     def _update(self, date_from, date_to, newest_only=False):
         Currency = self.env["res.currency"]
         CurrencyRate = self.env["res.currency.rate"]
@@ -28,30 +28,25 @@ class ResCurrencyRateProviderSecondRate(models.Model):
                     date_from,
                     date_to,
                 ).items()
-            except:
-                e = exc_info()[1]
+            except Exception as e:
                 _logger.warning(
-                    'Currency Rate Provider "%s" failed to obtain data since'
-                    " %s until %s"
-                    % (
-                        provider.name,
-                        date_from,
-                        date_to,
-                    ),
+                    f"""Currency Rate Provider "{provider.name}" failed to
+                    obtain data since {date_from} until {date_to}""",
                     exc_info=True,
                 )
                 provider.message_post(
                     subject=_("Currency Rate Provider Failure"),
                     body=_(
-                        'Currency Rate Provider "%s" failed to obtain data'
-                        " since %s until %s:\n%s"
+                        """Currency Rate Provider "%(provider_name)s"
+                        failed to obtain data since
+                        %(date_from)s until %(date_to)s:\n%(error)s"""
                     )
-                    % (
-                        provider.name,
-                        date_from,
-                        date_to,
-                        str(e) if e else _("N/A"),
-                    ),
+                    % {
+                        "provider_name": provider.name,
+                        "date_from": date_from,
+                        "date_to": date_to,
+                        "error": str(e) if e else _("N/A"),
+                    },
                 )
                 continue
 
@@ -115,7 +110,6 @@ class ResCurrencyRateProviderSecondRate(models.Model):
                             if is_main_rate:
                                 vals["rate"] = rate
                             record = CurrencyRate.create(vals)
-                        self.env.cr.commit()
 
             if is_scheduled:
                 provider._schedule_next_run()

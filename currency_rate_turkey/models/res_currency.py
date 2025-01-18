@@ -1,8 +1,13 @@
 # Copyright 2023 Yiğit Budak (https://github.com/yibudak)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import models, fields, api, _
-from datetime import timedelta
+
+# Copyright 2025 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 import logging
+from datetime import timedelta
+
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -12,13 +17,11 @@ class ResCurrency(models.Model):
 
     main_rate_field = fields.Selection(
         selection=lambda self: self.env["res.currency.rate"]._get_rate_fields(),
-        string="Main Rate Field",
         required=True,
     )
 
     second_rate_field = fields.Selection(
         selection=lambda self: self.env["res.currency.rate"]._get_rate_fields(),
-        string="Second Rate Field",
         required=True,
     )
 
