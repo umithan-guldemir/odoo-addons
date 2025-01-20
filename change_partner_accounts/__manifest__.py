@@ -9,7 +9,7 @@
     "category": "Accounting",
     "version": "13.0.0.1.0",
     # any module necessary for this one to work correctly
-    "depends": ["base", "account", "account_financial_risk"],
+    "depends": ["base", "altinkaya_base", "account", "account_financial_risk"],
     # always loaded
     "data": [
         # 'security/ir.model.access.csv',
