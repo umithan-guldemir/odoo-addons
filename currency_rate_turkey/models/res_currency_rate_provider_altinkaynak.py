@@ -7,7 +7,7 @@
 import logging
 from datetime import date, timedelta
 
-from altinkaynak_connector import (
+from .altinkaynak_connector import (
     AltinkaynakConnector,
 )
 
@@ -23,6 +23,7 @@ class ResCurrencyRateProviderTCMB(models.Model):
     service = fields.Selection(
         selection_add=[("altinkaynak", "Altinkaynak")],
         default="altinkaynak",
+        ondelete={"altinkaynak": "cascade"},
     )
     service_rate_type = fields.Selection(
         [

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-
-        <record id="res_partner_form_view_marketing" model="ir.ui.view">
+        <!-- TODO: Add l10n_eu_nace missing views, they migrated to res.partner.industry -->
+        <!-- <record id="res_partner_form_view_marketing" model="ir.ui.view">
             <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>
             <field name="priority" eval="100"/>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-            <!-- TODO: Add l10n_eu_nace missing views -->
+
                 <xpath expr="//page[@name='NACE']" position="inside">
                     <group string="Main Worksector" name="marketing">
 
@@ -24,7 +24,7 @@
                     </group>
                 </xpath>
             </field>
-        </record>
+        </record> -->
 
         <record id="res_partner_worksector_form_view" model="ir.ui.view">
             <field name="name">partner.worksector.form</field>

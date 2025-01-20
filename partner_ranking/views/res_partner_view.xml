@@ -12,8 +12,8 @@
                 </field>
             </field>
         </record>
-
-        <record id="res_partner_form_view" model="ir.ui.view">
+        <!-- TODO: fix partner_worksector view before this -->
+        <!-- <record id="res_partner_form_view" model="ir.ui.view">
             <field name="name">res.partner.form.inherit</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="partner_worksector.res_partner_form_view_marketing"/>
@@ -24,10 +24,10 @@
                		<field name="ranking" readonly="1"/>
                		</group>
 					<group>
-					</group>               	    
+					</group>
                	</group>
                  </xpath>
             </field>
-        </record>
+        </record> -->
     </data>
 </odoo>

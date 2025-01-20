@@ -6,7 +6,6 @@ from odoo.exceptions import UserError
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    
     @api.depends("property_account_receivable_id", "property_account_payable_id")
     def _get_partner_currency(self):
         for partner in self:
@@ -21,7 +20,6 @@ class ResPartner(models.Model):
             else:
                 partner.partner_currency_id = partner.sudo().company_id.currency_id
 
-    
     @api.depends("move_line_ids")
     def _compute_balance_fields(self):
         """
@@ -31,50 +29,50 @@ class ResPartner(models.Model):
         if not self.ids:
             return True
         query = """
-        UPDATE 
-          res_partner rp 
-        SET 
-          balance_due = CASE WHEN due_balance_table.due_balance > 0 THEN due_balance_table.due_balance ELSE 0 END, 
-          currency_balance_due = CASE WHEN due_balance_table.due_amount_currency > 0 THEN due_balance_table.due_amount_currency ELSE 0 END, 
-          balance = balance_table.balance, 
+        UPDATE
+          res_partner rp
+        SET
+          balance_due = CASE WHEN due_balance_table.due_balance > 0 THEN due_balance_table.due_balance ELSE 0 END,
+          currency_balance_due = CASE WHEN due_balance_table.due_amount_currency > 0 THEN due_balance_table.due_amount_currency ELSE 0 END,
+          balance = balance_table.balance,
           currency_balance = balance_table.amount_currency
-        FROM 
+        FROM
           (
-            SELECT 
-              aml.partner_id AS partner_id, 
-              SUM(aml.debit) - SUM(aml.credit) AS due_balance, 
-              SUM(aml.amount_currency) AS due_amount_currency 
-            FROM 
-              account_move_line aml 
-              LEFT JOIN account_account aa ON aa.id = aml.account_id 
-            WHERE 
-              aa.internal_type IN ('receivable', 'payable') 
-              AND NOT aa.deprecated 
-              AND aml.date >= '2021-01-01' 
-              AND aml.date_maturity <= CURRENT_DATE 
-              AND aml.partner_id IN %s 
-            GROUP BY 
+            SELECT
+              aml.partner_id AS partner_id,
+              SUM(aml.debit) - SUM(aml.credit) AS due_balance,
+              SUM(aml.amount_currency) AS due_amount_currency
+            FROM
+              account_move_line aml
+              LEFT JOIN account_account aa ON aa.id = aml.account_id
+            WHERE
+              aa.internal_type IN ('receivable', 'payable')
+              AND NOT aa.deprecated
+              AND aml.date >= '2021-01-01'
+              AND aml.date_maturity <= CURRENT_DATE
+              AND aml.partner_id IN %s
+            GROUP BY
               aml.partner_id
-          ) AS due_balance_table, 
+          ) AS due_balance_table,
           (
-            SELECT 
-              aml.partner_id AS partner_id, 
-              SUM(aml.debit) - SUM(aml.credit) AS balance, 
-              SUM(aml.amount_currency) AS amount_currency 
-            FROM 
-              account_move_line aml 
-              LEFT JOIN account_account aa ON aa.id = aml.account_id 
-            WHERE 
-              aa.internal_type IN ('receivable', 'payable') 
-              AND NOT aa.deprecated 
-              AND aml.date >= '2021-01-01' 
-              AND aml.partner_id IN %s 
-            GROUP BY 
+            SELECT
+              aml.partner_id AS partner_id,
+              SUM(aml.debit) - SUM(aml.credit) AS balance,
+              SUM(aml.amount_currency) AS amount_currency
+            FROM
+              account_move_line aml
+              LEFT JOIN account_account aa ON aa.id = aml.account_id
+            WHERE
+              aa.internal_type IN ('receivable', 'payable')
+              AND NOT aa.deprecated
+              AND aml.date >= '2021-01-01'
+              AND aml.partner_id IN %s
+            GROUP BY
               aml.partner_id
-          ) AS balance_table 
-        WHERE 
-          rp.id = due_balance_table.partner_id 
-          AND rp.id = balance_table.partner_id 
+          ) AS balance_table
+        WHERE
+          rp.id = due_balance_table.partner_id
+          AND rp.id = balance_table.partner_id
           AND rp.id IN %s;
 
         """
@@ -126,20 +124,23 @@ class ResPartner(models.Model):
         store=True,
     )
 
-    
     def _compute_has_2breconciled(self):
         domain = [
             "&",
             "&",
             "&",
             "|",
-            ("account_id.internal_type", "=", "payable"),
-            ("account_id.internal_type", "=", "receivable"),
+            ("account_id.account_type", "=", "payable"),
+            ("account_id.account_type", "=", "receivable"),
             ("full_reconcile_id", "=", False),
             ("journal_id.code", "not in", ("ADVR", "KFARK")),
         ]
 
         for partner in self:
+            # Always assign a value to the fields
+            partner.has_2breconciled_customer = False
+            partner.has_2breconciled_supplier = False
+
             if partner.customer:
                 aml_to_reconcile = partner.env["account.move.line"].search(
                     domain + [("partner_id", "=", partner.id), ("credit", ">", 0)],
@@ -163,8 +164,8 @@ class ResPartner(models.Model):
             "&",
             "&",
             "|",
-            ("account_id.internal_type", "=", "payable"),
-            ("account_id.internal_type", "=", "receivable"),
+            ("account_id.account_type", "=", "payable"),
+            ("account_id.account_type", "=", "receivable"),
             ("full_reconcile_id", "=", False),
             ("journal_id.code", "not in", ("ADVR", "KFARK")),
         ]
@@ -182,11 +183,9 @@ class ResPartner(models.Model):
         ]
         return [("id", "in", result)]
 
-    
     def _search_has_2breconciled_customer(self, operator, operand):
         return self._search_has_2breconciled("customer")
 
-    
     def _search_has_2breconciled_supplier(self, operator, operand):
         return self._search_has_2breconciled("supplier")
 
@@ -206,7 +205,6 @@ class ResPartner(models.Model):
         store=False,
     )
 
-    
     def change_accounts_to_usd(self):
         """Change partners receivable and payable account to USD and update move lines accordingly"""
         if self.parent_id:
@@ -273,7 +271,6 @@ class ResPartner(models.Model):
                 )
             )
 
-    
     def change_accounts_to_eur(self):
         """Change partners receivable and payable account to eur and update move lines accordingly"""
         if self.parent_id:
@@ -339,7 +336,6 @@ class ResPartner(models.Model):
                 )
             )
 
-    
     def change_accounts_to_try(self):
         """Change partners receivable and payable account to company currency and donot update move lines"""
         if self.parent_id:
