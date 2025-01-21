@@ -1,3 +1,6 @@
+# Copyright 2025 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 from odoo import api, fields, models
 from odoo.tools import float_compare
 
@@ -5,9 +8,9 @@ from odoo.tools import float_compare
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    acquirer_id = fields.Many2one(
-        "payment.acquirer",
-        related="transaction_ids.acquirer_id",
+    provider_id = fields.Many2one(
+        "payment.provider",
+        related="transaction_ids.provider_id",
         store=True,
     )
     payment_currency_id = fields.Many2one(
@@ -41,11 +44,10 @@ class SaleOrder(models.Model):
         store=True,
     )
 
-    
     def action_confirm_payment(self):
         aw_obj = self.env["ir.actions.act_window"]
-        action = aw_obj.for_xml_id(
-            "sale_confirm_payment", "action_confirm_payment_sale"
+        action = aw_obj._for_xml_id(
+            "sale_confirm_payment.action_confirm_payment_sale"
         )
         return action
 

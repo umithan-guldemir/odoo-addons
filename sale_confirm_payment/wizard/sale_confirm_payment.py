@@ -1,3 +1,6 @@
+# Copyright 2025 Ismail Cagan Yilmaz (https://github.com/milleniumkid)
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -7,17 +10,15 @@ class SaleConfirmPayment(models.TransientModel):
     _description = "Sale Confirm Payment"
 
     transaction_id = fields.Many2one("payment.transaction", readonly=True)
-    acquirer_id = fields.Many2one("payment.acquirer", required=True)
-    amount = fields.Monetary(string="Amount", required=True)
+    provider_id = fields.Many2one("payment.provider", required=True)
+    amount = fields.Monetary(required=True)
     currency_id = fields.Many2one("res.currency")
-    payment_date = fields.Date(
-        string="Payment Date", required=True, default=fields.Date.context_today
-    )
+    payment_date = fields.Date(required=True, default=fields.Date.context_today)
     order_id = fields.Many2one(comodel_name="sale.order")
 
     @api.model
     def default_get(self, fields_list):
-        defaults = super(SaleConfirmPayment, self).default_get(fields_list)
+        defaults = super().default_get(fields_list)
         active_id = self.env.context.get("active_id", False)
         if not active_id:
             raise UserError(_("Please select a sale order"))
@@ -26,10 +27,10 @@ class SaleConfirmPayment(models.TransientModel):
         defaults["currency_id"] = order.currency_id.id
         defaults["order_id"] = active_id
 
-        tx = order.sudo().transaction_ids.get_last_transaction()
+        tx = order.sudo().transaction_ids._get_last()
         if tx and tx.state in ["pending", "authorized"]:
             defaults["transaction_id"] = tx.id
-            defaults["acquirer_id"] = tx.acquirer_id.id
+            defaults["provider_id"] = tx.provider_id.id
             defaults["amount"] = tx.amount
 
         return defaults
@@ -44,20 +45,20 @@ class SaleConfirmPayment(models.TransientModel):
             transaction = self.env["payment.transaction"].create(
                 {
                     "amount": self.amount,
-                    "acquirer_id": self.acquirer_id.id,
-                    "acquirer_reference": self.order_id.name,
+                    "provider_id": self.provider_id.id,
+                    "provider_reference": self.order_id.name,
                     "partner_id": self.order_id.partner_id.id,
                     "sale_order_ids": [(4, self.order_id.id, False)],
                     "currency_id": self.currency_id.id,
-                    "date": self.payment_date,
+                    "create_date": self.payment_date,
                     "state": "draft",
                 }
             )
 
         if transaction.state != "done":
             transaction = transaction.with_context(payment_date=self.payment_date)
-            transaction._set_transaction_pending()
-            transaction._set_transaction_done()
+            transaction._set_pending()
+            transaction._set_done()
             transaction._post_process_after_done()
         return transaction
 
