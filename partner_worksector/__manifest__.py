@@ -17,5 +17,6 @@
         "views/partner_view.xml",
     ],
     "installable": True,
+    "license": "LGPL-3",
     "auto_install": False,
 }

@@ -5,6 +5,7 @@
     'website': 'https://www.codequarters.com',
     'category': 'Sales',
     'summary': 'Altinkaya Partner Ranking',
+    'license': 'LGPL-3',
     'description': """
 	 """,
     'depends': [

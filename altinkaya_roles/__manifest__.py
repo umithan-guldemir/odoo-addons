@@ -3,6 +3,7 @@
     "version": "16.0.0.1.0",
     "category": "General",
     "author": "MAkifOzdemir,Codequarters",
+    "license": "LGPL-3",
     "description": """
     Altınkaya Roles
     """,
