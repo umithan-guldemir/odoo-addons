@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
         <template id="report_hr_employee_annual_data">
@@ -17,34 +17,38 @@
                     }
                 </style>
                 <div class="header" style="font-size:12pt;">
-                    <t t-set="value" t-value="True"/>
+                    <t t-set="value" t-value="True" />
                     <t t-foreach="docs" t-as="o">
                         <t t-if="value">
                             <table class="table table-bordered" style="font-size:16pt">
                                 <tr>
                                     <td style="width:400px">
                                         Amiri :
-                                        <span t-field="o.parent_id.name"/>
+                                        <span t-field="o.parent_id.name" />
                                     </td>
                                     <td style="width:400px">
                                     </td>
                                     <td class="text-right" style="width:400px">
                                         Tarih :
-                                        <span t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
-                                              t-options="{'widget': 'date'}"/>
+                                        <span
+                      t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                      t-options="{'widget': 'date'}"
+                    />
                                     </td>
                                 </tr>
 
 
                             </table>
-                            <t t-set="value" t-value="False"/>
+                            <t t-set="value" t-value="False" />
                         </t>
                     </t>
                 </div>
                 <div class="page">
                     <div class="row">
                         <div class="col-12">
-                            <t t-call="altinkaya_reports.altinkaya_hr_employee_annual_report_data_table"/>
+                            <t
+                t-call="altinkaya_reports.altinkaya_hr_employee_annual_report_data_table"
+              />
                         </div>
                     </div>
                 </div>
@@ -54,15 +58,15 @@
                             <ul class="list-inline">
                                 <li class="list-inline-item">Sayfa:</li>
                                 <li class="list-inline-item">
-                                    <span class="page"/>
+                                    <span class="page" />
                                 </li>
                                 <li class="list-inline-item">/</li>
                                 <li class="list-inline-item">
-                                    <span class="topage"/>
+                                    <span class="topage" />
                                 </li>
                                 <li class="list-inline-item">
                                     Yazdıran:
-                                    <span t-field="user.name"/>
+                                    <span t-field="user.name" />
                                 </li>
                             </ul>
                         </div>
@@ -84,17 +88,23 @@
                     <th style="width:100px">Amir ile Uyum</th>
                     <th style="width:100px">Arkadaşları ile Uyum</th>
                     <th style="width:100px">Şirkete Sadakat</th>
-                    <th style="width:500px">Yorum (Kutulara 1 çok kötü – 10 çok iyi aralığında puan verin, yorum
+                    <th
+            style="width:500px"
+          >Yorum (Kutulara 1 çok kötü – 10 çok iyi aralığında puan verin, yorum
                         kutusuna değerlendirmenizi yapın. Zarfı kapatıp size formu verene elden iade edin)
                     </th>
                 </tr>
                 <tr t-foreach="docs" t-as="o" style="height:100px">
                     <td class="text-center">
-                        <img t-if="o.image_small" t-att-src="image_data_uri(o.image_small)" style="height:90px"
-                             class="img img-responsive"/>
+                        <img
+              t-if="o.image_small"
+              t-att-src="image_data_uri(o.image_small)"
+              style="height:90px"
+              class="img img-responsive"
+            />
                     </td>
                     <td class="text-center">
-                        <span t-field="o.name"/>
+                        <span t-field="o.name" />
                     </td>
                     <td>
                     </td>

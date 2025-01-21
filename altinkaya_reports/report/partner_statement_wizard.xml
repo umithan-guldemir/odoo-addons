@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 	<template id="report_partner_statement_wizard_document">
 		<!-- <t t-call="web.html_container">
@@ -14,8 +14,7 @@
 				<div class="header" style="font-size:10pt">
 					<div class="row" style="border-bottom:2px solid black;margin">
 						<div class="col-7">
-							<img src="/altinkaya_reports/static/img/altinkaya.svg"
-								style="max-height:30px" />
+							<img src="/altinkaya_reports/static/img/altinkaya.svg" style="max-height:30px" />
 							<br />
 							<br />
 							<strong style="font-size:12pt">ALTINKAYA ELEKTRONİK CİHAZ KUTULARI SAN.
@@ -64,8 +63,7 @@
 
 				</div>
 				<div class="footer">
-					<div class="row"
-						style="border-top:2px solid black;font-size:14pt">
+					<div class="row" style="border-top:2px solid black;font-size:14pt">
 						<div class="col-12 text-center">
 							<span>Telefon: +90 312 395 2768 | Faks: +90 312 395 2772 |
 								www.altinkaya.com | İvedik Vergi Dairesi 0610422947
@@ -97,10 +95,10 @@
 											</strong>
 											<br />
 											<span>
-												<span t-esc="o.partner_id._display_address()"></span>
-												<!-- <span t-esc="o.partner_id.street" /> , <span t-esc="o.partner_id.street2" 
-													/> , <span t-esc="o.partner_id.city" /> <span t-esc="o.partner_id.state_id.name" 
-													/> - <span t-esc="o.partner_id.zip" /> , <span t-esc="o.partner_id.country_id.name" 
+												<span t-esc="o.partner_id._display_address()" />
+												<!-- <span t-esc="o.partner_id.street" /> , <span t-esc="o.partner_id.street2"
+													/> , <span t-esc="o.partner_id.city" /> <span t-esc="o.partner_id.state_id.name"
+													/> - <span t-esc="o.partner_id.zip" /> , <span t-esc="o.partner_id.country_id.name"
 													/> -->
 											</span>
 											<br />
@@ -134,8 +132,9 @@
 										</td>
 										<td>
 											<span
-												t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
-												t-options="{'widget': 'date'}" />
+                  t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                  t-options="{'widget': 'date'}"
+                />
 											<br />
 											<t t-if="o.partner_id.tax_office_name">
 											<span t-esc="o.partner_id.tax_office_name" />
@@ -161,9 +160,9 @@
 										<th>Debit</th>
 										<th>Credit</th>
 										<th>Balance</th>
-										<th></th>
+										<th />
 									</tr>
-									<t t-set="number_lang" t-value="env['res.lang']._lang_get(user.lang)"/>
+									<t t-set="number_lang" t-value="env['res.lang']._lang_get(user.lang)" />
 
 										<t t-set="toplamBakiye" t-value="0" />
 										<t t-set="toplamBorc" t-value="0" />
@@ -188,18 +187,15 @@
 														<span t-esc="s['description']" />
 													</td>
 												<td class="text-right" style="padding:0;">
-													<span t-raw="number_lang.format('%.2f', s['debit'],grouping=True, monetary=True)"
-													 />
+													<span t-raw="number_lang.format('%.2f', s['debit'],grouping=True, monetary=True)" />
 
 												</td>
 												<td class="text-right" style="padding:0;">
-													<span t-raw="number_lang.format('%.2f', s['credit'],grouping=True, monetary=True)"
-													 />
+													<span t-raw="number_lang.format('%.2f', s['credit'],grouping=True, monetary=True)" />
 
 												</td>
 												<td class="text-right" style="padding:0;">
-													<span t-raw="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)"
-													 />
+													<span t-raw="number_lang.format('%.2f', s['balance'],grouping=True, monetary=True)" />
 
 													<!-- t-options='{"widget": "monetary", "display_currency": None}' -->
 												</td>
@@ -208,31 +204,28 @@
 													</td>
 												<t t-value="s['dc']" t-set="sdc" />
 												<t t-value="'%.2f' %s['balance']" t-set="toplamBakiye" />
-												<t t-set="toplamBorc" t-value="toplamBorc + s['debit']"/>
-												<t t-set="toplamAlacak" t-value="toplamAlacak + s['credit']"/>
+												<t t-set="toplamBorc" t-value="toplamBorc + s['debit']" />
+												<t t-set="toplamAlacak" t-value="toplamAlacak + s['credit']" />
 												</tr>
 											</t>
 <tr>
-											<td style="padding:0;"></td>
-											<td style="padding:0;"></td>
-											<td style="padding:0;"></td>
-											<td style="padding:0;"></td>
+											<td style="padding:0;" />
+											<td style="padding:0;" />
+											<td style="padding:0;" />
+											<td style="padding:0;" />
 											<td class="text-right" style="padding:0;">
 												TOTAL
 											</td>
 											<td class="text-right" style="padding:0;">
-												<span t-esc="'{:,.2f}'.format(float(toplamBorc))"
-												 />
+												<span t-esc="'{:,.2f}'.format(float(toplamBorc))" />
 
 											</td>
 											<td class="text-right" style="padding:0;">
-												<span t-esc="'{:,.2f}'.format(float(toplamAlacak))"
-												 />
+												<span t-esc="'{:,.2f}'.format(float(toplamAlacak))" />
 
 											</td>
 											<td class="text-right" style="padding:0;">
-												<span t-esc="'{:,}'.format(float(toplamBakiye))"
-												 />
+												<span t-esc="'{:,}'.format(float(toplamBakiye))" />
 
 											</td>
 											<td class="text-right" style="padding:0;">
@@ -252,18 +245,17 @@
 			</t>
 		</t> -->
 	</template>
-	<template
-		id="altinkaya_reports.report_partner_statement_wizard"
-		priority="151">
+	<template id="altinkaya_reports.report_partner_statement_wizard" priority="151">
 		<t t-call="web.html_container">
 			<t t-call="web.basic_layout">
 				<t t-foreach="docs" t-as="o">
 					<t
-						t-call="altinkaya_reports.report_partner_statement_wizard_document"
-						t-lang="o.partner_id.lang" />
+            t-call="altinkaya_reports.report_partner_statement_wizard_document"
+            t-lang="o.partner_id.lang"
+          />
 				</t>
 			</t>
 		</t>
 	</template>
-	
+
 </odoo>

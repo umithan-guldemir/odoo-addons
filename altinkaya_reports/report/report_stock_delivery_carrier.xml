@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
         <template id="report_delivery_carrier_report_data">
@@ -17,7 +17,10 @@
                     }
                 </style>
                 <div class="header" style="font-size:12pt;">
-                            <table class="table table-borderless" style="font-size:16pt">
+                            <table
+            class="table table-borderless"
+            style="font-size:16pt"
+          >
                                 <tr>
                                     <td>
                                         KARGO TESLİMAT TUTANAĞI
@@ -27,8 +30,10 @@
                                     </td>
                                     <td class="text-right">
                                         Tarih :
-                                    <span t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
-                                          t-options="{'widget': 'date'}"/>
+                                    <span
+                  t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                  t-options="{'widget': 'date'}"
+                />
                                     </td>
                                 </tr>
                             </table>
@@ -40,19 +45,20 @@
                                 <tr>
                                     <td class="text-center" style="width:500px">
                                         <span>Teslim Eden</span>
-                                        <br/>
-                                        <span t-field="user.name"/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
+                                        <br />
+                                        <span t-field="user.name" />
+                                        <br />
+                                        <br />
+                                        <br />
                                     </td>
                                     <td class="text-center" style="width:500px">
-                                        <span>Yukarıda listelenmiş paketleri teslim aldım.</span>
-                                        <br/>
+                                        <span
+                    >Yukarıda listelenmiş paketleri teslim aldım.</span>
+                                        <br />
                                         <span>Adı Soyadı İmza:</span>
-                                        <br/>
-                                        <br/>
-                                        <br/>
+                                        <br />
+                                        <br />
+                                        <br />
                                     </td>
                                 </tr>
 
@@ -65,16 +71,18 @@
                             <ul class="list-inline">
                                 <li class="list-inline-item">Sayfa:</li>
                                 <li class="list-inline-item">
-                                    <span class="page"/>
+                                    <span class="page" />
                                 </li>
                                 <li class="list-inline-item">/</li>
                                 <li class="list-inline-item">
-                                    <span class="topage"/>
+                                    <span class="topage" />
                                 </li>
                                 <li class="list-inline-item">
                                     Tarih:
-                                    <span t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
-                                          t-options="{'widget': 'date'}"/>
+                                    <span
+                    t-esc="datetime.datetime.strptime(context_timestamp(datetime.datetime.now()).strftime('%d/%m/%y %H:%M'),'%d/%m/%y %H:%M')"
+                    t-options="{'widget': 'date'}"
+                  />
                                 </li>
                             </ul>
                         </div>
@@ -85,35 +93,61 @@
                 <div class="page">
                     <div class="row">
                         <div class="col-12">
-                            <table class="table table-bordered" style="page-break-inside:avoid;">
+                            <table
+                class="table table-bordered"
+                style="page-break-inside:avoid;"
+              >
                                 <tr>
-                                    <th class="text-center" style="width:170px">SEVK NO</th>
-                                    <th class="text-center" style="width:400px">ALICI</th>
-                                    <th class="text-center" style="width:100px">REF. NO</th>
-                                    <th class="text-center" style="width:200px">KARGO ŞEKLİ</th>
-                                    <th class="text-center" style="width:120px">ŞEHİR</th>
-                                    <th class="text-center" style="width:100px">DESİ</th>
+                                    <th
+                    class="text-center"
+                    style="width:170px"
+                  >SEVK NO</th>
+                                    <th
+                    class="text-center"
+                    style="width:400px"
+                  >ALICI</th>
+                                    <th
+                    class="text-center"
+                    style="width:100px"
+                  >REF. NO</th>
+                                    <th
+                    class="text-center"
+                    style="width:200px"
+                  >KARGO ŞEKLİ</th>
+                                    <th
+                    class="text-center"
+                    style="width:120px"
+                  >ŞEHİR</th>
+                                    <th
+                    class="text-center"
+                    style="width:100px"
+                  >DESİ</th>
                                 </tr>
-                                <tr t-foreach="docs.sorted(lambda x: x.partner_id.display_name)" t-as="o">
+                                <tr
+                  t-foreach="docs.sorted(lambda x: x.partner_id.display_name)"
+                  t-as="o"
+                >
                                     <td class="text-center">
-                                        <span t-esc="o.display_name"/>
+                                        <span t-esc="o.display_name" />
                                     </td>
                                     <td class="text-center">
-                                        <span t-field="o.partner_id.display_name"/>
+                                        <span t-field="o.partner_id.display_name" />
                                     </td>
                                     <td class="text-center">
-                                        <span t-field="o.carrier_tracking_ref"/>
+                                        <span t-field="o.carrier_tracking_ref" />
                                     </td>
                                     <td class="text-center">
-                                        <span t-field="o.carrier_id.name"/>
+                                        <span t-field="o.carrier_id.name" />
                                     </td>
                                     <td class="text-center">
-                                        <span t-field="o.partner_id.district_id.name"/>
-                                        <br/>
-                                        <span t-field="o.partner_id.state_id.name"/>
+                                        <span t-field="o.partner_id.district_id.name" />
+                                        <br />
+                                        <span t-field="o.partner_id.state_id.name" />
                                     </td>
                                     <td class="text-center">
-                                        <span t-field="o.carrier_package_count"/>x<span t-field="o.picking_total_weight"/>
+                                        <span t-field="o.carrier_package_count" />x<span
+                      t-field="o.picking_total_weight"
+                    />
                                     </td>
                                 </tr>
                             </table>

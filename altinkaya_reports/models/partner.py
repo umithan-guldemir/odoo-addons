@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -19,10 +18,9 @@
 #
 ##############################################################################
 
-import time
 from datetime import date, datetime
-from odoo.exceptions import UserError
-from odoo import models, fields, api
+
+from odoo import models
 from odoo.tools.translate import _
 
 
@@ -31,11 +29,9 @@ class Partner(models.Model):
 
     # use_secondary_currency = fields.Boolean(string="Ekstrede çift para birimi yazdır",default=False)
 
-    
     def _get_statement_data_currency(self, data=None):
         return self._get_statement_data(self)
 
-    
     def _get_statement_data(self, data=None):
         # self = self.with_context(lang=self.commercial_partner_id.lang)
         statement_data2 = {}
@@ -45,26 +41,26 @@ class Partner(models.Model):
         balance, seq = 0.0, 0
         currency_balance = 0.0
         Currency = self.env["res.currency"]
-        end_date = ctx.get("date_end") or '%s-12-31' % date.today().year
+        end_date = ctx.get("date_end") or "%s-12-31" % date.today().year
 
         if ctx.get("date_start"):
             user_start_date = ctx.get("date_start")
         else:
             if date.today().month < 3:
-                user_start_date = '%s-01-01' % (int(date.today().year) - 1)
+                user_start_date = "%s-01-01" % (int(date.today().year) - 1)
             else:
-                user_start_date = '%s-01-01' % int(date.today().year)
+                user_start_date = "%s-01-01" % int(date.today().year)
         start_date = "2022-01-01"
-        move_type = ("payable", "receivable")
+        move_type = ("liability_payable", "asset_receivable")
 
-        query = """SELECT L.full_reconcile_id, L.DATE, A.CODE, A.CURRENCY_ID as ACCOUNT_CURRENCY,
+        query = f"""SELECT L.full_reconcile_id, L.DATE, A.CODE, A.CURRENCY_ID as ACCOUNT_CURRENCY,
     	AJ.NAME AS JOURNAL,	AM.NAME,INV.NUMBER, INV.SUPPLIER_INVOICE_NuMBER,L.MOVE_ID,L.DATE_MATURITY AS DUE_DATE,
-    
+
     	CASE
     					WHEN INV.SUPPLIER_INVOICE_NuMBER IS NOT NULL THEN INV.SUPPLIER_INVOICE_NuMBER
     					ELSE INV.NUMBER
-    	END AS INNUMBER,    
-    
+    	END AS INNUMBER,
+
     	CASE
     					WHEN INV.NUMBER IS NOT NULL THEN AJ.NAME
     					ELSE AJ.NAME
@@ -94,18 +90,13 @@ class Partner(models.Model):
         FROM ACCOUNT_MOVE_LINE AS L
         LEFT JOIN ACCOUNT_ACCOUNT A ON (L.ACCOUNT_ID = A.ID) LEFT JOIN ACCOUNT_MOVE AM ON (L.MOVE_ID = AM.ID)
         LEFT JOIN ACCOUNT_JOURNAL AJ ON (AM.JOURNAL_ID = AJ.ID) LEFT JOIN ACCOUNT_ACCOUNT_TYPE AT ON (A.USER_TYPE_ID = AT.ID)
-        LEFT JOIN ACCOUNT_INVOICE INV ON (L.INVOICE_ID = INV.ID)
-        WHERE (L.DATE BETWEEN '{0}' AND '{1}')
-        AND L.PARTNER_ID = {2}
-        AND AT.TYPE IN {3}
+        LEFT JOIN ACCOUNT_MOVE INV ON (L.INVOICE_ID = INV.ID)
+        WHERE (L.DATE BETWEEN '{str(start_date)}' AND '{str(end_date)}')
+        AND L.PARTNER_ID = {str(self.commercial_partner_id.id)}
+        AND AT.TYPE IN {str(move_type)}
         GROUP BY AJ.NAME, A.CODE, A.CURRENCY_ID, L.MOVE_ID,	AM.NAME,	AM.STATE,	L.DATE,	L.DATE_MATURITY,	L.CURRENCY_ID,	L.COMPANY_CURRENCY_ID,
         INV.NUMBER,INV.SUPPLIER_INVOICE_NUMBER,	AJ.ID,	L.ACCOUNT_ID, L.FULL_RECONCILE_ID
-        ORDER BY ACCOUNT_CURRENCY, L.DATE""".format(
-            str(start_date),
-            str(end_date),
-            str(self.commercial_partner_id.id),
-            str(move_type),
-        )
+        ORDER BY ACCOUNT_CURRENCY, L.DATE"""
         skip_journal_codes = ["ADVR", "KRFRK"]
         if ctx.get("lang") != "tr_TR":
             skip_journal_codes.append("KRDGR")
