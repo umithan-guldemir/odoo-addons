@@ -1,7 +1,8 @@
 {
     "name": "Altinkaya Stock",
     "version": "16.0.0.1.0",
-    "website": "https://www.altinkaya.com.tr",
+    "website": "https://www.altinkaya.com",
+    "license": "LGPL-3",
     "author": "Ahmet Altınışık,OnurUgur,Codequarters,Yavuz Avcı",
     "category": "Stock",
     "summary": "add specialized stock extensions",

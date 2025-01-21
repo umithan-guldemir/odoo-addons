@@ -12,6 +12,7 @@
     "website": "https://github.com/yibudak",
     "category": "Accounting",
     "version": "0.1",
+    "license": "LGPL-3",
     "depends": ["base", "account", "change_partner_accounts"],
     "data": [
         "views/res_partner_view.xml",

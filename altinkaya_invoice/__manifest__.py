@@ -3,6 +3,7 @@
     "name": "Altinkaya Invoice",
     "version": "16.0.0.1.0",
     "category": "General",
+    "license": "LGPL-3",
     "depends": ["base", "account", "sale", "stock", "sale_stock", "delivery"],
     "author": "MAkifOzdemir,Codequarters,Acespritech Solutions Pvt. Ltd.,Yavuz Avcı",
     "description": """

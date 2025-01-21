@@ -10,5 +10,6 @@
     "data": ["views/product_product.xml"],
     "installable": True,
     "application": False,
+    "license": "LGPL-3",
     "auto_install": False,
 }

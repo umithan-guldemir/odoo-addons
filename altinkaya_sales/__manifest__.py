@@ -60,6 +60,7 @@
         "views/res_bank_view.xml",
     ],
     "demo": [],
+    "license": "LGPL-3",
     "installable": True,
     "auto_install": False,
 }
