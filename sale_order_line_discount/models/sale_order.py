@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models, _
-from odoo.addons import decimal_precision as dp
+from odoo import api, fields, models
 
 
 class SaleOrderLine(models.Model):
-    _inherit = 'sale.order.line'
+    _inherit = "sale.order.line"
 
-    unit_discounted = fields.Float('Disc. Unit',
-                                   digits=dp.get_precision('Product Price'),
-                                   compute='_compute_unit_discounted',
-                                   readonly=True, states={'draft': [('readonly', False)]},
-                                   store=True)
+    unit_discounted = fields.Float(
+        "Disc. Unit",
+        digits=(16, 2),
+        compute="_compute_unit_discounted",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+        store=True,
+    )
 
-    
-    @api.depends('price_unit', 'discount')
+    @api.depends("price_unit", "discount")
     def _compute_unit_discounted(self):
-        for sol in self:
-            sol.unit_discounted = sol.price_unit * ((100.0 -sol.discount) / 100.0)
-
-
+        for line in self:
+            line.unit_discounted = line.price_unit * ((100.0 - line.discount) / 100.0)

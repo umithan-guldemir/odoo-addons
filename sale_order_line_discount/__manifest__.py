@@ -1,6 +1,6 @@
 {
     "name": "Order Line Discount",
-    "version": "13.0.0.1.0",
+    "version": "16.0.1",
     "website": "https://www.codequarters.com",
     "category": "Sales",
     "summary": "Sale Order Line Discount",
