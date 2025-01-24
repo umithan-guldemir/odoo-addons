@@ -12,8 +12,9 @@ class AccountMove(models.Model):
     @api.depends("partner_id")
     def partner_balance(self, partner_id):
         partner = self.env["res.partner"].browse(partner_id)
-        if partner.parent_id:
-            balance = partner.parent_id.credit - partner.parent_id.debit
+        if partner.commercial_partner_id != partner:
+            comm_partner = partner.commercial_partner_id
+            balance = comm_partner.credit - comm_partner.debit
         else:
             balance = partner.credit - partner.debit
         return balance
