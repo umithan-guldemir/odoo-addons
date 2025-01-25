@@ -149,7 +149,7 @@ class MrpBoM(models.Model):
                 if not line_product:
                     continue
 
-            bom = self._bom_find(product=line_product, picking_type=picking_type or self.picking_type_id, company_id=self.company_id.id)
+            bom = self._bom_find(products=line_product, picking_type=picking_type or self.picking_type_id, company_id=self.company_id.id)
 
             if bom.type == 'phantom':
                 converted_line_quantity = current_line.product_uom_id._compute_quantity(line_quantity / bom.product_qty, bom.product_uom_id)

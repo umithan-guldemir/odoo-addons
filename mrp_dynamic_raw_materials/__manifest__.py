@@ -21,7 +21,7 @@
 
 {
     'name': 'MRP - Dynamic Raw Materials Calculation',
-    'version': '13.0.0.1.0',
+    'version': '16.0.1.0.0',
     'category': 'MRP',
     'summary': 'Compute raw materials quantity based on the numeric value of a specific attribute of the product to be produced.',
     'description': """
@@ -31,11 +31,7 @@ MRP - Dynamic Raw Materials Calculation
     """,
     'author': 'CODEQUARTERS',
     'website': 'http://www.codequarters.com',
-    'depends': [
-        'mrp',
-#         'mrp_hook',
-        'product_attribute_types'
-        ],
+    'depends': ['mrp'],
     'data': ['views/mrp_bom_view.xml',
              ],
     'installable': True,
