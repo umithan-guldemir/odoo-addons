@@ -3,7 +3,7 @@ Created on Jan 24, 2019
 
 @author: cq
 '''
-from odoo import models, api, _
+from odoo import models, _
 import logging
 from odoo.exceptions import UserError
 
@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    @api.multi
     def _address_as_string(self):
         self.ensure_one()
         addr = []
