@@ -18,7 +18,7 @@
 
 {
     "name": "Product Attribute Types",
-    "version": "12.0",
+    "version": "16.0",
     "license": "AGPL-3",
     "depends": [
         "product",
