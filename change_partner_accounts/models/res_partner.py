@@ -28,6 +28,21 @@ class ResPartner(models.Model):
         """
         if not self.ids:
             return True
+        # Reset the balance fields
+        query_zero_initial = """
+        UPDATE
+            res_partner
+        SET
+            balance_due = 0,
+            currency_balance_due = 0,
+            balance = 0,
+            currency_balance = 0
+        WHERE
+            id IN %s;
+        """
+        params_zero_initial = (tuple(self.ids),)
+        self._cr.execute(query_zero_initial, params_zero_initial)
+
         query = """
         UPDATE
           res_partner rp
