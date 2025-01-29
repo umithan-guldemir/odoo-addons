@@ -42,19 +42,19 @@ class Product(models.Model):
                 fields=[
                     "account_id",
                     "commercial_partner_id",
-                    "price_total",  # TODO: Add and use USD field.
+                    "price_total_usd",
                     "move_type",
                     "state",
                     "invoice_date",
                 ],
                 groupby="product_id",
-                orderby="price_total desc",
+                orderby="price_total_usd desc",
             )
 
             for line in report_lines:
                 product_id = line["product_id"][0]
                 product_sales[product_id][f"sale_qty{date_range}days"] = line[
-                    "price_total"
+                    "price_total_usd"
                 ]
 
         for product_id, sales in product_sales.items():
