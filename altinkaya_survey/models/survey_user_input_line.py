@@ -4,26 +4,26 @@ from odoo import api, fields, models, _
 
 
 class SurveyUserInputLine(models.Model):
-    _inherit = "survey.user_input_line"
+    _inherit = "survey.user_input.line"
 
-    partner_id = fields.Many2one(related="user_input_id.partner_id", store=True)
+    partner_id = fields.Many2one(related="user_input_id.partner_id", store=True, readonly=False)
 
     general_answer = fields.Char(
         compute="_compute_general_answer",
     )
 
-    @api.multi
+
     def _compute_general_answer(self):
         for record in self:
-            if record.question_id.type == "simple_choice":
-                record.general_answer = record.value_suggested.value
+            if record.question_id.question_type == "simple_choice":
+                record.general_answer = record.suggested_answer_id.value if record.suggested_answer_id else ""
 
-            elif record.question_id.type == "star_rating":
-                record.general_answer = _("%s Star" % int(record.value_number))
+            elif record.question_id.question_type == "star_rating":
+                record.general_answer = _("%s Star" % int(record.value_numerical_box))
 
             else:
                 answer_field = (
-                    record.value_free_text or record.value_text or record.value_number
+                    record.value_text_box or record.value_char_box or record.value_numerical_box
                 )
                 record.general_answer = str(answer_field)
         return True

@@ -27,11 +27,11 @@ class SurveySurvey(models.Model):
     #     domain=[("active", "=", True)],
     # )
 
-    url_shortener_id = fields.Many2one(
-        "short.url.yourls",
-        string="URL Shortener",
-        help="If set, survey url will be shortened using this shortener.",
-    )
+    # url_shortener_id = fields.Many2one(
+    #     "short.url.yourls",
+    #     string="URL Shortener",
+    #     help="If set, survey url will be shortened using this shortener.",
+    # )
 
     @api.constrains("default_sale_survey", "default_partner_survey")
     def _check_default_sale_survey(self):
@@ -69,7 +69,7 @@ class SurveySurvey(models.Model):
         res = super(SurveySurvey, self).prepare_result(question, current_filters)
 
         # Calculate and return statistics for choice
-        if question.type == "star_rating":
+        if question.question_type == "star_rating":
             answers = [
                 {"text": _("%s Star" % (star + 1)), "count": 0, "answer_id": 0}
                 for star in range(question.star_count)

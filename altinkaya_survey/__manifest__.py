@@ -1,4 +1,4 @@
-# Copyright 2023 Yiğit Budak (https://github.com/yibudak)
+# Copyright 2025 Yiğit Budak, Ümithan Güldemir (https://github.com/yibudak) (https://github.com/umithan-guldemir)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
@@ -10,16 +10,21 @@
     - Auto compute survey url on sale order
     - Easy access to survey user input from sale order
     """,
-    "version": "12.0.1.0.0",
+    "version": "16.0.1.0.0",
     "category": "Marketing",
     "website": "https://github.com/yibudak",
-    "author": "Yiğit Budak",
+    "author": "Yiğit Budak, Ümithan Güldemir",
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["survey", "sale", "crm", "account", "altinkaya_reports"],
+    "depends": [
+        "survey",
+        "sale",
+        "crm",
+        "account",
+    ],
     "data": [
-        "templates/disable_odoo_branding.xml",
+        # "templates/disable_odoo_branding.xml", # TODO: migration check if this is necessary
         "templates/star_rating.xml",
         "templates/clean_survey_fill.xml",
         "templates/clean_survey_print.xml",
@@ -29,4 +34,10 @@
         "views/survey_user_input_views.xml",
         "views/sale_order_views.xml",
     ],
+    "assets": {
+        "survey.survey_assets": [
+            "/altinkaya_survey/static/src/star.css",
+            "/altinkaya_survey/static/src/star.js",
+        ],
+    },
 }
