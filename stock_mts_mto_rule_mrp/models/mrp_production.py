@@ -7,27 +7,29 @@ from odoo.tools import float_compare, float_is_zero
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
 
-    @api.multi
-    def _adjust_procure_method(self):
-        # we call super()._adjust_procure_method first and then come back to
-        # check for split_procurement rules on the move.
-        super()._adjust_procure_method()
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        for production in res:
+            production._run_split_procurement_mrp()
+        return res
+
+    def _run_split_procurement_mrp(self):
+
         precision = self.env["decimal.precision"].precision_get(
             "Product Unit of Measure"
         )
         for move in self.move_raw_ids:
             product = move.product_id
             routes = (
-                product.route_ids +
-                product.route_from_categ_ids +
-                move.warehouse_id.route_ids
+                product.route_ids + product.route_from_categ_ids + move.warehouse_id.route_ids
             )
             # find if we have a "split_procurement" rule in the routes
             split_rule = self.env["stock.rule"].search(
                 [
                     ("route_id", "in", [x.id for x in routes]),
                     ("location_src_id", "=", move.location_id.id),
-                    ("location_id", "=", move.location_dest_id.id),
+                    ("location_dest_id", "=", move.location_dest_id.id),
                     ("action", "=", "split_procurement")
                 ],
                 limit=1

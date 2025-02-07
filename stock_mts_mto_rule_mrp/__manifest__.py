@@ -3,11 +3,11 @@
 {
     'name': 'Stock MTS+MTO Rule for manufacturing',
     'summary': 'Add support for MTS+MTO route on manufacturing',
-    'version': '12.0.1.0.0',
+    'version': '16.0.1.0.0',
     'development_status': 'Alpha',
     'category': 'Warehouse',
     'website': 'https://github.com/OCA/manufacture',
-    'author': 'Camptocamp,Odoo Community Association (OCA)',
+    'author': 'Camptocamp,Odoo Community Association (OCA), Ümithan Güldemir',
     'license': 'AGPL-3',
     'application': False,
     'installable': True,
